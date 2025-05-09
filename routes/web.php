@@ -3,9 +3,21 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landingpages.home');
 });
 
-Route::get('/home', function () {
-    return view('home');
+// Route for fitur page
+Route::get('/fitur', function () {
+    return view('landingpages.fitur');
 });
+
+// Route for product page
+Route::get('/product', function () {
+    return view('landingpages.product');
+});
+
+// Route for pricing page
+Route::get('/aboutus', function () {
+    return view('landingpages.about-us');
+});
+
