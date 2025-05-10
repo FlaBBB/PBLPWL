@@ -37,7 +37,7 @@
                     <p>Campaigns</p>
                 </a>
             </div>
-            <a href="" class="flex items-center bg-gray-100 text-indigo-950 px-8 py-2 rounded-sm hover:bg-[var(--color-primary)] hover:text-white hover:scale-110 transition duration-300 ease-in-out ">
+            <a href="{{ url('/login') }}" class="flex items-center bg-gray-100 text-indigo-950 px-8 py-2 rounded-sm hover:bg-[var(--color-primary)] hover:text-white hover:scale-110 transition duration-300 ease-in-out ">
                 <p class="font-semibold">Login</p>
             </a>
         </header>

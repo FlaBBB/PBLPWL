@@ -21,3 +21,7 @@ Route::get('/aboutus', function () {
     return view('landingpages.about-us');
 });
 
+Route::get('/login', function () {
+    return view('auth.login');
+});
+
