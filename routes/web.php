@@ -39,3 +39,15 @@ Route::get('/login', function () {
 Route::get('/dashboard', function () {
     return view('layout.template');
 });
+
+Route::get('/overviewAdmin', function () {
+    return view('admin.overview');
+});
+
+Route::get('/overviewMahasiswa', function () {
+    return view('mahasiswa.welcome');
+});
+
+Route::get('/overviewMahasiswa', function () {
+    return view('mahasiswa.overview');
+});
