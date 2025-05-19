@@ -21,20 +21,25 @@
                 <form action="" method="POST" class="space-y-6">
                     @csrf
                     <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Username</label>
+                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">NIM / NIDN /
+                            NIP</label>
                         <input type="email" name="email" id="email" required autofocus
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Input your username">
+                            placeholder="Input your NIM / NIDN / NIP ">
                     </div>
                     <div class="relative">
                         <label for="password" class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
                         <input type="password" name="password" id="password" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                             placeholder="Input your password">
-                        <button type="button" onclick="togglePassword()" class="right-0 flex items-center px-3 text-gray-500">
-                            <button type="button" onclick="togglePassword()" tabindex="-1" class="absolute right-4 top-9 text-gray-400 hover:text-gray-600 focus:outline-none">
-                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7z" />
+                        <button type="button" onclick="togglePassword()"
+                            class="right-0 flex items-center px-3 text-gray-500">
+                            <button type="button" onclick="togglePassword()" tabindex="-1"
+                                class="absolute right-4 top-9 text-gray-400 hover:text-gray-600 focus:outline-none">
+                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7z" />
                                 </svg>
                             </button>
                         </button>
@@ -73,4 +78,5 @@
         }
     }
 </script>
+
 </html>
