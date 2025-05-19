@@ -52,8 +52,6 @@ Route::get('/overviewMahasiswa', function () {
 Route::get('/overviewMahasiswa', function () {
     return view('mahasiswa.overview');
 });
-=======
-});
 
 // Route for fitur page
 Route::get('/fitur', function () {
