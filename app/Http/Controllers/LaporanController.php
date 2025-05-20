@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PrestasiController extends Controller
+class LaporanController extends Controller
 {
     public function index()
     {
-        $activeMenu = 'prestasi';
+        $activeMenu = 'laporan';
 
-        return view('prestasi.index', [
+        return view('layout.template', [
             'activeMenu' => $activeMenu
         ]);
     }

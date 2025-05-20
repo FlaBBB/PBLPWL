@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PrestasiController extends Controller
+class DashboardController extends Controller
 {
     public function index()
     {
-        $activeMenu = 'prestasi';
+        $activeMenu = 'dashboard';
 
-        return view('prestasi.index', [
+        return view('prestasi.mainContent', [
             'activeMenu' => $activeMenu
         ]);
     }
