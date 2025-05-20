@@ -46,5 +46,3 @@ Route::get('/aboutus', function () {
 Route::get('/login', function () {
     return view('auth.login');
 });
-
-

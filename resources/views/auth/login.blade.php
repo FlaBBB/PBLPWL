@@ -8,6 +8,7 @@
     @vite(['resources/css/app.css'])
 </head>
 
+
 <body class="bg-gray-50 min-h-screen flex items-center justify-between">
     <div class="w-screen flex flex-col md:flex-row justify-between">
         <!-- Left Side -->
@@ -21,20 +22,25 @@
                 <form action="" method="POST" class="space-y-6">
                     @csrf
                     <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">Username</label>
+                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">NIM / NIDN /
+                            NIP</label>
                         <input type="email" name="email" id="email" required autofocus
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Input your username">
+                            placeholder="Input your NIM / NIDN / NIP ">
                     </div>
                     <div class="relative">
                         <label for="password" class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
                         <input type="password" name="password" id="password" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                             placeholder="Input your password">
-                        <button type="button" onclick="togglePassword()" class="right-0 flex items-center px-3 text-gray-500">
-                            <button type="button" onclick="togglePassword()" tabindex="-1" class="absolute right-4 top-9 text-gray-400 hover:text-gray-600 focus:outline-none">
-                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7z" />
+                        <button type="button" onclick="togglePassword()"
+                            class="right-0 flex items-center px-3 text-gray-500">
+                            <button type="button" onclick="togglePassword()" tabindex="-1"
+                                class="absolute right-4 top-9 text-gray-400 hover:text-gray-600 focus:outline-none">
+                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7z" />
                                 </svg>
                             </button>
                         </button>
@@ -73,4 +79,58 @@
         }
     }
 </script>
+
+=======
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<section class="flex flex-row gap-4 w-full justify-between items-center">
+
+    <div class="w-100 p-8 items-center">
+        <h3 class="mb-6 text-2xl font-bold text-center text-gray-800">Login</h3>
+        @if(session('error'))
+            <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                {{ session('error') }}
+            </div>
+        @endif
+        <form method="POST" action="">
+            @csrf
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 mb-2">Email address</label>
+                <input type="email"
+                       class="w-full px-3 py-2 border @error('email') rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       id="email"
+                       name="email"
+                       value="{{ old('email') }}"
+                       required autofocus>
+                @error('email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700 mb-2">Password</label>
+                <input type="password"
+                       class="w-full px-3 py-2 border @error('password') rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       id="password"
+                       name="password"
+                       required>
+                @error('password')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-4 flex items-center">
+                <input type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded" id="remember" name="remember">
+                <label class="ml-2 block text-gray-700" for="remember">Remember Me</label>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition duration-150">Login</button>
+        </form>
+        <div class="mt-4 text-center">
+            <a href="" class="text-blue-600 hover:underline">Forgot Your Password?</a>
+        </div>
+    </div>
+
+    <div class="w-full h-auto flex items-center justify-end">
+        <img src="{{ asset(url('images/log-image.svg')) }}" alt="" class="w-[55%] h-auto">
+    </div>
+</section>
+</body>
+
 </html>
