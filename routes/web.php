@@ -51,3 +51,15 @@ Route::get('/overviewDosen', function () {
 Route::get('/overviewMahasiswa', function () {
     return view('mahasiswa.overview');
 });
+Route::get('/lombaMahasiswa', function () {
+    return view('mahasiswa.lomba');
+});
+Route::get('/laporanMahasiswa', function () {
+    return view('mahasiswa.laporan');
+});
+Route::get('/dapresMahasiswa', function () {
+    return view('mahasiswa.dapres');
+});
+Route::get('/newpresMahasiswa', function () {
+    return view('mahasiswa.newpres');
+});
