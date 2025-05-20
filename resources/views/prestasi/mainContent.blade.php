@@ -44,7 +44,7 @@
             <h2 class="font-bold mb-4">Rekomendasi Lomba Untuk Anda ⚡</h2>
             <table class="w-full text-left text-sm">
                 <thead>
-                    <tr class="text-gray-400">
+                    <tr class="border-b border-gray-200 text-gray-400">
                         <th class="py-2 font-semibold">No</th>
                         <th class="py-2 font-semibold">Nama Lomba</th>
                         <th class="py-2 font-semibold">Penyelenggara</th>
@@ -53,7 +53,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b hover:bg-gray-50">
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
                         <td class="py-3 px-2">1</td>
                         <td class="py-3 px-2">GEMASTIK</td>
                         <td class="py-3 px-2">Puspresnas</td>
@@ -62,7 +62,7 @@
                             <a href="#" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
                         </td>
                     </tr>
-                    <tr class="border-b">
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
                         <td class="py-3 px-2">2</td>
                         <td class="py-3 px-2">Hackathon Merdeka</td>
                         <td class="py-3 px-2">Institut Merdeka</td>
@@ -71,7 +71,7 @@
                             <a href="#" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
                         </td>
                     </tr>
-                    <tr class="">
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
                         <td class="py-3 px-2">3</td>
                         <td class="py-3 px-2">IoT Competition</td>
                         <td class="py-3 px-2">Kementerian Pendidikan</td>
@@ -121,7 +121,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="border-t">
+                <tr class="border-t border-gray-200">
                     <td class="py-2">1</td>
                     <td>#12564</td>
                     <td>Dec 1, 2021</td>
