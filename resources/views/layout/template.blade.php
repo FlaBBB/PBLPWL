@@ -5,31 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SIPRESTA')</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: 'Poppins', sans-serif; }
     </style>
     @vite(['resources/css/app.css'])
 </head>
 <body>
+
+<section>
     <!-- Navbar -->
-    <nav>
+    <nav class="fixed lg:flex lg:flex-grow lg:justify-between lg:items-center overflow-y-auto">
         <div class="w-full h-screen">
             @include('layout.navbar')
         </div>
     </nav>
-
-    <!-- Header -->
-    <header>
-        <div class="container">
-            @include('layout.header')
-        </div>
-    </header>
+    <div class="flex-grow ml-64">
+        <!-- Header -->
+        <header>
+            <div class="container">
+                @include('layout.header')
+            </div>
+        </header>
+    
+        <main>
+            <div class="content">
+                @yield('content')
+            </div>
+        </main>
+    </div>
 
     <!-- Main Content -->
-    <main>
-        <div class="container">
-            @yield('content')
-        </div>
-    </main>
+
+</section>
+
 </body>
 </html> 
