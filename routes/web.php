@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('landingpages.home');
-
 });
 
 // Route for fitur page
@@ -45,31 +44,10 @@ Route::get('/overviewAdmin', function () {
     return view('admin.overview');
 });
 
-Route::get('/overviewMahasiswa', function () {
-    return view('mahasiswa.welcome');
+Route::get('/overviewDosen', function () {
+    return view('dosen.overview');
 });
 
 Route::get('/overviewMahasiswa', function () {
     return view('mahasiswa.overview');
 });
-
-// Route for fitur page
-Route::get('/fitur', function () {
-    return view('landingpages.fitur');
-});
-
-// Route for product page
-Route::get('/product', function () {
-    return view('landingpages.product');
-});
-
-// Route for pricing page
-Route::get('/aboutus', function () {
-    return view('landingpages.about-us');
-});
-
-Route::get('/login', function () {
-    return view('auth.login');
-});
-
-
