@@ -1,5 +1,5 @@
 <nav class="w-full md:w-1/4 lg:w-1/5 bg-gray-100 h-auto md:h-screen shadow-lg flex flex-col">
-    <div class="flex items-center pl-10 py-6">
+    <div class="flex items-center pl-10 py-6 mt-8">
         <img src="{{ asset('images/Logo-Blue.svg') }}" alt="Logo" class="h-10 w-auto">
     </div>
     <ul class="flex flex-row md:flex-col gap-2 md:gap-4 pb-4 md:pb-0">
