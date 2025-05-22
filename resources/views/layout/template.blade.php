@@ -7,6 +7,7 @@
     <title>@yield('title', 'SIPRESTA')</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -15,31 +16,32 @@
     @vite(['resources/css/app.css'])
 </head>
 
-<body>
+<body class="bg-gray-50 min-h-screen">
 
-<section>
-    <!-- Navbar -->
-    <nav class="fixed lg:flex lg:flex-grow lg:justify-between lg:items-center overflow-y-auto">
-        <div class="w-full h-screen">
-            @include('layout.navbar')
-        </div>
-    </nav>
-    <div class="flex-grow ml-64">
+    <!-- Sidebar/Navbar -->
+    <aside class="fixed top-0 left-0 h-screen w-64 bg-white shadow-lg z-20 overflow-y-auto hidden lg:block">
+        @include('layout.navbar-admin')
+    </aside>
+
+    <!-- Main Content -->
+    <div class="bg-white lg:ml-64">
         <!-- Header -->
-        <header>
-            <div class="container">
+        <header class="">
+            <div class="container mx-auto px-6 py-4">
                 @include('layout.header')
             </div>
         </header>
-    
-        <main>
-            <div class="content">
-                @yield('content')
-            </div>
+
+        <!-- Breadcrumb -->
+        <div class="container mx-auto px-6 mt-2 pb-2">
+            @include('layout.breadcrumb')
+        </div>
+
+        <!-- Main -->
+        <main class="container mx-auto px-6">
+            @yield('content')
         </main>
     </div>
-
-</section>
 
 </body>
 
