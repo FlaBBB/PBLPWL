@@ -10,7 +10,7 @@
             </div>
             <nav class="flex flex-col gap-2">
                 <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 px-4 py-2 {{ ($activeMenu == 'dashboard') ? ' text-blue-700 font-semibold bg-blue-50' : ' hover:bg-blue-50 text-gray-700' }} ">
-                    dashboard
+                    Dashboard
                 </a>
                 <a href="{{ url('/prestasi') }}" class="flex items-center gap-3 px-4 py-2 {{ ($activeMenu == 'prestasi') ? ' text-blue-700 font-semibold bg-blue-50' : ' hover:bg-blue-50 text-gray-700' }} ">
                     Prestasi
