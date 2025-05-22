@@ -79,7 +79,7 @@
         }
     }
 </script>
-
+{{-- 
 =======
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
 <section class="flex flex-row gap-4 w-full justify-between items-center">
@@ -131,6 +131,6 @@
         <img src="{{ asset(url('images/log-image.svg')) }}" alt="" class="w-[55%] h-auto">
     </div>
 </section>
-</body>
+</body> --}}
 
 </html>

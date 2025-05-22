@@ -1,16 +1,20 @@
 @php
     $activeMenu = $activeMenu ?? '';
+    $activeSubmenu = $activeSubmenu ?? '';
 @endphp
 <div class="flex min-h-screen bg-gray-50">
     <!-- Sidebar -->
-    <aside class="w-64 bg-white border-navbar flex flex-col justify-between py-8">
+    <aside class="w-64 bg-white border-r-2 border-gray-100 flex flex-col justify-between py-8">
         <div>
-            <div class="flex items-center justify-center mb-10">
+            <div class="flex items-center justify-center px-6 mb-10">
                 <img src="{{ asset('images/Logo-blue.svg') }}" alt="SIPRESTA Logo" class="h-8">
             </div>
-            <nav class="flex flex-col gap-2">
+            <nav class="flex flex-col gap-1">
                 <a href="{{ url('/dashboard') }}"
-                    class="flex items-center gap-3 px-4 py-2 {{ ($activeMenu == 'dashboard') ? ' text-blue-700 font-semibold bg-blue-50' : ' hover:bg-blue-50 text-gray-700' }} ">
+                    class="relative flex items-center gap-3 pl-6 py-3 text-sm {{ ($activeMenu == 'dashboard') ? 'text-blue-600 font-semibold bg-blue-400/8' : ' hover:text-blue-700' }} ">
+                    @if ($activeMenu == 'dashboard')
+                        <span class="absolute right-0 top-0 h-full w-1 bg-blue-600 rounded-l"></span>
+                    @endif
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -18,55 +22,83 @@
                     </svg>
                     Dashboard
                 </a>
+{{-- Menu Prestasi  --}}
                 <div>
-                    <a href="{{ url('/prestasi') }}"
-                        class="flex items-center gap-3 px-4 py-2 {{ ($activeMenu == 'prestasi') ? ' text-blue-700 font-semibold bg-blue-50' : ' hover:bg-blue-50 text-gray-700' }} ">
+                    <!-- Tombol utama -->
+                    <button onclick="toggleDropdown('prestasiDropdown', 'chevronPrestasi')" id="dropdownButtonPrestasi"
+                        class="relative flex items-center gap-3 px-6 py-3 w-full text-sm {{ ($activeMenu == 'prestasi') ? 'text-blue-600 font-semibold bg-blue-400/5' : 'hover:text-blue-700' }}">
+                        @if ($activeMenu == 'prestasi')
+                        <span class="absolute right-0 top-0 h-full w-1 bg-blue-600 rounded-l"></span>
+                    @endif
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
                         </svg>
                         Prestasi
-                        <!-- Chevron Icon -->
-                        @if($activeMenu == 'prestasi')
-                            <!-- Chevron Up Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-5 ml-auto">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-                            </svg>
-                        @else
-                            <!-- Chevron Down Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-5 ml-auto">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        @endif
-                    </a>
-                    @if($activeMenu == 'prestasi')
-                        <div class="ml-10 mt-1 flex flex-col gap-1">
-                            <a href="{{ url('/prestasi') }}"
-                                class="px-3 py-1 rounded text-blue-700 bg-blue-100 font-medium text-sm hover:bg-blue-200 transition">
-                                Daftar Prestasi
-                            </a>
-                            <a href="{{ url('/prestasi/tambah') }}"
-                                class="px-3 py-1 rounded text-gray-600 font-medium text-sm hover:bg-gray-100 transition">
-                                Tambah Prestasi Baru
-                            </a>
-                        </div>
-                    @endif
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-5 ml-auto transition-transform duration-200"
+                            id="chevronPrestasi"
+                            style="{{ ($activeMenu == 'prestasi') ? 'transform: rotate(180deg);' : '' }}">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25L12 15.75 4.5 8.25" />
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div id="prestasiDropdown"
+                        class="{{ ($activeMenu == 'prestasi') ? 'block' : 'hidden' }} mt-1 ml-10 flex flex-col gap-1 transition-all duration-300">
+                        <a href="{{ url('/prestasi') }}" class="px-3 py-3 rounded text-sm font-medium transition
+                {{ ($activeSubmenu == 'daftarPrestasi') ? 'text-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
+                            Daftar Prestasi
+                        </a>
+                        <a href="{{ url('/prestasi/tambah') }}" class="px-3 py-3 rounded text-sm font-medium transition
+                {{ ($activeSubmenu == 'tambah') ? 'text-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
+                            Tambah Prestasi Baru
+                        </a>
+                    </div>
                 </div>
-                <a href="#"
-                    class="flex items-center gap-3 px-4 py-2 {{ ($activeMenu == 'lomba') ? ' text-blue-700 font-semibold' : ' hover:bg-blue-50 text-gray-700' }} relative ">
+
+                {{-- Menu Lomba --}}
+                <div>
+                    <!-- Tombol utama -->
+                    <button onclick="toggleDropdown('lombaDropdown', 'chevronlomba')" id="dropdownButtonlomba" 
+                    class="relative flex items-center gap-3 px-6 py-2 w-full text-sm {{ ($activeMenu == 'lomba') ? 'text-blue-600 font-semibold bg-blue-400/5' : 'hover:text-blue-700' }}">
+                    @if ($activeMenu == 'lomba')
+                        <span class="absolute right-0 top-0 h-full w-1 bg-blue-600 rounded-l"></span>
+                    @endif    
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0" />
-                    </svg>
-                    Lomba
-                    <span class="absolute right-4 top-3 bg-red-500 text-white text-xs rounded-full px-2">2</span>
-                </a>
-                <a href="#"
-                    class="flex items-center gap-3 px-4 py-2 {{ ($activeMenu == 'laporan') ? ' text-blue-700 font-semibold' : ' hover:bg-blue-50 text-gray-700' }} ">
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0" />
+                        </svg>
+                        Lomba
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-5 ml-auto transition-transform duration-200"
+                            id="chevronlomba"
+                            style="{{ ($activeMenu == 'lomba') ? 'transform: rotate(180deg);' : '' }}">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25L12 15.75 4.5 8.25" />
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div id="lombaDropdown"
+                        class="{{ ($activeMenu == 'lomba') ? 'block' : 'hidden' }} mt-1 ml-10 flex flex-col gap-1 transition-all duration-300">
+                        <a href="{{ url('/lomba') }}" class="px-3 py-3 rounded text-sm font-medium transition
+                {{ ($activeSubmenu == 'daftarLomba') ? 'text-blue-700' : 'text-gray-600 hover:bg-gray-100' }}">
+                            Daftar Lomba
+                        </a>
+                        <a href="{{ url('/lomba/tambah') }}" class="px-3 py-3 rounded text-sm font-medium transition
+                {{ ($activeSubmenu == 'tambah') ? 'text-blue-700' : 'text-gray-600 hover:bg-gray-100' }}">
+                            Tambah Lomba Baru
+                        </a>
+                    </div>
+                </div>
+
+                <a href="{{ url('/laporan') }}"
+                    class="relative flex items-center gap-3 pl-6 py-3 text-sm {{ ($activeMenu == 'laporan') ? ' text-blue-600 font-semibold bg-blue-400/5' : 'hover:text-blue-700' }} ">
+                    @if ($activeMenu == 'laporan')
+                        <span class="absolute right-0 top-0 h-full w-1 bg-blue-600 rounded-l"></span>
+                    @endif   
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -76,7 +108,8 @@
                 </a>
             </nav>
         </div>
-        <div class="flex flex-col gap-2 ml-4">
+
+        <div class="flex flex-col gap-4 ml-8">
             <a href="#" class="flex items-center gap-2 text-gray-400 hover:text-blue-600 text-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
@@ -91,7 +124,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
                 </svg>
-
                 Log out
             </a>
         </div>

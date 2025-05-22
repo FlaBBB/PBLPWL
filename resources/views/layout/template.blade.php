@@ -38,9 +38,38 @@
             </div>
         </main>
     </div>
-
 </section>
 
+<script>
+    let activeDropdown = null;
+    let activeChevron = null;
+
+    function toggleDropdown(dropdownId, chevronId){
+        const dropdown = document.getElementById(dropdownId);
+        const chevron = document.getElementById(chevronId);
+
+        // If another dropdown is open, close it
+        if (activeDropdown && activeDropdown !== dropdown) {
+            activeDropdown.classList.add('hidden');
+            if (activeChevron) {
+                activeChevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Toggle current dropdown
+        if (dropdown.classList.contains('hidden')) {
+            dropdown.classList.remove('hidden');
+            chevron.style.transform = 'rotate(180deg)';
+            activeDropdown = dropdown;
+            activeChevron = chevron;
+        } else {
+            dropdown.classList.add('hidden');
+            chevron.style.transform = 'rotate(0deg)';
+            activeDropdown = null;
+            activeChevron = null;
+        }
+    }
+</script>
 </body>
 
 </html>
