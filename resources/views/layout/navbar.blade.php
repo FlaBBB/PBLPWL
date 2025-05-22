@@ -83,12 +83,12 @@
                     <!-- Dropdown menu -->
                     <div id="lombaDropdown"
                         class="{{ ($activeMenu == 'lomba') ? 'block' : 'hidden' }} mt-1 ml-10 flex flex-col gap-1 transition-all duration-300">
-                        <a href="{{ url('/lomba') }}" class="px-3 py-3 rounded text-sm font-medium transition
+                        <a href="{{ route('lomba.index') }}" class="px-3 py-3 rounded text-sm font-medium transition
                 {{ ($activeSubmenu == 'daftarLomba') ? 'text-blue-700' : 'text-gray-600 hover:bg-gray-100' }}">
                             Daftar Lomba
                         </a>
-                        <a href="{{ url('/lomba/tambah') }}" class="px-3 py-3 rounded text-sm font-medium transition
-                {{ ($activeSubmenu == 'tambah') ? 'text-blue-700' : 'text-gray-600 hover:bg-gray-100' }}">
+                        <a href="{{ route('lomba.create') }}" class="px-3 py-3 rounded text-sm font-medium transition
+                {{ ($activeSubmenu == 'createLomba') ? 'text-blue-700' : 'text-gray-600 hover:bg-gray-100' }}">
                             Tambah Lomba Baru
                         </a>
                     </div>

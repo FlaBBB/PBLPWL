@@ -25,8 +25,12 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('prestasi.dashboard');
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi');
-Route::get('/lomba', [LombaController::class, 'index'])->name('lomba');
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+
+
+Route::get('/lomba', [LombaController::class, 'index'])->name('lomba.index');
+Route::get('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
+Route::get('/lomba/detail', [LombaController::class, 'detail'])->name('lomba.detail');
 
 // Route for fitur page
 Route::get('/fitur', function () {
