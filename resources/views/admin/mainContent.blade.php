@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Main Content -->
-<main class="flex-1 p-10">
+<main class="flex-1 px-10 pb-10">
     <!-- Stats -->
     <div class="grid grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
