@@ -5,9 +5,7 @@ use App\Http\Controllers\Mahasiswa\LombaController;
 use App\Http\Controllers\Mahasiswa\LaporanController;
 use App\Http\Controllers\Mahasiswa\PrestasiController;
 use App\Http\Controllers\Admin\DashboardAdminController;
-use App\Http\Controlle
-=======
->>>>>>> f7ed2d99cafe0514b21365ae177e10ea8b7803c2rs\Admin\KelolaPenggunaController;
+use App\Http\Controllers\Admin\KelolaPenggunaController;
 use App\Http\Controllers\Admin\KelolaPrestasiController;
 use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
