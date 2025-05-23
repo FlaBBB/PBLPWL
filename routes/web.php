@@ -5,7 +5,9 @@ use App\Http\Controllers\Mahasiswa\LombaController;
 use App\Http\Controllers\Mahasiswa\LaporanController;
 use App\Http\Controllers\Mahasiswa\PrestasiController;
 use App\Http\Controllers\Admin\DashboardAdminController;
-use App\Http\Controllers\Admin\KelolaPenggunaController;
+use App\Http\Controlle
+=======
+>>>>>>> f7ed2d99cafe0514b21365ae177e10ea8b7803c2rs\Admin\KelolaPenggunaController;
 use App\Http\Controllers\Admin\KelolaPrestasiController;
 use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
@@ -29,11 +31,6 @@ Route::get('/', function () {
     return view('landingpages.home');
 });
 
-
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('prestasi.dashboard');
-Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi');
-Route::get('/lomba', [LombaController::class, 'index'])->name('lomba');
-Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 
 // Route for fitur page
 Route::get('/fitur', function () {
