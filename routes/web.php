@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LombaController;
 use App\Http\Controllers\PrestasiController;
+use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('prestasi.
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi');
 Route::get('/lomba', [LombaController::class, 'index'])->name('lomba');
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+
+Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
+Route::get('/profile/edit', [MahasiswaController::class, 'edit_profile'])->name('edit_profile');
 
 // Route for fitur page
 Route::get('/fitur', function () {

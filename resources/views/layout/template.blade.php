@@ -40,7 +40,21 @@
     </div>
 
 </section>
+<script>
+     function toggleDropdown() {
+    const dropdown = document.getElementById('dropdown');
+    dropdown.classList.toggle('hidden');
+  }
 
+  // Optional: close dropdown when clicked outside
+  document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('dropdown');
+    const button = e.target.closest('button');
+    if (!dropdown.contains(e.target) && !button) {
+      dropdown.classList.add('hidden');
+    }
+  });
+</script>
 </body>
 
 </html>

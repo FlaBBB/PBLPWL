@@ -14,6 +14,17 @@ class MahasiswaController extends Controller
         //
     }
 
+    public function profile()
+    {
+        return view('mahasiswa.profilMahasiswa', [
+        ]);
+    }
+    public function edit_profile()
+    {
+        return view('mahasiswa.editProfil', [
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
