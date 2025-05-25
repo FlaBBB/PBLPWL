@@ -16,4 +16,14 @@ class PrestasiController extends Controller
             'activeSubmenu' => $activeSubmenu
         ]);
     }
+public function tambah()
+{
+    $activeMenu = 'prestasi';
+    $activeSubmenu = 'tambah'; // ubah dari 'tambahPrestasi' ke 'tambah'
+
+    return view('prestasi.tambah', [
+        'activeMenu' => $activeMenu,
+        'activeSubmenu' => $activeSubmenu
+    ]);
+}
 }

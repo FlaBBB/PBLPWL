@@ -25,6 +25,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('prestasi.dashboard');
 Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi');
+Route::get('/prestasi/tambah', [PrestasiController::class, 'tambah'])->name('prestasi.tambah');
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 
 
