@@ -141,15 +141,48 @@
                             class="block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                     </div>
 
+                    <!-- Data Mahasiswa -->
+                    <div class="relative p-8 pt-14 mt-4 border border-gray-200 rounded-sm">
+                        <div class="absolute inset-x-0 top-0 h-10 w-full bg-blue-500 flex rounded-t-md items-center">
+                            <span class="text-white font-medium pl-4">Data Mahasiswa</span>
+                        </div>
+                        <div class="mt-8 text-left">
+                            <button
+                                class="text-sm bg-blue-500 text-white px-5 py-2 rounded-md hover:bg-blue-600 transition flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                Tambah Mahasiswa
+                            </button>
+                        </div>
+                    </div>
                     <!-- Data Dosen -->
-                    
+                    <div class="relative p-8 pt-14 mt-4 border border-gray-200 rounded-sm">
+                        <div class="absolute inset-x-0 top-0 h-10 w-full bg-blue-500 flex rounded-t-md items-center">
+                            <span class="text-white font-medium pl-4">Data Dosen</span>
+                        </div>
+                        <div class="mt-8 text-left">
+                            <button
+                                class="text-sm bg-blue-500 text-white px-5 py-2 rounded-md hover:bg-blue-600 transition flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                Tambah Dosen
+                            </button>
+                        </div>
+                    </div>
 
                     <!-- Tombol Submit -->
                     <div class="mt-8 text-right">
-                        <button type="submit"
-                            class="w-32 bg-blue-500 text-white py-2 px-4 rounded-sm hover:bg-blue-700 transition duration-200">
-                            Submit
-                        </button>
+                        <a href="{{ route('prestasi.tambah') }}">
+                            <button type="Cancel"
+                                class="w-32 bg-gray-300 text-gray-700 py-2 px-4 rounded-sm hover:bg-gray-400 transition duration-200">
+                                Batal
+                            </button>
+                            <button type="submit"
+                                class="w-32 bg-blue-500 text-white py-2 px-4 rounded-sm hover:bg-blue-700 transition duration-200">
+                                Submit
+                            </button>
                     </div>
                 </form>
             </div>
