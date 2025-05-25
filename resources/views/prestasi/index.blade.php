@@ -7,7 +7,7 @@
             <div class="flex flex-wrap gap-4 py-4 items-center">
                 <p class="text-gray-400">Lihat dan pantau seluruh prestasi yang telah Anda unggah selama masa studi.
                     Pastikan setiap prestasi disertai bukti sah seperti sertifikat atau surat keterangan resmi.</p>
-                <div class="flex flex-wrap gap-4 py-4 items-center">
+                <div class="flex flex-wrap gap-4 py-4 items-center w-full">
                     <!-- Search Input -->
                     <div class="relative">
                         <input type="text" placeholder="Cari disini"
@@ -32,7 +32,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>
-
                     <!-- Dropdown: Tingkat Lomba -->
                     <div class="relative w-40">
                         <select
@@ -61,6 +60,18 @@
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
+                    </div>
+                    <!-- Button: Tambah Prestasi -->
+                    <div class="ml-auto">
+                        <a href="{{ route('prestasi.tambah') }}">
+                            <button
+                                class="text-sm bg-blue-500 text-white px-5 py-2 rounded-md hover:bg-blue-600 transition flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                Tambah Prestasi
+                            </button>
+                        </a>
                     </div>
                 </div>
                 <table class="w-full text-left text-sm bg-white rounded-lg overflow-hidden">
@@ -104,142 +115,58 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">1</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">2</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">3</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">4</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">5</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">6</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">7</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">8</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">9</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">10</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">11</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">12</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">13</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">14</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">15</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">Terverifikasi</td>
-                            <td class="py-2 px-3">ooo</td>
+                        @for($i = 1; $i <= 4; $i++)
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                <td class="py-2 px-3">{{ $i }}</td>
+                                <td class="py-2 px-3">Hackathon Merdeka</td>
+                                <td class="py-2 px-3">Software Development</td>
+                                <td class="py-2 px-3">Juara 2</td>
+                                <td class="py-2 px-3">Nasional</td>
+                                <td class="py-2 px-3">
+                                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                                        Terverifikasi
+                                    </span>
+                                </td>
+                                <td class="py-2 px-3">ooo</td>
+                            </tr>
+                        @endfor
+                        @for($i = 5; $i <= 8; $i++)
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                <td class="py-2 px-3">{{ $i }}</td>
+                                <td class="py-2 px-3">Hackathon Merdeka</td>
+                                <td class="py-2 px-3">Software Development</td>
+                                <td class="py-2 px-3">Juara 2</td>
+                                <td class="py-2 px-3">Nasional</td>
+                                <td class="py-2 px-3">
+                                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
+                                        <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                                        Sedang Diproses
+                                    </span>
+                                </td>
+                                <td class="py-2 px-3">ooo</td>
+                            </tr>
+                        @endfor
+                        @for($i = 9; $i <= 12; $i++)
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                <td class="py-2 px-3">{{ $i }}</td>
+                                <td class="py-2 px-3">Hackathon Merdeka</td>
+                                <td class="py-2 px-3">Software Development</td>
+                                <td class="py-2 px-3">Juara 2</td>
+                                <td class="py-2 px-3">Nasional</td>
+                                <td class="py-2 px-3">
+                                    <span
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                                        <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                        DITOLAK
+                                    </span>
+                                </td>
+                                <td class="py-2 px-3">ooo</td>
+                            </tr>
+                        @endfor
                     </tbody>
                 </table>
             </div>
+        </div>
     </main>
 @endsection
