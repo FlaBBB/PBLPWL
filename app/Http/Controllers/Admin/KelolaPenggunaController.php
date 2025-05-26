@@ -48,6 +48,31 @@ class KelolaPenggunaController extends Controller
             'headerDesc' => $headerDesc,
         ]);
     }
+    
+    public function dosenTambah()
+    {
+    $activeMenu = 'kelola-dosen-tambah';
+    $breadcrumbs = [
+        [
+            'label' => 'Kelola Dosen',
+            'url' => route('admin.kelola-dosen')
+        ],
+        [
+            'label' => 'Tambah Dosen',
+            'url' => route('admin.kelola-dosen-tambah')
+        ],
+    ];
+
+    $headerTitle = 'Tambah Dosen';
+    $headerDesc = 'Tambah dosen baru ke dalam sistem.';
+
+    return view('admin.kelola-dosen-tambah', [
+        'activeMenu' => $activeMenu,
+        'breadcrumbs' => $breadcrumbs,
+        'headerTitle' => $headerTitle,
+        'headerDesc' => $headerDesc,
+        ]);
+    }
 
     public function admin()
     {

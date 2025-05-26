@@ -77,8 +77,11 @@ Route::prefix('admin')->group(function () {
     // Pengguna
     Route::prefix('kelola-pengguna')->group(function () {
         Route::get('/', [KelolaPenggunaController::class, 'index'])->name('admin.kelola-pengguna');
+        Route::get('/tambah', [KelolaPenggunaController::class, 'index'])->name('admin.kelola-pengguna-tambah');
         Route::get('/dosen', [KelolaPenggunaController::class, 'dosen'])->name('admin.kelola-dosen');
+        Route::get('/dosen/tambah', [KelolaPenggunaController::class, 'dosenTambah'])->name('admin.kelola-dosen-tambah');
         Route::get('/admin', [KelolaPenggunaController::class, 'admin'])->name('admin.kelola-admin');
+        Route::get('/admin/tambah', [KelolaPenggunaController::class, 'admin'])->name('admin.kelola-admin-tambah');
     });
     // Prestasi
     Route::prefix('kelola-prestasi')->group(function () {
