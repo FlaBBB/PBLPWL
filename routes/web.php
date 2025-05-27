@@ -29,7 +29,6 @@ Route::get('/', function () {
     return view('landingpages.home');
 });
 
-
 // Route for fitur page
 Route::get('/fitur', function () {
     return view('landingpages.fitur');
