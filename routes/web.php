@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\KelolaPrestasiController;
 use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
 use App\Http\Controllers\Admin\LaporanAdminController;
+use App\Http\Controllers\Admin\RekomendasiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -98,6 +99,11 @@ Route::prefix('admin')->group(function () {
     // Laporan
     Route::prefix('laporan')->group(function () {
         Route::get('/', [LaporanAdminController::class, 'index'])->name('admin.laporan');
+    });
+    //Rekomendasi
+    Route::prefix('rekomendasi')->group(function () {
+        Route::get('/rekomendasi-vikor', [RekomendasiController::class, 'rekomendasiVikor'])->name('admin.rekomendasi-vikor');
+        Route::get('/rekomendasi-smart', [RekomendasiController::class, 'rekomendasiSmart'])->name('admin.rekomendasi-smart');
     });
     
 

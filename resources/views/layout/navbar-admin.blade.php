@@ -10,10 +10,10 @@ $activeMenu = $activeMenu ?? '';
                 <img src="{{ asset('images/Logo-blue.svg') }}" alt="SIPRESTA Logo" class="h-8">
             </div>
 
-            <nav class="flex flex-col gap-2">
+            <nav class="text-sm flex flex-col gap-2">
                 <!-- Navbar Mahasiswa -->
                 <a href="{{ route('admin.dashboard') }}"
-                    class="flex items-center gap-3 pl-7 py-2 {{ ($activeMenu == 'dashboard') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 transition text-gray-700' }} ">
+                    class="flex items-center gap-3 pl-7 py-2 {{ ($activeMenu == 'dashboard') ? 'text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 transition text-gray-700' }} ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
                     </svg>
@@ -100,31 +100,7 @@ $activeMenu = $activeMenu ?? '';
                         </a>
                     </div>
                 </div>
-                <div x-data="{ open: {{ $activeMenu == 'program-studi' || $activeMenu == 'periode' ? 'true' : 'false' }}, $activeMenu: '{{ $activeMenu }}' }"
-                    x-effect="if ($activeMenu !== 'program-studi' && $activeMenu !== 'periode') { open = false }">
-                    <a href="#" @click.prevent="open = !open"
-                        class="flex items-center gap-3 pl-7 py-2 pr-3 {{ ($activeMenu == 'program-studi' || $activeMenu == 'periode') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 transition text-gray-700' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
-                        </svg>
-                        Kelola Akademik
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-6 ml-auto transition-transform duration-200"
-                            :class="open ? 'rotate-180' : ''">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                        </svg>
-                    </a>
-                    <div x-show="open" x-transition class="ml-10 my-3 flex flex-col gap-3">
-                        <a href="{{ route('admin.program-studi') }}"
-                            class="px-3 py-1 rounded-l-2xl {{ ($activeMenu == 'program-studi') ? 'text-blue-700 font-medium hover:bg-blue-50 transition border-r-blue-500 border-r-3' : 'text-gray-600 font-medium text-sm hover:bg-blue-50 transition' }} ">
-                            Kelola Program Studi
-                        </a>
-                        <a href="{{ route('admin.periode') }}"
-                            class="px-3 py-1 rounded-l-2xl {{ ($activeMenu == 'periode') ? 'text-blue-700 font-medium hover:bg-blue-50 transition border-r-blue-500 border-r-3' : 'text-gray-600 font-medium text-sm hover:bg-blue-50 transition' }} ">
-                            Kelola Periode
-                        </a>
-                    </div>
-                </div>
+
                 <a href="{{ route('admin.laporan') }}"
                     class="flex items-center gap-3 pl-7 py-2 {{ ($activeMenu == 'laporan') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 text-gray-700' }} ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -134,6 +110,44 @@ $activeMenu = $activeMenu ?? '';
                     </svg>
                     Laporan
                 </a>
+
+                <div x-data="{ open: {{ $activeMenu == 'rekomendasi-vikor' || $activeMenu == 'rekomendasi-smart' ? 'true' : 'false' }}, $activeMenu: '{{ $activeMenu }}' }"
+                    x-effect="if ($activeMenu !== 'rekomendasi-vikor' && $activeMenu !== 'rekomendasi-smart') { open = false }">
+                    <a href="#" @click.prevent="open = !open"
+                        class="flex items-center gap-3 pl-7 py-2 pr-3 {{ ($activeMenu == 'rekomendasi-vikor' || $activeMenu == 'rekomendasi-smart') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 transition text-gray-700' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                        </svg>
+
+                        Rekomendasi
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6 ml-auto transition-transform duration-200"
+                            :class="open ? 'rotate-180' : ''">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </a>
+                    <div x-show="open" x-transition class="ml-10 my-3 flex flex-col gap-3">
+                        <a href="{{ route('admin.rekomendasi-vikor') }}"
+                            class="px-3 py-1 rounded-l-2xl {{ ($activeMenu == 'rekomendasi-vikor') ? 'text-blue-700 font-medium hover:bg-blue-50 transition border-r-blue-500 border-r-3' : 'text-gray-600 font-medium text-sm hover:bg-blue-50 transition' }} ">
+                            Rekomendasi VIKOR
+                        </a>
+                        <a href="{{ route('admin.rekomendasi-smart') }}"
+                            class="px-3 py-1 rounded-l-2xl {{ ($activeMenu == 'rekomendasi-smart') ? 'text-blue-700 font-medium hover:bg-blue-50 transition border-r-blue-500 border-r-3' : 'text-gray-600 font-medium text-sm hover:bg-blue-50 transition' }} ">
+                            Rekomendasi SMART
+                        </a>
+                    </div>
+                </div>
+                {{-- <a href="{{ route('admin.rekomendasi') }}"
+                    class="flex items-center gap-3 pl-7 py-2 {{ ($activeMenu == 'rekomendasi') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 text-gray-700' }} ">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+                    </svg>
+                    Rekomendasi
+                </a> --}}
             </nav>
         </div>
         <div class="flex flex-col gap-5 ml-7 mb-5 mt-10 overflow-y-auto">
