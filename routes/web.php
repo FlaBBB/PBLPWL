@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\KelolaPrestasiController;
 use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
 use App\Http\Controllers\Admin\LaporanAdminController;
+use App\Http\Controllers\Dosen\DashboardDosenController;
+use App\Http\Controllers\Dosen\ManajemenMahasiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,13 +57,13 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 // Route Prestasi
 Route::prefix('prestasi')->group(function () {
     Route::get('/', [PrestasiController::class, 'index'])->name('prestasi');
-    Route::get('/tambah', [PrestasiController::class, 'create'])->name('prestasi.create');
+    Route::get('/tambah', [PrestasiController::class, 'create'])->name('prestasi-tambah');
 });
 
 // Route Lomba
 Route::prefix('lomba')->group(function () {
     Route::get('/', [LombaController::class, 'index'])->name('lomba');
-    Route::get('/tambah', [LombaController::class, 'create'])->name('lomba.create');
+    Route::get('/tambah', [LombaController::class, 'create'])->name('lomba-tambah');
 });
 
 // Route Laporan
@@ -100,5 +102,15 @@ Route::prefix('admin')->group(function () {
         Route::get('/', [LaporanAdminController::class, 'index'])->name('admin.laporan');
     });
     
+});
+// Route for Admin
 
+Route::prefix('dosen')->group(function () {
+    Route::get('/dashboard', [DashboardDosenController::class, 'index'])->name('dosen.dashboard');
+    Route::get('/manajemen-mahasiswa', [ManajemenMahasiswaController::class, 'index'])->name('dosen.manajemen-mahasiswa');
+    
+    Route::prefix('kelola-lomba')->group(function () {
+        Route::get('/daftar', [KelolaLombaController::class, 'daftar'])->name('dosen.daftar-lomba');
+        Route::get('/tambah', [KelolaLombaController::class, 'tambah'])->name('dosen.tambah-lomba');
+    });
 });

@@ -19,14 +19,14 @@
 <body class="bg-gray-50 min-h-screen">
 
     <!-- Sidebar/Navbar -->
-    <aside class="fixed top-0 left-0 h-screen w-64 bg-white shadow-lg z-20 overflow-y-auto hidden lg:block">
-        @include('layout.navbar-admin')
+    <aside class="fixed top-0 left-0 h-screen w-64 bg-white z-20 overflow-y-auto hidden lg:block">
+        @include('layout.navbar-dosen')
     </aside>
 
     <!-- Main Content -->
     <div class="bg-white lg:ml-64">
         <!-- Header -->
-        <header class="">
+        <header class="sticky top-0 z-20 bg-white">
             <div class="container mx-auto px-6 py-4">
                 @include('layout.header')
             </div>
