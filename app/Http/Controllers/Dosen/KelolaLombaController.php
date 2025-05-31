@@ -17,8 +17,8 @@ class KelolaLombaController extends Controller
                 'url' => route('dosen.daftar-lomba')
             ],
         ];
-        $headerTitle = 'Daftar Lomba';
-        $headerDesc = 'Daftar data lomba yang ada di dalam sistem.';
+        $headerTitle = 'Kelola Lomba';
+        $headerDesc = 'Pantau dan atur daftar lomba dengan mudah. Jelajahi katalog lomba dan tambahkan lomba baru hanya dalam beberapa klik.';
 
         return view('dosen.daftar-lomba', [
             'activeMenu' => $activeMenu,
@@ -38,9 +38,49 @@ class KelolaLombaController extends Controller
                 'url' => route('dosen.tambah-lomba')
             ],
         ];
-        $headerTitle = 'Tambah Lomba';
-        $headerDesc = 'Form untuk menambahkan lomba baru.';
+        $headerTitle = 'Kelola Lomba';
+        $headerDesc = 'Pantau dan atur daftar lomba dengan mudah. Jelajahi katalog lomba dan tambahkan lomba baru hanya dalam beberapa klik.';
         return view('dosen.tambah-lomba', [
+            'activeMenu' => $activeMenu,
+            'breadcrumbs' => $breadcrumbs,
+            'headerTitle' => $headerTitle,
+            'headerDesc' => $headerDesc,
+        ]);
+    }
+    public function detail()
+    {
+        $activeMenu = 'daftar-lomba';
+        $breadcrumbs = [
+            [
+                'label' => 'Daftar Lomba',
+                'url' => route('dosen.daftar-lomba')
+            ],
+            [
+                'label' => 'Detail Lomba',
+                'url' => route('dosen.detail-lomba')
+            ],
+        ];
+        $headerTitle = 'Kelola Lomba';
+        $headerDesc = 'Pantau dan atur daftar lomba dengan mudah. Jelajahi katalog lomba dan tambahkan lomba baru hanya dalam beberapa klik.';
+        return view('dosen.detail-lomba', [
+            'activeMenu' => $activeMenu,
+            'breadcrumbs' => $breadcrumbs,
+            'headerTitle' => $headerTitle,
+            'headerDesc' => $headerDesc,
+        ]);
+    }
+    public function histori()
+    {
+        $activeMenu = 'tambah-lomba';
+        $breadcrumbs = [
+            [
+                'label' => 'Riwayat Tambah Lomba',
+                'url' => route('dosen.histori-lomba')
+            ],
+        ];
+        $headerTitle = 'Kelola Lomba';
+        $headerDesc = 'Pantau dan atur daftar lomba dengan mudah. Jelajahi katalog lomba dan tambahkan lomba baru hanya dalam beberapa klik.';
+        return view('dosen.histori-lomba', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,

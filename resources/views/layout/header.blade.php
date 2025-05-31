@@ -5,7 +5,7 @@
                 {{ $headerTitle ?? 'Welcome Back, Dennis 👋' }}
             </h1>
             @if(!empty($headerDesc) || !isset($headerTitle))
-                <p class="text-gray-400 mt-1">
+                <p class="text-gray-400 mt-1 text-sm">
                     {{ $headerDesc ?? 'Here is the information about all your achievement' }}
                 </p>
             @endif

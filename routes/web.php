@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
 use App\Http\Controllers\Admin\LaporanAdminController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
+use App\Http\Controllers\Dosen\KelolaLombaController as DosenKelolaLombaController;
 use App\Http\Controllers\Dosen\ManajemenMahasiswaController;
 use Illuminate\Support\Facades\Route;
 
@@ -103,14 +104,16 @@ Route::prefix('admin')->group(function () {
     });
     
 });
-// Route for Admin
+// Route for Dosen
 
 Route::prefix('dosen')->group(function () {
     Route::get('/dashboard', [DashboardDosenController::class, 'index'])->name('dosen.dashboard');
     Route::get('/manajemen-mahasiswa', [ManajemenMahasiswaController::class, 'index'])->name('dosen.manajemen-mahasiswa');
     
     Route::prefix('kelola-lomba')->group(function () {
-        Route::get('/daftar', [KelolaLombaController::class, 'daftar'])->name('dosen.daftar-lomba');
-        Route::get('/tambah', [KelolaLombaController::class, 'tambah'])->name('dosen.tambah-lomba');
+        Route::get('/daftar', [DosenKelolaLombaController::class, 'daftar'])->name('dosen.daftar-lomba');
+        Route::get('/tambah', [DosenKelolaLombaController::class, 'tambah'])->name('dosen.tambah-lomba');
+        Route::get('/detail', [DosenKelolaLombaController::class, 'detail'])->name('dosen.detail-lomba');
+        Route::get('/histori', [DosenKelolaLombaController::class, 'histori'])->name('dosen.histori-lomba');
     });
 });
