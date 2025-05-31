@@ -10,7 +10,7 @@ class LaporanController extends Controller
     {
         $activeMenu = 'laporan';
 
-        return view('layout.template', [
+        return view('mahasiswa.laporan', [
             'activeMenu' => $activeMenu
         ]);
     }

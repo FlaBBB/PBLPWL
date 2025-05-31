@@ -9,9 +9,11 @@ class PrestasiController extends Controller
     public function index()
     {
         $activeMenu = 'prestasi';
+        $activeSubmenu = 'daftarPrestasi';
 
         return view('prestasi.index', [
-            'activeMenu' => $activeMenu
+            'activeMenu' => $activeMenu,
+            'activeSubmenu' => $activeSubmenu
         ]);
     }
 }

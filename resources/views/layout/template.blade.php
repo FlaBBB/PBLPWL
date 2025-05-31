@@ -21,7 +21,7 @@
     <!-- Navbar -->
     <nav class="fixed lg:flex lg:flex-grow lg:justify-between lg:items-center overflow-y-auto">
         <div class="w-full h-screen">
-            @include('layout.navbar')
+            @include('layout.navbar-admin')
         </div>
     </nav>
     <div class="flex-grow ml-64">
