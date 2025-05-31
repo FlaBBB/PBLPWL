@@ -10,6 +10,10 @@ class SupervisorAchievementModel extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        ""
+    ];
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(RoleSupervisorModel::class, 'id_role', 'id');
