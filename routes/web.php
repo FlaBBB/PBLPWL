@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
 use App\Http\Controllers\Admin\LaporanAdminController;
 use App\Http\Controllers\Admin\RekomendasiController;
+use App\Http\Controllers\AuthController; // Import AuthController
+use App\Enums\UserRoleEnum; // Import UserRoleEnum
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +32,15 @@ Route::get('/', function () {
     return view('landingpages.home');
 });
 
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('prestasi.dashboard');
+Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi');
+Route::get('/lomba', [LombaController::class, 'index'])->name('lomba');
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+
+// Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
+// Route::get('/profile/edit', [MahasiswaController::class, 'edit_profile'])->name('edit_profile');
+
 // Route for fitur page
 Route::get('/fitur', function () {
     return view('landingpages.fitur');
@@ -40,65 +51,70 @@ Route::get('/product', function () {
     return view('landingpages.product');
 });
 
-// Route for pricing page
 Route::get('/aboutus', function () {
     return view('landingpages.about-us');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
-
-// <!-- Route for Mahasiswa -->
-
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-// Route Prestasi
-Route::prefix('prestasi')->group(function () {
-    Route::get('/', [PrestasiController::class, 'index'])->name('prestasi');
-    Route::get('/tambah', [PrestasiController::class, 'create'])->name('prestasi.create');
-});
-
-// Route Lomba
-Route::prefix('lomba')->group(function () {
-    Route::get('/', [LombaController::class, 'index'])->name('lomba');
-    Route::get('/tambah', [LombaController::class, 'create'])->name('lomba.create');
-});
-
-// Route Laporan
-Route::prefix('laporan')->group(function () {
-    Route::get('/', [LaporanController::class, 'index'])->name('laporan');
-});
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-// <!-- Route for Admin -->
+// Protected Routes
+Route::middleware(['auth'])->group(function () {
+    // Mahasiswa Routes
+    Route::middleware(['role:' . UserRoleEnum::MAHASISWA->value])->group(function () {
+        Route::get('/mahasiswa/dashboard', [DashboardController::class, 'index'])->name('mahasiswa.dashboard');
 
-Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('admin.dashboard');
-    // Pengguna
-    Route::prefix('kelola-pengguna')->group(function () {
-        Route::get('/', [KelolaPenggunaController::class, 'index'])->name('admin.kelola-pengguna');
-        Route::get('/dosen', [KelolaPenggunaController::class, 'dosen'])->name('admin.kelola-dosen');
-        Route::get('/admin', [KelolaPenggunaController::class, 'admin'])->name('admin.kelola-admin');
+        // Route Prestasi
+        Route::prefix('prestasi')->group(function () {
+            Route::get('/', [PrestasiController::class, 'index'])->name('prestasi');
+            Route::get('/tambah', [PrestasiController::class, 'create'])->name('prestasi.create');
+        });
+
+        // Route Lomba
+        Route::prefix('lomba')->group(function () {
+            Route::get('/', [LombaController::class, 'index'])->name('lomba');
+            Route::get('/tambah', [LombaController::class, 'create'])->name('lomba.create');
+        });
+
+        // Route Laporan
+        Route::prefix('laporan')->group(function () {
+            Route::get('/', [LaporanController::class, 'index'])->name('laporan');
+        });
     });
-    // Prestasi
-    Route::prefix('kelola-prestasi')->group(function () {
-        Route::get('/verifikasi', [KelolaPrestasiController::class, 'verifikasi'])->name('admin.verifikasi-prestasi');
-        Route::get('/daftar', [KelolaPrestasiController::class, 'daftar'])->name('admin.daftar-prestasi');
-    });
-    // Lomba
-    Route::prefix('kelola-lomba')->group(function () {
-        Route::get('/daftar', [KelolaLombaController::class, 'daftar'])->name('admin.daftar-lomba');
-        Route::get('/tambah', [KelolaLombaController::class, 'tambah'])->name('admin.tambah-lomba');
-    });
-    // Akademik
-    Route::prefix('kelola-akademik')->group(function () {
-       Route::get('/program-studi', [KelolaAkademikController::class, 'prodi'])->name('admin.program-studi');
-       Route::get('/periode', [KelolaAkademikController::class, 'periode'])->name('admin.periode');
-    });
-    // Laporan
-    Route::prefix('laporan')->group(function () {
-        Route::get('/', [LaporanAdminController::class, 'index'])->name('admin.laporan');
+
+    // Admin Routes
+    Route::middleware(['role:' . UserRoleEnum::ADMIN->value])->group(function () {
+        Route::prefix('admin')->group(function () {
+            Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('admin.dashboard');
+            // Pengguna
+            Route::prefix('kelola-pengguna')->group(function () {
+                Route::get('/', [KelolaPenggunaController::class, 'index'])->name('admin.kelola-pengguna');
+                Route::get('/dosen', [KelolaPenggunaController::class, 'dosen'])->name('admin.kelola-dosen');
+                Route::get('/admin', [KelolaPenggunaController::class, 'admin'])->name('admin.kelola-admin');
+            });
+            // Prestasi
+            Route::prefix('kelola-prestasi')->group(function () {
+                Route::get('/verifikasi', [KelolaPrestasiController::class, 'verifikasi'])->name('admin.verifikasi-prestasi');
+                Route::get('/daftar', [KelolaPrestasiController::class, 'daftar'])->name('admin.daftar-prestasi');
+            });
+            // Lomba
+            Route::prefix('kelola-lomba')->group(function () {
+                Route::get('/daftar', [KelolaLombaController::class, 'daftar'])->name('admin.daftar-lomba');
+                Route::get('/tambah', [KelolaLombaController::class, 'tambah'])->name('admin.tambah-lomba');
+            });
+            // Akademik
+            Route::prefix('kelola-akademik')->group(function () {
+               Route::get('/program-studi', [KelolaAkademikController::class, 'prodi'])->name('admin.program-studi');
+               Route::get('/periode', [KelolaAkademikController::class, 'periode'])->name('admin.periode');
+            });
+            // Laporan
+            Route::prefix('laporan')->group(function () {
+                Route::get('/', [LaporanAdminController::class, 'index'])->name('admin.laporan');
+            });
+        });
     });
     //Rekomendasi
     Route::prefix('rekomendasi')->group(function () {
@@ -107,4 +123,13 @@ Route::prefix('admin')->group(function () {
     });
     
 
+    // Dosen Routes (assuming a Dosen role exists and needs a dashboard)
+    Route::middleware(['role:' . UserRoleEnum::DOSEN->value])->group(function () {
+        Route::get('/dosen/dashboard', function () {
+            return view('dosen.dashboard'); // Assuming a dosen dashboard view
+        })->name('dosen.dashboard');
+        Route::get('/dosen/verifikasi-prestasi', function () {
+            return view('dosen.verifikasi-prestasi'); // Assuming a dosen verification view
+        })->name('dosen.verifikasi-prestasi');
+    });
 });
