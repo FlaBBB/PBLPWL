@@ -21,8 +21,11 @@ class AdminFactory extends Factory
     public function definition(): array
     {
         return [
-            'nip' => fake()->unique()->numerify('##########'),
-            'id_user' => User::factory(),
+            'nip' => $nip = fake()->unique()->numerify('##########'),
+            'id_user' => User::factory()->state([
+                'username' => $nip,
+                'role' => \App\Enums\UserRoleEnum::ADMIN,
+            ]),
             'name' => fake()->name(),
         ];
     }
