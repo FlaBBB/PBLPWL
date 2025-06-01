@@ -10,8 +10,12 @@ class RoleSupervisorModel extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "description"
+    ];
+
     public function supervisorAchievement(): HasMany
     {
-        return $this->hasMany(SupervisorAchievementModel::class, 'id_role', 'id');
+        return $this->hasMany(SupervisorAchievementModel::class, 'role', 'id');
     }
 }

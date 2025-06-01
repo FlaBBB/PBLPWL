@@ -12,14 +12,30 @@ class MahasiswaModel extends Model
 {
     use HasFactory;
 
-    public function user(): HasOne
+    protected $primaryKey = "nim";
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        "nim",
+        "id_user",
+        "name",
+        "phone_number",
+        "city",
+        "district",
+        "subdistrict",
+        "address",
+        "prodi",
+        "grade"
+    ];
+
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id', 'id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
-    public function mark(): BelongsTo
+    public function mark(): HasOne
     {
-        return $this->belongsTo(MarkModel::class, 'nim', 'nim');
+        return $this->hasOne(MarkModel::class, 'nim', 'nim');
     }
 
     public function preferences(): BelongsToMany

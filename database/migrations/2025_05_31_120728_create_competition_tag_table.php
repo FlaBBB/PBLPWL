@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('competition_tag', function (Blueprint $table) {
             $table->foreignId("id_competition")->constrained('competition')->onDelete("cascade");
             $table->foreignId("id_tag")->constrained("tag")->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

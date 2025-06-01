@@ -4,16 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class AdminModel extends Model
 {
     use HasFactory;
 
-    public function user(): HasOne
+    protected $primaryKey = "nip";
+
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        "nip",
+        "id_user",
+        "name"
+    ];
+
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id', 'id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
     public function mahasiswaMark(): HasMany

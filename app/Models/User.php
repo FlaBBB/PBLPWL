@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -19,9 +21,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
+        'role',
+        'photo_profile'
     ];
 
     /**
@@ -42,20 +46,31 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'role' => UserRoleEnum::class, // Assuming UserRoleEnum exists for the enum type
     ];
 
-    public function mahasiswa(): BelongsTo
+    public function mahasiswa(): HasOne
     {
-        return $this->belongsTo(MahasiswaModel::class, 'id', 'id_user');
+        return $this->hasOne(MahasiswaModel::class, 'id_user', 'id');
     }
 
-    public function admin(): BelongsTo
+    public function admin(): HasOne
     {
-        return $this->belongsTo(AdminModel::class, 'id', 'id_user');
+        return $this->hasOne(AdminModel::class, 'id_user', 'id');
     }
 
-    public function dosen(): BelongsTo
+    public function dosen(): HasOne
     {
-        return $this->belongsTo(DosenModel::class, 'id', 'id_user');
+        return $this->hasOne(DosenModel::class, 'id_user', 'id');
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(NotificationModel::class, 'id_user', 'id');
+    }
+
+    public function competitions(): HasMany
+    {
+        return $this->hasMany(CompetitionModel::class, 'creator', 'id');
     }
 }

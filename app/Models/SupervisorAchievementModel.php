@@ -10,12 +10,28 @@ class SupervisorAchievementModel extends Model
 {
     use HasFactory;
 
+    protected $table = 'supervisor_achivement';
+    public $incrementing = false;
+    protected $primaryKey = null;
+
     protected $fillable = [
-        ""
+        "id_achievement",
+        "nidn",
+        "role"
     ];
 
-    public function role(): BelongsTo
+    public function achievement(): BelongsTo
     {
-        return $this->belongsTo(RoleSupervisorModel::class, 'id_role', 'id');
+        return $this->belongsTo(AchievementModel::class, 'id_achievement', 'id');
+    }
+
+    public function dosen(): BelongsTo
+    {
+        return $this->belongsTo(DosenModel::class, 'nidn', 'nidn');
+    }
+
+    public function roleSupervisor(): BelongsTo
+    {
+        return $this->belongsTo(RoleSupervisorModel::class, 'role', 'id');
     }
 }

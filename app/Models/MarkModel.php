@@ -11,13 +11,21 @@ class MarkModel extends Model
 {
     use HasFactory;
 
-    public function mahasiswa(): HasOne
+    protected $table = 'mark';
+
+    protected $fillable = [
+        "nim",
+        "ipk",
+        "updated_by"
+    ];
+
+    public function mahasiswa(): BelongsTo
     {
-        return $this->hasOne(MahasiswaModel::class, 'nim', 'nim');
+        return $this->belongsTo(MahasiswaModel::class, 'nim', 'nim');
     }
 
     public function admin(): BelongsTo
     {
-        return $this->belongsTo(AdminModel::class, 'updated_by', 'id');
+        return $this->belongsTo(AdminModel::class, 'updated_by', 'nip');
     }
 }
