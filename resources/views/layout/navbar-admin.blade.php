@@ -1,6 +1,10 @@
 @php
 $activeMenu = $activeMenu ?? '';
 @endphp
+@php
+use App\Enums\UserRoleEnum;
+$activeMenu = $activeMenu ?? '';
+@endphp
 <div class="flex min-h-screen bg-gray-50">
     <!-- Sidebar -->
     <aside
@@ -144,26 +148,40 @@ $activeMenu = $activeMenu ?? '';
                         </svg>
                         Laporan
                     </a>
-                </nav>
-            </div>
-
-        <div class="flex flex-col gap-5 ml-10 mt-10">
-            <a href="#" class="flex font-semibold items-center gap-2 text-gray-400 hover:text-blue-600 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    <div x-show="open" x-transition class="ml-10 my-3 flex flex-col gap-3">
+                        <a href="{{ route('admin.tambah-lomba') }}"
+                            class="px-3 py-1 rounded-l-2xl {{ ($activeMenu == 'tambah-lomba') ? 'text-blue-700 font-medium hover:bg-blue-50 transition border-r-blue-500 border-r-3' : 'text-gray-600 font-medium text-sm hover:bg-blue-50 transition' }} ">
+                            Tambah Lomba Baru
+                        </a>
+                        <a href="{{ route('admin.daftar-lomba') }}"
+                            class="px-3 py-1 rounded-l-2xl {{ ($activeMenu == 'daftar-lomba') ? 'text-blue-700 font-medium hover:bg-blue-50 transition border-r-blue-500 border-r-3' : 'text-gray-600 font-medium text-sm hover:bg-blue-50 transition' }} ">
+                            Daftar Lomba
+                        </a>
+                    </div>
+                </div>
+                @endif
+            </nav>
+        </div>
+        <div class="flex flex-col gap-5 ml-7 mb-5 mt-10 overflow-y-auto">
+            <a href="#" class="flex items-center gap-2 text-gray-400 hover:text-blue-600 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
                 </svg>
                 Contact us
             </a>
-            <a href="#" class="flex font-semibold items-center gap-2 text-red-500 hover:text-red-700 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                </svg>
-                Log out
-            </a>
+            <form action="{{ route('logout') }}" method="POST" class="w-full">
+                @csrf
+                <button type="submit" class="flex items-center gap-2 text-red-500 hover:text-red-700 text-sm font-semibold w-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                    </svg>
+                    Log out
+                </button>
+            </form>
         </div>
         </div>
     </aside>

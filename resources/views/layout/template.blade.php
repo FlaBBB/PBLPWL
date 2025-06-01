@@ -7,7 +7,6 @@
     <title>@yield('title', 'SIPRESTA')</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="//unpkg.com/alpinejs" defer></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -17,31 +16,40 @@
 </head>
 
 <body class="bg-gray-50 min-h-screen">
-
-    <!-- Sidebar/Navbar -->
-    <aside class="fixed top-0 left-0 h-screen w-64 bg-white z-20 overflow-y-auto hidden lg:block">
-        @include('layout.navbar-dosen')
-    </aside>
-
-    <!-- Main Content -->
-    <div class="bg-white lg:ml-64">
+@php
+use App\Enums\UserRoleEnum;
+@endphp
+<section>
+    <!-- Navbar -->
+    <nav class="fixed lg:flex lg:flex-grow lg:justify-between lg:items-center overflow-y-auto">
+        <div class="w-full h-screen">
+            @auth
+                @if(Auth::user()->role->value === UserRoleEnum::ADMIN->value)
+                    @include('layout.navbar-admin')
+                @elseif(Auth::user()->role->value === UserRoleEnum::MAHASISWA->value)
+                    @include('layout.navbar-mahasiswa')
+                @elseif(Auth::user()->role->value === UserRoleEnum::DOSEN->value)
+                    @include('layout.navbar-dosen')
+                @endif
+            @endauth
+        </div>
+    </nav>
+    <div class="flex-grow ml-64">
         <!-- Header -->
-        <header class="sticky top-0 z-20 bg-white">
-            <div class="container mx-auto px-6 py-4">
+        <header>
+            <div class="container">
                 @include('layout.header')
             </div>
         </header>
-
-        <!-- Breadcrumb -->
-        <div class="container mx-auto px-6 mt-2 pb-2">
-            @include('layout.breadcrumb')
-        </div>
-
-        <!-- Main -->
-        <main class="container mx-auto px-6">
-            @yield('content')
+    
+        <main>
+            <div class="content">
+                @yield('content')
+            </div>
         </main>
     </div>
+
+</section>
 
 </body>
 
