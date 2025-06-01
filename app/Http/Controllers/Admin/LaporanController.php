@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class LaporanAdminController extends Controller
+class LaporanController extends Controller
 {
     public function index()
     {

@@ -59,7 +59,7 @@
                         <td class="py-3 px-2">Puspresnas</td>
                         <td class="py-3 px-2">25 Agustus 2021</td>
                         <td class="py-3 px-2">
-                            <a href="#" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
+                            <a href="{{ route('admin.lomba.detail', 1) }}" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
                         </td>
                     </tr>
                     <tr class="border-b border-gray-200 hover:bg-gray-50">
@@ -68,7 +68,7 @@
                         <td class="py-3 px-2">Institut Merdeka</td>
                         <td class="py-3 px-2">11 Januari 2022</td>
                         <td class="py-3 px-2">
-                            <a href="#" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
+                            <a href="{{ route('admin.lomba.detail', 2) }}" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
                         </td>
                     </tr>
                     <tr class="border-b border-gray-200 hover:bg-gray-50">
@@ -77,7 +77,7 @@
                         <td class="py-3 px-2">Kementerian Pendidikan</td>
                         <td class="py-3 px-2">21 Desember 2021</td>
                         <td class="py-3 px-2">
-                            <a href="#" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
+                            <a href="{{ route('admin.lomba.detail', 3) }}" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
                         </td>
                     </tr>
                 </tbody>

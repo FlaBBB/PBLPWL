@@ -4,13 +4,16 @@ use App\Http\Controllers\Mahasiswa\DashboardController;
 use App\Http\Controllers\Mahasiswa\LombaController;
 use App\Http\Controllers\Mahasiswa\LaporanController;
 use App\Http\Controllers\Mahasiswa\PrestasiController;
-use App\Http\Controllers\Admin\DashboardAdminController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\KelolaPenggunaController;
 use App\Http\Controllers\Admin\KelolaPrestasiController;
 use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
-use App\Http\Controllers\Admin\LaporanAdminController;
+use App\Http\Controllers\Admin\LaporanController as AdminLaporanController;
 use App\Http\Controllers\Admin\RekomendasiController;
+use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
+use App\Http\Controllers\Dosen\VerifikasiPrestasiController;
+use App\Http\Controllers\Mahasiswa\ProfileController as MahasiswaProfileController;
 use App\Http\Controllers\AuthController; // Import AuthController
 use App\Enums\UserRoleEnum; // Import UserRoleEnum
 use Illuminate\Support\Facades\Route;
@@ -26,20 +29,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// <!-- Route for landing page -->
-
+// Route for landing page
 Route::get('/', function () {
     return view('landingpages.home');
 });
 
-
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('prestasi.dashboard');
-Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi');
-Route::get('/lomba', [LombaController::class, 'index'])->name('lomba');
-Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
-
-// Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
-// Route::get('/profile/edit', [MahasiswaController::class, 'edit_profile'])->name('edit_profile');
 
 // Route for fitur page
 Route::get('/fitur', function () {
@@ -83,12 +77,15 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('laporan')->group(function () {
             Route::get('/', [LaporanController::class, 'index'])->name('laporan');
         });
+
+        // Route Profile
+        Route::get('/profile', [MahasiswaProfileController::class, 'index'])->name('mahasiswa.profile');
     });
 
     // Admin Routes
     Route::middleware(['role:' . UserRoleEnum::ADMIN->value])->group(function () {
         Route::prefix('admin')->group(function () {
-            Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('admin.dashboard');
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
             // Pengguna
             Route::prefix('kelola-pengguna')->group(function () {
                 Route::get('/', [KelolaPenggunaController::class, 'index'])->name('admin.kelola-pengguna');
@@ -104,6 +101,7 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('kelola-lomba')->group(function () {
                 Route::get('/daftar', [KelolaLombaController::class, 'daftar'])->name('admin.daftar-lomba');
                 Route::get('/tambah', [KelolaLombaController::class, 'tambah'])->name('admin.tambah-lomba');
+                Route::get('/{id}/detail', [KelolaLombaController::class, 'detail'])->name('admin.lomba.detail');
             });
             // Akademik
             Route::prefix('kelola-akademik')->group(function () {
@@ -112,7 +110,7 @@ Route::middleware(['auth'])->group(function () {
             });
             // Laporan
             Route::prefix('laporan')->group(function () {
-                Route::get('/', [LaporanAdminController::class, 'index'])->name('admin.laporan');
+                Route::get('/', [AdminLaporanController::class, 'index'])->name('admin.laporan');
             });
         });
     });
@@ -123,13 +121,9 @@ Route::middleware(['auth'])->group(function () {
     });
     
 
-    // Dosen Routes (assuming a Dosen role exists and needs a dashboard)
+    // Dosen Routes
     Route::middleware(['role:' . UserRoleEnum::DOSEN->value])->group(function () {
-        Route::get('/dosen/dashboard', function () {
-            return view('dosen.dashboard'); // Assuming a dosen dashboard view
-        })->name('dosen.dashboard');
-        Route::get('/dosen/verifikasi-prestasi', function () {
-            return view('dosen.verifikasi-prestasi'); // Assuming a dosen verification view
-        })->name('dosen.verifikasi-prestasi');
+        Route::get('/dosen/dashboard', [DosenDashboardController::class, 'index'])->name('dosen.dashboard');
+        Route::get('/dosen/verifikasi-prestasi', [VerifikasiPrestasiController::class, 'index'])->name('dosen.verifikasi-prestasi');
     });
 });
