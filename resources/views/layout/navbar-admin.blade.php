@@ -159,7 +159,53 @@ $activeMenu = $activeMenu ?? '';
                         </a>
                     </div>
                 </div>
-                @endif
+
+                <a href="{{ route('admin.laporan') }}"
+                    class="flex items-center gap-3 pl-7 py-2 {{ ($activeMenu == 'laporan') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 text-gray-700' }} ">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+                    </svg>
+                    Laporan
+                </a>
+                <div x-data="{ open: {{ $activeMenu == 'rekomendasi-vikor' || $activeMenu == 'rekomendasi-smart' ? 'true' : 'false' }}, $activeMenu: '{{ $activeMenu }}' }"
+                    x-effect="if ($activeMenu !== 'rekomendasi-vikor' && $activeMenu !== 'rekomendasi-smart') { open = false }">
+                    <a href="#" @click.prevent="open = !open"
+                        class="flex items-center gap-3 pl-7 py-2 pr-3 {{ ($activeMenu == 'rekomendasi-vikor' || $activeMenu == 'rekomendasi-smart') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 transition text-gray-700' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                        </svg>
+
+                        Rekomendasi
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6 ml-auto transition-transform duration-200"
+                            :class="open ? 'rotate-180' : ''">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </a>
+                    <div x-show="open" x-transition class="ml-10 my-3 flex flex-col gap-3">
+                        <a href="{{ route('admin.rekomendasi-vikor') }}"
+                            class="px-3 py-1 rounded-l-2xl {{ ($activeMenu == 'rekomendasi-vikor') ? 'text-blue-700 font-medium hover:bg-blue-50 transition border-r-blue-500 border-r-3' : 'text-gray-600 font-medium text-sm hover:bg-blue-50 transition' }} ">
+                            Rekomendasi VIKOR
+                        </a>
+                        <a href="{{ route('admin.rekomendasi-smart') }}"
+                            class="px-3 py-1 rounded-l-2xl {{ ($activeMenu == 'rekomendasi-smart') ? 'text-blue-700 font-medium hover:bg-blue-50 transition border-r-blue-500 border-r-3' : 'text-gray-600 font-medium text-sm hover:bg-blue-50 transition' }} ">
+                            Rekomendasi SMART
+                        </a>
+                    </div>
+                </div>
+                {{-- <a href="{{ route('admin.rekomendasi') }}"
+                    class="flex items-center gap-3 pl-7 py-2 {{ ($activeMenu == 'rekomendasi') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 text-gray-700' }} ">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+                    </svg>
+                    Rekomendasi
+                </a> --}}
             </nav>
         </div>
         <div class="flex flex-col gap-5 ml-7 mb-5 mt-10 overflow-y-auto">

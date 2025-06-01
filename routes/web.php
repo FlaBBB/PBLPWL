@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\LaporanAdminController;
 use App\Http\Controllers\Dosen\DashboardDosenController;
 use App\Http\Controllers\Dosen\KelolaLombaController as DosenKelolaLombaController;
 use App\Http\Controllers\Dosen\ManajemenMahasiswaController;
+use App\Http\Controllers\Admin\RekomendasiController;
 use App\Http\Controllers\AuthController; // Import AuthController
 use App\Enums\UserRoleEnum; // Import UserRoleEnum
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,14 @@ Route::get('/', function () {
     return view('landingpages.home');
 });
 
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('prestasi.dashboard');
+Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi');
+Route::get('/lomba', [LombaController::class, 'index'])->name('lomba');
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+
+// Route::get('/profile', [MahasiswaController::class, 'profile'])->name('profile');
+// Route::get('/profile/edit', [MahasiswaController::class, 'edit_profile'])->name('edit_profile');
 
 // Route for fitur page
 Route::get('/fitur', function () {
@@ -131,6 +140,12 @@ Route::middleware(['auth'])->group(function () {
             });
         });
     });
+    //Rekomendasi
+    Route::prefix('rekomendasi')->group(function () {
+        Route::get('/rekomendasi-vikor', [RekomendasiController::class, 'rekomendasiVikor'])->name('admin.rekomendasi-vikor');
+        Route::get('/rekomendasi-smart', [RekomendasiController::class, 'rekomendasiSmart'])->name('admin.rekomendasi-smart');
+    });
+    
 
     // Dosen Routes (assuming a Dosen role exists and needs a dashboard)
     Route::middleware(['role:' . UserRoleEnum::DOSEN->value])->group(function () {
