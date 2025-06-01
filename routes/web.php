@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\KelolaPrestasiController;
 use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
 use App\Http\Controllers\Admin\LaporanAdminController;
+use App\Http\Controllers\Admin\RekomendasiController;
 use App\Http\Controllers\AuthController; // Import AuthController
 use App\Enums\UserRoleEnum; // Import UserRoleEnum
 use Illuminate\Support\Facades\Route;
@@ -115,6 +116,12 @@ Route::middleware(['auth'])->group(function () {
             });
         });
     });
+    //Rekomendasi
+    Route::prefix('rekomendasi')->group(function () {
+        Route::get('/rekomendasi-vikor', [RekomendasiController::class, 'rekomendasiVikor'])->name('admin.rekomendasi-vikor');
+        Route::get('/rekomendasi-smart', [RekomendasiController::class, 'rekomendasiSmart'])->name('admin.rekomendasi-smart');
+    });
+    
 
     // Dosen Routes (assuming a Dosen role exists and needs a dashboard)
     Route::middleware(['role:' . UserRoleEnum::DOSEN->value])->group(function () {
