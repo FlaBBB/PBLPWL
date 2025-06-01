@@ -17,6 +17,25 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
     --font-poppins: 'Poppins', sans-serif;
-
 }
 
+.border-navbar {
+    position: relative;
+    z-index: 0;
+}
+.border-navbar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2px; /* Border thickness */
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(181, 220, 255, 0), rgba(95, 204, 255, 0.815), rgba(95, 204, 255, 0));
+    pointer-events: none;
+    z-index: 1;
+}
+.border-navbar > * {
+    position: relative;
+    z-index: 2;
+}

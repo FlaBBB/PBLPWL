@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SIPRESTA')</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -15,21 +16,31 @@
 </head>
 
 <body>
-    <!-- Navbar -->
 
+<section>
+    <!-- Navbar -->
+    <nav class="fixed lg:flex lg:flex-grow lg:justify-between lg:items-center overflow-y-auto">
+        <div class="w-full h-screen">
+            @include('layout.navbar-admin')
+        </div>
+    </nav>
+    <div class="flex-grow ml-64">
         <!-- Header -->
         <header>
             <div class="container">
                 @include('layout.header')
             </div>
         </header>
-
-        <!-- Main Content -->
+    
         <main>
-            <div class="container">
+            <div class="content">
                 @yield('content')
             </div>
         </main>
+    </div>
+
+</section>
+
 </body>
 
 </html>

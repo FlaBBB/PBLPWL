@@ -1,64 +1,39 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 
 class LombaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-    }
+        $activeMenu = 'lomba';
+        $activeSubmenu = 'daftarLomba';
 
-    /**
-     * Show the form for creating a new resource.
-     */
+        return view('mahasiswa.lomba.daftarLomba', [
+            'activeMenu' => $activeMenu,
+            'activeSubmenu' => $activeSubmenu
+        ]);
+    }
     public function create()
     {
-        //
+        $activeMenu = 'lomba';
+        $activeSubmenu = 'createLomba';
+
+        return view('mahasiswa.lomba.createLomba', [
+            'activeMenu' => $activeMenu,
+            'activeSubmenu' => $activeSubmenu
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function detail()
     {
-        //
-    }
+        $activeMenu = 'lomba';
+        $activeSubmenu = 'daftarLomba';
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('mahasiswa.lomba.detailLomba', [
+            'activeMenu' => $activeMenu,
+            'activeSubmenu' => $activeSubmenu
+        ]);
     }
 }
