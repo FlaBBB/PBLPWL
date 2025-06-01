@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('role_supervisor', function (Blueprint $table) {
-            $table->id();
-            $table->string("description");
-            $table->timestamps();
+            $table->integer("id")->primary();
+            $table->text("description");
         });
     }
 

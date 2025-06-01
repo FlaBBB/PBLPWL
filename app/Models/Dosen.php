@@ -6,19 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class NotificationModel extends Model
+class Dosen extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        "id_user",
-        "id_reference",
-        "content",
-        "is_read"
-    ];
+    protected $table = 'dosen';
+    protected $primaryKey = "nidn";
+    protected $keyType = 'string';
+    public $timestamps = false;
 
-    protected $casts = [
-        'is_read' => 'boolean',
+    protected $fillable = [
+        "nidn",
+        "id_user",
+        "firstname",
+        "lastname",
+        "name"
     ];
 
     public function user(): BelongsTo

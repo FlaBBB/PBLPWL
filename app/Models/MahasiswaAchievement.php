@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MahasiswaAchievementModel extends Model
+class MahasiswaAchievement extends Model
 {
     use HasFactory;
 
+    protected $table = 'mahasiswa_achievement';
     public $incrementing = false;
     protected $primaryKey = null;
+    public $timestamps = false;
 
     protected $fillable = [
         "id_achievement",
@@ -27,16 +29,16 @@ class MahasiswaAchievementModel extends Model
 
     public function achievement(): BelongsTo
     {
-        return $this->belongsTo(AchievementModel::class, 'id_achievement', 'id');
+        return $this->belongsTo(Achievement::class, 'id_achievement', 'id');
     }
 
     public function mahasiswa(): BelongsTo
     {
-        return $this->belongsTo(MahasiswaModel::class, 'nim', 'nim');
+        return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
     }
 
     public function tag(): BelongsTo
     {
-        return $this->belongsTo(TagModel::class, 'id_tag', 'id');
+        return $this->belongsTo(Tag::class, 'id_tag', 'id');
     }
 }

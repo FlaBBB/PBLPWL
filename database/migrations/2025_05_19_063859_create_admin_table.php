@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('admin', function (Blueprint $table) {
             $table->string("nip")->primary();
-            $table->foreignId("id_user")->contrained("user")->onDelete("cascade");
+            $table->foreignId("id_user")->constrained("user");
             $table->string("name");
-            $table->timestamps();
+            $table->index('id_user');
         });
     }
 

@@ -9,9 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class CompetitionModel extends Model
+class Competition extends Model
 {
     use HasFactory;
+
+    protected $table = 'competition';
+    public $timestamps = false;
 
     protected $fillable = [
         "name",
@@ -19,8 +22,8 @@ class CompetitionModel extends Model
         "level",
         "poster",
         "organizer",
-        "start_date",
-        "end_date",
+        "start_at",
+        "end_at",
         "registration_deadline",
         "registration_link",
         "registration_fee",
@@ -35,8 +38,8 @@ class CompetitionModel extends Model
     protected $casts = [
         'level' => CompetitionLevelEnum::class,
         'status' => CompetitionStatusEnum::class,
-        'start_date' => 'date',
-        'end_date' => 'date',
+        'start_at' => 'date',
+        'end_at' => 'date',
         'registration_deadline' => 'date',
         'verification_date' => 'date',
     ];
@@ -48,11 +51,11 @@ class CompetitionModel extends Model
 
     public function verificator(): BelongsTo
     {
-        return $this->belongsTo(AdminModel::class, 'verificator', 'nip');
+        return $this->belongsTo(Admin::class, 'verificator', 'nip');
     }
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(TagModel::class, 'competition_tag', 'id_competition', 'id_tag');
+        return $this->belongsToMany(Tag::class, 'competition_tag', 'id_competition', 'id_tag');
     }
 }

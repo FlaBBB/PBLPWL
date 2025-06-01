@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class MarkModel extends Model
+class Mark extends Model
 {
     use HasFactory;
 
     protected $table = 'mark';
+
+    public $incrementing = false;
+
+    protected $primaryKey = null;
 
     protected $fillable = [
         "nim",
@@ -19,13 +23,16 @@ class MarkModel extends Model
         "updated_by"
     ];
 
+    
+    public $timestamps = false;
+
     public function mahasiswa(): BelongsTo
     {
-        return $this->belongsTo(MahasiswaModel::class, 'nim', 'nim');
+        return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
     }
 
     public function admin(): BelongsTo
     {
-        return $this->belongsTo(AdminModel::class, 'updated_by', 'nip');
+        return $this->belongsTo(Admin::class, 'updated_by', 'nip');
     }
 }

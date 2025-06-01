@@ -6,26 +6,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MahasiswaPreferencesModel extends Model
+class CompetitionTag extends Model
 {
     use HasFactory;
 
-    protected $table = 'mahasiswa_preferences';
+    protected $table = 'competition_tag';
     public $incrementing = false;
     protected $primaryKey = null;
+    public $timestamps = false;
 
     protected $fillable = [
-        "nim",
+        "id_competition",
         "id_tag"
     ];
 
-    public function mahasiswa(): BelongsTo
+    public function competition(): BelongsTo
     {
-        return $this->belongsTo(MahasiswaModel::class, 'nim', 'nim');
+        return $this->belongsTo(Competition::class, 'id_competition', 'id');
     }
 
     public function tag(): BelongsTo
     {
-        return $this->belongsTo(TagModel::class, 'id_tag', 'id');
+        return $this->belongsTo(Tag::class, 'id_tag', 'id');
     }
 }

@@ -15,6 +15,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = "user";
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -51,26 +54,26 @@ class User extends Authenticatable
 
     public function mahasiswa(): HasOne
     {
-        return $this->hasOne(MahasiswaModel::class, 'id_user', 'id');
+        return $this->hasOne(Mahasiswa::class, 'id_user', 'id');
     }
 
     public function admin(): HasOne
     {
-        return $this->hasOne(AdminModel::class, 'id_user', 'id');
+        return $this->hasOne(Admin::class, 'id_user', 'id');
     }
 
     public function dosen(): HasOne
     {
-        return $this->hasOne(DosenModel::class, 'id_user', 'id');
+        return $this->hasOne(Dosen::class, 'id_user', 'id');
     }
 
     public function notifications(): HasMany
     {
-        return $this->hasMany(NotificationModel::class, 'id_user', 'id');
+        return $this->hasMany(Notification::class, 'id_user', 'id');
     }
 
     public function competitions(): HasMany
     {
-        return $this->hasMany(CompetitionModel::class, 'creator', 'id');
+        return $this->hasMany(Competition::class, 'creator', 'id');
     }
 }

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class AdminModel extends Model
+class Admin extends Model
 {
     use HasFactory;
 
+    protected $table = 'admin';
     protected $primaryKey = "nip";
 
     protected $keyType = 'string';
@@ -20,6 +21,7 @@ class AdminModel extends Model
         "id_user",
         "name"
     ];
+    public $timestamps = false;
 
     public function user(): BelongsTo
     {
@@ -28,16 +30,16 @@ class AdminModel extends Model
 
     public function mahasiswaMark(): HasMany
     {
-        return $this->hasMany(MarkModel::class, 'updated_by', 'nip');
+        return $this->hasMany(Mark::class, 'updated_by', 'nip');
     }
 
     public function achievement(): HasMany
     {
-        return $this->hasMany(AchievementModel::class, 'verificator', 'nip');
+        return $this->hasMany(Achievement::class, 'verificator', 'nip');
     }
 
     public function competition(): HasMany
     {
-        return $this->hasMany(CompetitionModel::class, 'verificator', 'nip');
+        return $this->hasMany(Competition::class, 'verificator', 'nip');
     }
 }
