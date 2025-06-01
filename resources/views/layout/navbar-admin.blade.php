@@ -11,7 +11,7 @@ $activeMenu = $activeMenu ?? '';
 
         <div>
             <div class="flex items-center justify-center mb-10">
-                <img src="{{ asset('images/Logo-blue.svg') }}" alt="SIPRESTA Logo" class="h-8">
+                <img src="{{ asset('images/Logo-Blue.svg') }}" alt="SIPRESTA Logo" class="h-8">
             </div>
 
             <nav class="flex flex-col gap-2">
