@@ -16,12 +16,22 @@
 </head>
 
 <body>
-
+@php
+use App\Enums\UserRoleEnum;
+@endphp
 <section>
     <!-- Navbar -->
     <nav class="fixed lg:flex lg:flex-grow lg:justify-between lg:items-center overflow-y-auto">
         <div class="w-full h-screen">
-            @include('layout.navbar')
+            @auth
+                @if(Auth::user()->role->value === UserRoleEnum::ADMIN->value)
+                    @include('layout.navbar-admin')
+                @elseif(Auth::user()->role->value === UserRoleEnum::MAHASISWA->value)
+                    @include('layout.navbar-mahasiswa')
+                @elseif(Auth::user()->role->value === UserRoleEnum::DOSEN->value)
+                    @include('layout.navbar-dosen')
+                @endif
+            @endauth
         </div>
     </nav>
     <div class="flex-grow ml-64">

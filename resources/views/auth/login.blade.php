@@ -13,18 +13,18 @@
     <div class="w-screen flex flex-col md:flex-row justify-between">
         <!-- Left Side -->
         <div class="w-full md:w-1/2 flex flex-col items-start pl-10 ">
-            <img src="{{ asset('images/Logo-blue.svg') }}" alt="SIPRESTA Logo" class="h-10 items-start mt-10">
+            <img src="{{ asset('images/Logo-Blue.svg') }}" alt="SIPRESTA Logo" class="h-10 items-start mt-10">
             <div class="w-full max-w-md mx-auto mt-10 p-8 ">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
-                    <p class="text-gray-500 mb-8">Enter your email and password to access your account</p>
+                    <p class="text-gray-500 mb-8">Enter your username and password to access your account</p>
                 </div>
                 <form action="" method="POST" class="space-y-6">
                     @csrf
                     <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-1">NIM / NIDN /
+                        <label for="username" class="block text-sm font-semibold text-gray-700 mb-1">NIM / NIDN /
                             NIP</label>
-                        <input type="email" name="email" id="email" required autofocus
+                        <input type="username" name="username" id="username" required autofocus
                             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Input your NIM / NIDN / NIP ">
                     </div>

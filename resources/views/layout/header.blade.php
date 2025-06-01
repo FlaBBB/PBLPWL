@@ -1,11 +1,13 @@
 <header class="flex-1 px-10 pt-10">
     <div class="flex justify-between items-center">
         <div>
-            @if(request()->is('prestasi*'))
-                <h1 class="text-2xl font-bold">Prestasi</h1>
-            @else
-                <h1 class="text-2xl font-bold">Welcome Back, Dennis <span class="inline-block">👋</span></h1>
-                <p class="text-gray-400 mt-1">Here is the information about all your achievement</p>
+            <h1 class="text-2xl font-bold">
+                {{ $headerTitle ?? 'Welcome Back, Dennis 👋' }}
+            </h1>
+            @if(!empty($headerDesc) || !isset($headerTitle))
+                <p class="text-gray-400 mt-1">
+                    {{ $headerDesc ?? 'Here is the information about all your achievement' }}
+                </p>
             @endif
         </div>
         <div class="flex items-center gap-6">
