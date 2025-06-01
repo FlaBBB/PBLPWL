@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('supervisor_achievement', function (Blueprint $table) {
-            $table->foreignId("id_achievement")->constrained("achievement")->onDelete("cascade");
+            $table->foreignId("id_achievement")->constrained("achievement");
             $table->string('nidn');
-            $table->foreign('nidn')->references('nidn')->on('dosen')->onDelete('cascade');
-            $table->foreignId("role")->constrained("role_supervisor")->onDelete("cascade");
-            $table->timestamps();
+            $table->foreign('nidn')->references('nidn')->on('dosen');
+            $table->integer("role");
+            $table->foreign("role")->references("id")->on("role_supervisor");
         });
     }
 

@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('competition_tag', function (Blueprint $table) {
-            $table->foreignId("id_competition")->constrained('competition')->onDelete("cascade");
-            $table->foreignId("id_tag")->constrained("tag")->onDelete('cascade');
-            $table->timestamps();
+            $table->integer("id_competition");
+            $table->foreign("id_competition")->references("id")->on("competition");
+            $table->integer("id_tag");
+            $table->foreign("id_tag")->references("id")->on("tag");
         });
     }
 

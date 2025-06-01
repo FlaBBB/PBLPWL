@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
             $table->string("nim")->primary();
-            $table->foreignId("id_user")->constrained("user")->onDelete("cascade");
+            $table->foreignId("id_user")->constrained("user");
             $table->string("name");
-            $table->string("phone_number")->unique()->nullable();
-            $table->text("city")->nullable();
-            $table->text('district')->nullable();
-            $table->text('subdistrict')->nullable();
-            $table->text('address')->nullable();
+            $table->string("phone_number");
+            $table->text("city");
+            $table->text('district');
+            $table->text('subdistrict');
+            $table->text('address');
             $table->string("prodi");
-            $table->unsignedInteger("grade")->default(1);
-            $table->timestamps();
+            $table->integer("grade");
+            $table->index('id_user');
         });
     }
 

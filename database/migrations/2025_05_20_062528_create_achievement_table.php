@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('achievement', function (Blueprint $table) {
-            $table->id();
-            $table->timestamp("upload_at")->default(now());
+            $table->integer("id")->primary();
+            $table->timestamp("upload_at");
             $table->string("competition_type");
-            $table->string("comptition_name");
-            $table->string("competition_name_en");
+            $table->string("competition_name");
+            $table->string("competition_name_english");
             $table->string("competition_location");
-            $table->string("competition_location_en");
+            $table->string("competition_location_english");
             $table->string("competition_url");
             $table->date("start_at");
             $table->date("end_at");
@@ -31,24 +31,21 @@ return new class extends Migration
             $table->string("file_activity_photo");
             $table->string("file_poster");
             $table->enum("level", [
-                "INTERNAL",
-                "CITY",
                 "PROVINCE",
                 "NATIONAL",
                 "INTERNATIONAL"
             ]);
-            $table->unsignedSmallInteger("place");
+            $table->integer("place");
             $table->enum("status", [
                 "WAITING",
                 "REVISION",
                 "ACCEPTED",
                 "REJECTED"
             ]);
-            $table->text("note")->nullable();
+            $table->text("note");
             $table->string("verificator");
-            $table->foreign("verificator")->references("nip")->on("admin")->onDelete("cascade");
-            $table->timestamp("verified_at")->nullable();
-            $table->timestamps();
+            $table->foreign("verificator")->references("nip")->on("admin");
+            $table->timestamp("verified_at");
         });
     }
 

@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class TagModel extends Model
+class Tag extends Model
 {
     use HasFactory;
+
+    protected $table = 'tag';
+    public $timestamps = false;
 
     protected $fillable = [
         "name"
@@ -17,16 +20,16 @@ class TagModel extends Model
 
     public function mahasiswaPreferences(): HasMany
     {
-        return $this->hasMany(MahasiswaPreferencesModel::class, 'id_tag', 'id');
+        return $this->hasMany(MahasiswaPreferences::class, 'id_tag', 'id');
     }
 
     public function competitionTags(): HasMany
     {
-        return $this->hasMany(CompetitionTagModel::class, 'id_tag', 'id');
+        return $this->hasMany(CompetitionTag::class, 'id_tag', 'id');
     }
 
     public function mahasiswaAchievement(): HasMany
     {
-        return $this->hasMany(MahasiswaAchievementModel::class, 'id_tag', 'id');
+        return $this->hasMany(MahasiswaAchievement::class, 'id_tag', 'id');
     }
 }

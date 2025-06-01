@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class MahasiswaModel extends Model
+class Mahasiswa extends Model
 {
     use HasFactory;
 
+    protected $table = 'mahasiswa';
     protected $primaryKey = "nim";
     protected $keyType = 'string';
+    public $timestamps = false;
 
     protected $fillable = [
         "nim",
@@ -35,11 +37,11 @@ class MahasiswaModel extends Model
 
     public function mark(): HasOne
     {
-        return $this->hasOne(MarkModel::class, 'nim', 'nim');
+        return $this->hasOne(Mark::class, 'nim', 'nim');
     }
 
     public function preferences(): BelongsToMany
     {
-        return $this->belongsToMany(TagModel::class, 'mahasiswa_preferences', 'nim', 'id_tag');
+        return $this->belongsToMany(Tag::class, 'mahasiswa_preferences', 'nim', 'id_tag');
     }
 }

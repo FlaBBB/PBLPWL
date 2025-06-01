@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class RoleSupervisorModel extends Model
+class RoleSupervisor extends Model
 {
     use HasFactory;
+
+    protected $table = 'role_supervisor';
+    public $timestamps = false;
 
     protected $fillable = [
         "description"
@@ -16,6 +19,6 @@ class RoleSupervisorModel extends Model
 
     public function supervisorAchievement(): HasMany
     {
-        return $this->hasMany(SupervisorAchievementModel::class, 'role', 'id');
+        return $this->hasMany(SupervisorAchievement::class, 'role', 'id');
     }
 }

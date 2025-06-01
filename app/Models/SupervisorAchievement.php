@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class SupervisorAchievementModel extends Model
+class SupervisorAchievement extends Model
 {
     use HasFactory;
 
-    protected $table = 'supervisor_achivement';
+    protected $table = 'supervisor_achievement';
     public $incrementing = false;
     protected $primaryKey = null;
 
@@ -19,19 +19,20 @@ class SupervisorAchievementModel extends Model
         "nidn",
         "role"
     ];
+    public $timestamps = false;
 
     public function achievement(): BelongsTo
     {
-        return $this->belongsTo(AchievementModel::class, 'id_achievement', 'id');
+        return $this->belongsTo(Achievement::class, 'id_achievement', 'id');
     }
 
     public function dosen(): BelongsTo
     {
-        return $this->belongsTo(DosenModel::class, 'nidn', 'nidn');
+        return $this->belongsTo(Dosen::class, 'nidn', 'nidn');
     }
 
     public function roleSupervisor(): BelongsTo
     {
-        return $this->belongsTo(RoleSupervisorModel::class, 'role', 'id');
+        return $this->belongsTo(RoleSupervisor::class, 'role', 'id');
     }
 }

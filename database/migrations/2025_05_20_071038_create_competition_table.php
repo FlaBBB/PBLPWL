@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('competition', function (Blueprint $table) {
-            $table->id();
-            $table->string("name")->unique();
-            $table->string("description");
+            $table->integer("id")->primary();
+            $table->string("name");
+            $table->text("description");
             $table->enum("level", [
                 "INTERNAL",
                 "CITY",
@@ -28,19 +28,18 @@ return new class extends Migration
             $table->date("end_at");
             $table->date("registration_deadline");
             $table->string("registration_link");
-            $table->string("registration_fee");
+            $table->unsignedBigInteger("registration_fee");
             $table->unsignedSmallInteger("max_participation_amount");
-            $table->foreignId("creator")->constrained("user")->onDelete("cascade");
+            $table->foreignId("creator")->constrained("user");
             $table->enum("status", [
                 "WAITING",
                 "ACCEPTED",
                 "REJECTED"
             ]);
-            $table->text("rejection_note")->nullable();
+            $table->text("rejection_note");
             $table->string("verificator");
-            $table->foreign("verificator")->references("nip")->on("admin")->onDelete("cascade");
-            $table->timestamp("verified_at")->nullable();
-            $table->timestamps();
+            $table->foreign("verificator")->references("nip")->on("admin");
+            $table->date("verified_at");
         });
     }
 

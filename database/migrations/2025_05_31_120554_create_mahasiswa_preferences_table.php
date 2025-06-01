@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('mahasiswa_preferences', function (Blueprint $table) {
             $table->string("nim");
-            $table->foreign("nim")->references("nim")->on("mahasiswa")->onDelete("cascade");
-            $table->foreignId("id_tag")->constrained("tag")->onDelete("cascade");
-            $table->timestamps();
+            $table->foreign("nim")->references("nim")->on("mahasiswa");
+            $table->integer("id_tag");
+            $table->foreign("id_tag")->references("id")->on("tag");
         });
     }
 
