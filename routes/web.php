@@ -113,5 +113,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dosen/dashboard', function () {
             return view('dosen.dashboard'); // Assuming a dosen dashboard view
         })->name('dosen.dashboard');
+        Route::get('/dosen/verifikasi-prestasi', function () {
+            return view('dosen.verifikasi-prestasi'); // Assuming a dosen verification view
+        })->name('dosen.verifikasi-prestasi');
     });
 });

@@ -1,6 +1,10 @@
 @php
 $activeMenu = $activeMenu ?? '';
 @endphp
+@php
+use App\Enums\UserRoleEnum;
+$activeMenu = $activeMenu ?? '';
+@endphp
 <div class="flex min-h-screen bg-gray-50">
     <!-- Sidebar -->
     <aside class="w-64 bg-white flex flex-col justify-between py-8 border-r-blue-200 border-r-2">
@@ -11,7 +15,7 @@ $activeMenu = $activeMenu ?? '';
             </div>
 
             <nav class="flex flex-col gap-2">
-                <!-- Navbar Mahasiswa -->
+                <!-- Dashboard (Accessible by all roles) -->
                 <a href="{{ route('admin.dashboard') }}"
                     class="flex items-center gap-3 pl-7 py-2 {{ ($activeMenu == 'dashboard') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 transition text-gray-700' }} ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -19,6 +23,9 @@ $activeMenu = $activeMenu ?? '';
                     </svg>
                     Dashboard
                 </a>
+
+                @if(Auth::check() && Auth::user()->role->value === UserRoleEnum::ADMIN->value)
+                <!-- Kelola Pengguna (Admin only) -->
                 <div x-data="{ open: {{ $activeMenu == 'kelola-pengguna' || $activeMenu == 'kelola-dosen' || $activeMenu == 'kelola-admin' ? 'true' : 'false' }}, $activeMenu: '{{ $activeMenu }}' }"
                     x-effect="if ($activeMenu !== 'kelola-pengguna' && $activeMenu !== 'kelola-dosen' && $activeMenu !== 'kelola-admin') { open = false }">
                     <a href="#" @click.prevent="open = !open"
@@ -48,6 +55,8 @@ $activeMenu = $activeMenu ?? '';
                         </a>
                     </div>
                 </div>
+
+                <!-- Kelola Prestasi (Admin only) -->
                 <div x-data="{ open: {{ $activeMenu == 'verifikasi-prestasi' || $activeMenu == 'daftar-prestasi' ? 'true' : 'false' }}, $activeMenu: '{{ $activeMenu }}' }"
                     x-effect="if ($activeMenu !== 'verifikasi-prestasi' && $activeMenu !== 'daftar-prestasi') { open = false }">
                     <a href="#" @click.prevent="open = !open"
@@ -73,6 +82,8 @@ $activeMenu = $activeMenu ?? '';
                         </a>
                     </div>
                 </div>
+
+                <!-- Kelola Lomba (Admin only) -->
                 <div x-data="{ open: {{ $activeMenu == 'daftar-lomba' || $activeMenu == 'tambah-lomba' ? 'true' : 'false' }}, $activeMenu: '{{ $activeMenu }}' }"
                     x-effect="if ($activeMenu !== 'daftar-lomba' && $activeMenu !== 'tambah-lomba') { open = false }">
                     <a href="#" @click.prevent="open = !open"
@@ -100,6 +111,8 @@ $activeMenu = $activeMenu ?? '';
                         </a>
                     </div>
                 </div>
+
+                <!-- Kelola Akademik (Admin only) -->
                 <div x-data="{ open: {{ $activeMenu == 'program-studi' || $activeMenu == 'periode' ? 'true' : 'false' }}, $activeMenu: '{{ $activeMenu }}' }"
                     x-effect="if ($activeMenu !== 'program-studi' && $activeMenu !== 'periode') { open = false }">
                     <a href="#" @click.prevent="open = !open"
@@ -125,6 +138,8 @@ $activeMenu = $activeMenu ?? '';
                         </a>
                     </div>
                 </div>
+
+                <!-- Laporan (Admin only) -->
                 <a href="{{ route('admin.laporan') }}"
                     class="flex items-center gap-3 pl-7 py-2 {{ ($activeMenu == 'laporan') ? ' text-blue-700 font-semibold bg-blue-50 border-r-blue-500 border-r-3' : ' hover:bg-blue-50 text-gray-700' }} ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -134,6 +149,7 @@ $activeMenu = $activeMenu ?? '';
                     </svg>
                     Laporan
                 </a>
+                @endif
             </nav>
         </div>
         <div class="flex flex-col gap-5 ml-7 mb-5 mt-10 overflow-y-auto">
@@ -145,14 +161,17 @@ $activeMenu = $activeMenu ?? '';
                 </svg>
                 Contact us
             </a>
-            <a href="#" class="flex items-center gap-2 text-red-500 hover:text-red-700 text-sm font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                </svg>
-                Log out
-            </a>
+            <form action="{{ route('logout') }}" method="POST" class="w-full">
+                @csrf
+                <button type="submit" class="flex items-center gap-2 text-red-500 hover:text-red-700 text-sm font-semibold w-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                    </svg>
+                    Log out
+                </button>
+            </form>
         </div>
     </aside>
 </div>
