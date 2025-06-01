@@ -21,8 +21,11 @@ class DosenFactory extends Factory
     public function definition(): array
     {
         return [
-            'nidn' => fake()->unique()->numerify('############'),
-            'id_user' => User::factory(),
+            'nidn' => $nidn = fake()->unique()->numerify('############'),
+            'id_user' => User::factory()->state([
+                'username' => $nidn,
+                'role' => \App\Enums\UserRoleEnum::DOSEN,
+            ]),
             'name' => fake()->name(),
         ];
     }

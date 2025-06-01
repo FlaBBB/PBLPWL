@@ -23,8 +23,11 @@ class MahasiswaFactory extends Factory
     public function definition(): array
     {
         return [
-            'nim' => fake()->unique()->numerify('2###########'),
-            'id_user' => User::factory(),
+            'nim' => $nim = fake()->unique()->numerify('2###########'),
+            'id_user' => User::factory()->state([
+                'username' => $nim,
+                'role' => \App\Enums\UserRoleEnum::MAHASISWA,
+            ]),
             'name' => fake()->name(),
             'phone_number' => fake()->phoneNumber(),
             'city' => fake()->city(),
