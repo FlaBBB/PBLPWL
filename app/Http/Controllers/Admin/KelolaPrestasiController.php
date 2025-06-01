@@ -48,4 +48,24 @@ class KelolaPrestasiController extends Controller
             'headerDesc' => $headerDesc,
         ]);
     }
+   public function detail($id)
+{
+    $activeMenu = 'detail-prestasi';
+    $breadcrumbs = [
+        [
+            'label' => 'Detail Prestasi',
+            'url' => route('admin.detail-prestasi', ['id' => $id])
+        ],
+    ];
+    $headerTitle = 'Detail Prestasi';
+    $headerDesc = 'Lihat detail prestasi yang telah diajukan oleh mahasiswa.';
+    // Logika untuk mengambil data berdasarkan $id
+    // return view('admin.detail-prestasi', [
+    //     'activeMenu' => $activeMenu,
+    //     'breadcrumbs' => $breadcrumbs,
+    //     'headerTitle' => $headerTitle,
+    //     'headerDesc' => $headerDesc,
+    //     'prestasi' => Prestasi::findOrFail($id), 
+    // ]);
+}
 }
