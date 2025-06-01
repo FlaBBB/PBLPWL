@@ -1,11 +1,11 @@
-<header class="flex-1 px-10 pt-10">
+<header class="flex-1 px-10 pt-5 sticky top-0 z-20 bg-white">
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold">
                 {{ $headerTitle ?? 'Welcome Back, Dennis 👋' }}
             </h1>
             @if(!empty($headerDesc) || !isset($headerTitle))
-                <p class="text-gray-400 mt-1">
+                <p class="text-gray-400 mt-1 text-sm">
                     {{ $headerDesc ?? 'Here is the information about all your achievement' }}
                 </p>
             @endif

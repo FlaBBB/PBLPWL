@@ -15,7 +15,7 @@
     @vite(['resources/css/app.css'])
 </head>
 
-<body>
+<body class="bg-gray-50 min-h-screen">
 @php
 use App\Enums\UserRoleEnum;
 @endphp
