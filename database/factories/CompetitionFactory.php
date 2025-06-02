@@ -34,7 +34,7 @@ class CompetitionFactory extends Factory
             'end_at' => fake()->date(),
             'registration_deadline' => fake()->date(),
             'registration_link' => fake()->url(),
-            'registration_fee' => fake()->numberBetween(0, 100000),
+            'registration_fee' => fake()->numberBetween(0, 60) * 5_000,
             'max_participation_amount' => fake()->numberBetween(1, 10),
             'creator' => User::factory(),
             'status' => fake()->randomElement(CompetitionStatusEnum::cases()),
