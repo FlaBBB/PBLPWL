@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('competition_tag', function (Blueprint $table) {
             $table->integer("id_competition");
             $table->foreign("id_competition")->references("id")->on("competition");
-            $table->integer("id_tag");
+            $table->unsignedBigInteger("id_tag");
             $table->foreign("id_tag")->references("id")->on("tag");
         });
     }
