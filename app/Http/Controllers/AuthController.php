@@ -47,6 +47,7 @@ class AuthController extends Controller
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
+            'error' => 'Login failed. Please check your username and password.',
         ])->onlyInput('email');
     }
 

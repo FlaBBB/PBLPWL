@@ -1,4 +1,4 @@
-<header class="flex-1 px-10 pt-10">
+<header class="flex-1 px-10 pt-5 sticky top-0 z-20 bg-white">
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold">

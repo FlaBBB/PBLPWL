@@ -41,7 +41,7 @@ class KelolaPrestasiController extends Controller
         $headerTitle = 'Daftar Prestasi';
         $headerDesc = 'Kelola daftar prestasi yang ada di dalam sistem.';
 
-        return view('admin.daftar-prestasi', [
+        return view('admin.detail-prestasi', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
