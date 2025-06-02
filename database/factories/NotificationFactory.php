@@ -21,7 +21,6 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber(),
             'id_user' => User::pluck('id')->random(),
             'code_reference' => fake()->word(),
             'content' => fake()->paragraph(),

@@ -23,7 +23,6 @@ class AchievementFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber(),
             'upload_at' => fake()->dateTimeThisYear(),
             'competition_type' => fake()->word(),
             'competition_name' => fake()->sentence(),

@@ -24,7 +24,6 @@ class CompetitionFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber(),
             'name' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'level' => fake()->randomElement(CompetitionLevelEnum::cases()),
@@ -34,11 +33,11 @@ class CompetitionFactory extends Factory
             'end_at' => fake()->date(),
             'registration_deadline' => fake()->date(),
             'registration_link' => fake()->url(),
-            'registration_fee' => fake()->numberBetween(0, 60) * 5_000,
+            'registration_fee' => fake()->numberBetween(0, 12) * 25_000,
             'max_participation_amount' => fake()->numberBetween(1, 10),
             'creator' => User::factory(),
-            'status' => fake()->randomElement(CompetitionStatusEnum::cases()),
-            'rejection_note' => fake()->paragraph(),
+            'status' => $status = fake()->randomElement(CompetitionStatusEnum::cases()),
+            'rejection_note' => $status == CompetitionStatusEnum::REJECTED ? fake()->paragraph() : '',
             'verificator' => Admin::pluck('nip')->random(),
             'verified_at' => fake()->date(),
         ];

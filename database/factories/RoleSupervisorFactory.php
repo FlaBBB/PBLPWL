@@ -20,7 +20,6 @@ class RoleSupervisorFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber(),
             'description' => fake()->sentence(),
         ];
     }
