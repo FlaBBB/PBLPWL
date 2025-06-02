@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('competition', function (Blueprint $table) {
-            $table->integer("id")->primary();
+            $table->id();
             $table->string("name");
             $table->text("description");
             $table->enum("level", [

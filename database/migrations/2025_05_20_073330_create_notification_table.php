@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notification', function (Blueprint $table) {
-            $table->integer("id")->primary();
+            $table->id();
             $table->foreignId("id_user")->constrained("user");
             $table->string("code_reference");
             $table->text("content");
