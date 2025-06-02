@@ -38,11 +38,9 @@ class DosenFactory extends Factory
         return $this->afterCreating(function (Dosen $dosen) {
             $tagIds = Tag::pluck('id')->shuffle()->take(fake()->numberBetween(1, 4));
 
-            $nidn = str_pad($dosen->nidn, 12, '0', STR_PAD_LEFT);
-
-            $tagIds->each(function ($tagId) use ($nidn) {
+            $tagIds->each(function ($tagId) use ($dosen) {
                 DosenPreferenceFactory::new()->create([
-                    'nidn' => $nidn, // Explicitly cast to string
+                    'nidn' => $dosen->nidn,
                     'id_tag' => $tagId,
                 ]);
             });

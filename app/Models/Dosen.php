@@ -13,6 +13,7 @@ class Dosen extends Model
     protected $table = 'dosen';
     protected $primaryKey = "nidn";
     protected $keyType = 'string';
+    public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = [

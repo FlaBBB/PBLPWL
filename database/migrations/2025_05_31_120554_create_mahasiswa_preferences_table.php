@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreign("nim")->references("nim")->on("mahasiswa");
             $table->unsignedBigInteger("id_tag");
             $table->foreign("id_tag")->references("id")->on("tag");
+
+            $table->primary(['nim', 'id_tag']);
         });
     }
 
