@@ -34,7 +34,7 @@ class MahasiswaFactory extends Factory
             'district' => fake()->citySuffix(),
             'subdistrict' => fake()->streetName(),
             'address' => fake()->address(),
-            'prodi' => fake()->word(),
+            'prodi' => fake()->randomElement(['TI', 'SIB']),
             'grade' => fake()->numberBetween(1, 8),
         ];
     }
