@@ -2,18 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Competition;
-use App\Models\CompetitionTag;
-use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Tag;
+use App\Models\Dosen;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CompetitionTag>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DosenPreference>
  */
-class CompetitionTagFactory extends Factory
+class DosenPreferenceFactory extends Factory
 {
-    protected $model = CompetitionTag::class;
-
     /**
      * Define the model's default state.
      *
@@ -22,7 +19,7 @@ class CompetitionTagFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_competition' => Competition::pluck('id')->random(),
+            'nidn' => Dosen::pluck("nidn")->random(),
             'id_tag' => Tag::pluck('id')->random(),
         ];
     }

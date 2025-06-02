@@ -39,7 +39,7 @@ class CompetitionFactory extends Factory
             'creator' => User::factory(),
             'status' => fake()->randomElement(CompetitionStatusEnum::cases()),
             'rejection_note' => fake()->paragraph(),
-            'verificator' => Admin::inRandomOrder()->first()->nip,
+            'verificator' => Admin::pluck('nip')->random(),
             'verified_at' => fake()->date(),
         ];
     }

@@ -3,9 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\Mahasiswa;
+use App\Enums\UserRoleEnum;
 use App\Models\MahasiswaPreferences;
 use App\Models\Mark;
 use App\Models\User;
+use App\Models\Tag;
+use Database\Factories\MahasiswaPreferencesFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,10 +26,10 @@ class MahasiswaFactory extends Factory
     public function definition(): array
     {
         return [
-            'nim' => $nim = fake()->unique()->numerify('2###########'),
+            'nim' => $nim = fake()->unique()->numerify('############'),
             'id_user' => User::factory()->state([
                 'username' => $nim,
-                'role' => \App\Enums\UserRoleEnum::MAHASISWA,
+                'role' => UserRoleEnum::MAHASISWA,
             ]),
             'name' => fake()->name(),
             'phone_number' => fake()->phoneNumber(),
@@ -43,11 +46,18 @@ class MahasiswaFactory extends Factory
     {
         return $this->afterCreating(function (Mahasiswa $mahasiswa) {
             Mark::factory()->create([
-                'nim' => $mahasiswa->nim,
+                'nim' => (string) $mahasiswa->nim, // Explicitly cast to string
             ]);
-            MahasiswaPreferencesFactory::new()->count(fake()->numberBetween(1, 4))->create([
-                'nim' => $mahasiswa->nim,
-            ]);
+            $tagIds = Tag::pluck('id')->shuffle()->take(fake()->numberBetween(1, 4));
+
+            $nim = str_pad($mahasiswa->nim, 12, '0', STR_PAD_LEFT); // getting around of bug
+
+            $tagIds->each(function ($tagId) use ($nim) {
+                MahasiswaPreferencesFactory::new()->create([
+                    'nim' => (string) $nim, // Explicitly cast to string
+                    'id_tag' => $tagId,
+                ]);
+            });
         });
     }
 }

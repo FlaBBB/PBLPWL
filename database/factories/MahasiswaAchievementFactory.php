@@ -24,10 +24,10 @@ class MahasiswaAchievementFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_achievement' => Achievement::factory(),
-            'nim' => Mahasiswa::factory(),
+            'id_achievement' => Achievement::pluck('id')->random(),
+            'nim' => Mahasiswa::pluck('nim')->random(),
             'role' => fake()->randomElement(MahasiswaAchievementRoleEnum::cases()),
-            'id_tag' => Tag::factory(),
+            'id_tag' => Tag::pluck('id')->random(),
         ];
     }
 }

@@ -45,7 +45,7 @@ class AchievementFactory extends Factory
             'place' => fake()->numberBetween(1, 3),
             'status' => fake()->randomElement(AchievementStatusEnum::cases()),
             'note' => fake()->paragraph(),
-            'verificator' => Admin::inRandomOrder()->first()->nip,
+            'verificator' => Admin::pluck("nip")->random(),
             'verified_at' => fake()->date(),
         ];
     }

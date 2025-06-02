@@ -22,7 +22,7 @@ class NotificationFactory extends Factory
     {
         return [
             'id' => fake()->unique()->randomNumber(),
-            'id_user' => User::factory(),
+            'id_user' => User::pluck('id')->random(),
             'code_reference' => fake()->word(),
             'content' => fake()->paragraph(),
             'is_read' => fake()->boolean(),

@@ -22,8 +22,8 @@ class MahasiswaPreferencesFactory extends Factory
     public function definition(): array
     {
         return [
-            'nim' => Mahasiswa::factory(),
-            'id_tag' => Tag::factory(),
+            'nim' => Mahasiswa::pluck('nim')->random(),
+            'id_tag' => Tag::pluck('id')->random(),
         ];
     }
 }
