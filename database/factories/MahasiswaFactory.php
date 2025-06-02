@@ -45,12 +45,12 @@ class MahasiswaFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Mahasiswa $mahasiswa) {
+            $nim = str_pad($mahasiswa->nim, 12, '0', STR_PAD_LEFT); // getting around of bug
+
             Mark::factory()->create([
-                'nim' => (string) $mahasiswa->nim, // Explicitly cast to string
+                'nim' => (string) $nim, // Explicitly cast to string
             ]);
             $tagIds = Tag::pluck('id')->shuffle()->take(fake()->numberBetween(1, 4));
-
-            $nim = str_pad($mahasiswa->nim, 12, '0', STR_PAD_LEFT); // getting around of bug
 
             $tagIds->each(function ($tagId) use ($nim) {
                 MahasiswaPreferencesFactory::new()->create([
