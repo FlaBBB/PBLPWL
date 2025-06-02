@@ -24,7 +24,6 @@ $activeMenu = $activeMenu ?? '';
                     Dashboard
                 </a>
 
-                @if(Auth::check() && Auth::user()->role->value === UserRoleEnum::ADMIN->value)
                 <!-- Kelola Pengguna (Admin only) -->
                 <div x-data="{ open: {{ $activeMenu == 'kelola-pengguna' || $activeMenu == 'kelola-dosen' || $activeMenu == 'kelola-admin' ? 'true' : 'false' }}, $activeMenu: '{{ $activeMenu }}' }"
                     x-effect="if ($activeMenu !== 'kelola-pengguna' && $activeMenu !== 'kelola-dosen' && $activeMenu !== 'kelola-admin') { open = false }">
