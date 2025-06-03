@@ -43,9 +43,12 @@ class DashboardController extends Controller
                 'tag.name as tag_name'
             )
             ->orderBy('achievement.upload_at', 'desc')
+            ->limit(7)
             ->get();
 
-        $totalPrestasi = $listPrestasi->count();
+        $totalPrestasi = MahasiswaAchievement::query()
+            ->where('nim', $mahasiswa->nim)
+            ->count();
         
         $totalWaitedPrestasi = MahasiswaAchievement::query()
             ->join('achievement', 'mahasiswa_achievement.id_achievement', '=', 'achievement.id')
