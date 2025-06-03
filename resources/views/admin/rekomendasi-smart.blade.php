@@ -135,15 +135,16 @@
                             </a>
                         @endfor
                     </div>
-                    <div class="mt-4 text-right px-2 text-sm text-gray-700 hover:text-blue-600 hover:underline">
-                        <a href="" class="inline-flex items-center gap-1 ">
+                    <div class="mt-4 text-right px-2 text-sm text-gray-700 hover:text-[#1e6aae]">
+                        <a href=""
+                            class="inline-flex items-center gap-1 px-3 py-1 rounded-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-sm ">
+                            <!-- beri link ke menu daftar prestasi mahasiswa saat ini -->
                             Selengkapnya
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
                             </svg>
-
                         </a>
                     </div>
                 </div>

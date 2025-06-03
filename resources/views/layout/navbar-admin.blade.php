@@ -1,22 +1,21 @@
 @php
-$activeMenu = $activeMenu ?? '';
+    $activeMenu = $activeMenu ?? '';
 @endphp
 <div class="flex min-h-screen bg-gray-50">
     <!-- Sidebar -->
-    <aside
-        x-data="{ openDropdown: '' }"
-        x-init="() => {
-            if (['kelola-pengguna', 'kelola-dosen', 'kelola-admin'].includes('{{ $activeMenu }}')) {
-                openDropdown = 'kelola-pengguna-group';
-            } else if (['verifikasi-prestasi', 'daftar-prestasi'].includes('{{ $activeMenu }}')) {
-                openDropdown = 'kelola-prestasi-group';
-            } else if (['tambah-lomba', 'daftar-lomba'].includes('{{ $activeMenu }}')) {
-                openDropdown = 'kelola-lomba-group';
-            } else if (['program-studi', 'periode'].includes('{{ $activeMenu }}')) {
-                openDropdown = 'kelola-akademik-group';
-            }
-        }"
-        class="w-64 bg-white flex flex-col py-8 h-screen">
+    <aside x-data="{ openDropdown: '' }" x-init="() => {
+    if (['kelola-pengguna', 'kelola-dosen', 'kelola-admin'].includes('{{ $activeMenu }}')) {
+        openDropdown = 'kelola-pengguna-group';
+    } else if (['verifikasi-prestasi', 'daftar-prestasi'].includes('{{ $activeMenu }}')) {
+        openDropdown = 'kelola-prestasi-group';
+    } else if (['tambah-lomba', 'daftar-lomba'].includes('{{ $activeMenu }}')) {
+        openDropdown = 'kelola-lomba-group';
+    } else if (['program-studi', 'periode'].includes('{{ $activeMenu }}')) {
+        openDropdown = 'kelola-akademik-group';
+    } else if (['rekomendasi-vikor', 'rekomendasi-smart'].includes('{{ $activeMenu }}')) {
+        openDropdown = 'rekomendasi-group';
+    }
+}" class="w-64 bg-white flex flex-col py-8 h-screen">
         <div class="flex pl-10">
             <img src="{{ asset('images/Logo-Blue.svg') }}" alt="SIPRESTA Logo" class="h-11">
         </div>
@@ -25,17 +24,22 @@ $activeMenu = $activeMenu ?? '';
                 <nav class="flex flex-col gap-2 mt-10">
                     <a href="{{ route('admin.dashboard') }}"
                         class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 {{ ($activeMenu == 'dashboard') ? ' text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }} ">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
                         </svg>
                         Dashboard
                     </a>
                     <!-- Dropdown 1: Kelola Pengguna -->
                     <div>
-                        <a href="#" @click.prevent="openDropdown = (openDropdown === 'kelola-pengguna-group' ? '' : 'kelola-pengguna-group')"
-                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['kelola-pengguna','kelola-dosen','kelola-admin']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                        <a href="#"
+                            @click.prevent="openDropdown = (openDropdown === 'kelola-pengguna-group' ? '' : 'kelola-pengguna-group')"
+                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['kelola-pengguna', 'kelola-dosen', 'kelola-admin']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                             </svg>
                             Kelola Pengguna
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -45,49 +49,56 @@ $activeMenu = $activeMenu ?? '';
                             </svg>
 
                         </a>
-                        <div x-show="openDropdown === 'kelola-pengguna-group'" x-transition class="ml-10 my-3 flex flex-col gap-3">
+                        <div x-show="openDropdown === 'kelola-pengguna-group'" x-transition
+                            class="ml-10 my-3 flex flex-col gap-3">
                             <a href="{{ route('admin.kelola-pengguna') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'kelola-pengguna' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'kelola-pengguna' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] text-sm font-medium hover:bg-blue-50 transition' }}">
                                 Mahasiswa
                             </a>
                             <a href="{{ route('admin.kelola-dosen') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'kelola-dosen' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'kelola-dosen' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] text-sm font-medium hover:bg-blue-50 transition' }}">
                                 Dosen
                             </a>
                             <a href="{{ route('admin.kelola-admin') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'kelola-admin' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'kelola-admin' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] text-sm font-medium hover:bg-blue-50 transition' }}">
                                 Admin
                             </a>
                         </div>
                     </div>
                     <!-- Dropdown 2: Kelola Prestasi -->
                     <div>
-                        <a href="#" @click.prevent="openDropdown = (openDropdown === 'kelola-prestasi-group' ? '' : 'kelola-prestasi-group')"
-                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['verifikasi-prestasi','daftar-prestasi']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                        <a href="#"
+                            @click.prevent="openDropdown = (openDropdown === 'kelola-prestasi-group' ? '' : 'kelola-prestasi-group')"
+                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['verifikasi-prestasi', 'daftar-prestasi']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
                             </svg>
                             Kelola Prestasi
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="size-4 ml-auto mr-2 transition-transform duration-200" :class="openDropdown === 'kelola-prestasi-group' ? 'rotate-180' : ''">
+                                stroke="currentColor" class="size-4 ml-auto mr-2 transition-transform duration-200"
+                                :class="openDropdown === 'kelola-prestasi-group' ? 'rotate-180' : ''">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </a>
-                        <div x-show="openDropdown === 'kelola-prestasi-group'" x-transition class="ml-10 my-3 flex flex-col gap-3">
+                        <div x-show="openDropdown === 'kelola-prestasi-group'" x-transition
+                            class="ml-10 my-3 flex flex-col gap-3">
                             <a href="{{ route('admin.verifikasi-prestasi') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'verifikasi-prestasi' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'verifikasi-prestasi' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
                                 Verifikasi Prestasi
                             </a>
                             <a href="{{ route('admin.daftar-prestasi') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'daftar-prestasi' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'daftar-prestasi' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
                                 Daftar Prestasi
                             </a>
                         </div>
                     </div>
                     <!-- Dropdown 3: Kelola Lomba -->
                     <div>
-                        <a href="#" @click.prevent="openDropdown = (openDropdown === 'kelola-lomba-group' ? '' : 'kelola-lomba-group')"
-                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['daftar-lomba','tambah-lomba']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
+                        <a href="#"
+                            @click.prevent="openDropdown = (openDropdown === 'kelola-lomba-group' ? '' : 'kelola-lomba-group')"
+                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['daftar-lomba', 'tambah-lomba']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -95,46 +106,24 @@ $activeMenu = $activeMenu ?? '';
                             </svg>
                             Kelola Lomba
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="size-4 ml-auto mr-2 transition-transform duration-200" :class="openDropdown === 'kelola-lomba-group' ? 'rotate-180' : ''">
+                                stroke="currentColor" class="size-4 ml-auto mr-2 transition-transform duration-200"
+                                :class="openDropdown === 'kelola-lomba-group' ? 'rotate-180' : ''">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </a>
-                        <div x-show="openDropdown === 'kelola-lomba-group'" x-transition class="ml-10 my-3 flex flex-col gap-3">
+                        <div x-show="openDropdown === 'kelola-lomba-group'" x-transition
+                            class="ml-10 my-3 flex flex-col gap-3">
                             <a href="{{ route('admin.tambah-lomba') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'tambah-lomba' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'tambah-lomba' ? 'text-[#1E6AAE] font-medium text-sm  hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
                                 Tambah Lomba Baru
                             </a>
                             <a href="{{ route('admin.daftar-lomba') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'daftar-lomba' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'daftar-lomba' ? 'text-[#1E6AAE] font-medium text-sm hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
                                 Daftar Lomba
                             </a>
                         </div>
                     </div>
-                    <!-- Dropdown 4: Kelola Akademik -->
-                    <div>
-                        <a href="#" @click.prevent="openDropdown = (openDropdown === 'kelola-akademik-group' ? '' : 'kelola-akademik-group')"
-                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['program-studi','periode']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
-                            </svg>
-                            Kelola Akademik
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="size-4 ml-auto mr-2 transition-transform duration-200" :class="openDropdown === 'kelola-akademik-group' ? 'rotate-180' : ''">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        </a>
-                        <div x-show="openDropdown === 'kelola-akademik-group'" x-transition class="ml-10 my-3 flex flex-col gap-3">
-                            <a href="{{ route('admin.program-studi') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'program-studi' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
-                                Kelola Program Studi
-                            </a>
-                            <a href="{{ route('admin.periode') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'periode' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
-                                Kelola Periode
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Menu tanpa dropdown -->
+                    <!-- Menu Laporan -->
                     <a href="{{ route('admin.laporan') }}"
                         class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 {{ ($activeMenu == 'laporan') ? ' text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : ' hover:bg-blue-50 text-[#7C8DB5]' }} ">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -144,6 +133,36 @@ $activeMenu = $activeMenu ?? '';
                         </svg>
                         Laporan
                     </a>
+                    <!-- Menu Rekomendasi -->
+                    <!-- Menu Rekomendasi -->
+                    <div>
+                        <a href="#"
+                            @click.prevent="openDropdown = (openDropdown === 'rekomendasi-group' ? '' : 'rekomendasi-group')"
+                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['rekomendasi-vikor', 'rekomendasi-smart']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                            </svg>
+                            Rekomendasi
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="size-4 ml-auto mr-2 transition-transform duration-200"
+                                :class="openDropdown === 'rekomendasi-group' ? 'rotate-180' : ''">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </a>
+                        <div x-show="openDropdown === 'rekomendasi-group'" x-transition
+                            class="ml-10 my-3 flex flex-col gap-3">
+                            <a href="{{ route('admin.rekomendasi-vikor') }}"
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'rekomendasi-vikor' ? 'text-[#1E6AAE] font-medium text-sm  hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                Rekomendasi VIKOR
+                            </a>
+                            <a href="{{ route('admin.rekomendasi-smart') }}"
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'rekomendasi-smart' ? 'text-[#1E6AAE] font-medium text-sm  hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                Rekomendasi SMART
+                            </a>
+                        </div>
+                    </div>
                 </nav>
             </div>
 
@@ -158,7 +177,8 @@ $activeMenu = $activeMenu ?? '';
                 </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="flex font-semibold items-center cursor-pointer gap-2 text-red-500 hover:text-red-700 text-sm">
+                    <button type="submit"
+                        class="flex font-semibold items-center cursor-pointer gap-2 text-red-500 hover:text-red-700 text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
