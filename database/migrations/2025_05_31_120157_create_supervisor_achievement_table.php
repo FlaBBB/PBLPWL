@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId("id_achievement")->constrained("achievement");
             $table->string('nidn');
             $table->foreign('nidn')->references('nidn')->on('dosen');
-            $table->integer("role");
+            $table->unsignedBigInteger("role");
             $table->foreign("role")->references("id")->on("role_supervisor");
         });
     }

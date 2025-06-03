@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Login - SIPRESTA</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{{ asset('images/icon.svg') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
     <!-- Notyf CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
@@ -23,6 +24,18 @@
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
                     <p class="text-gray-500 mb-8">Enter your username and password to access your account</p>
                 </div>
+                @if(session('error') || $errors->has('error') || $errors->has('email'))
+                <div id="login-error"
+                    class="fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-500 opacity-0"
+                    style="background: rgba(0,0,0,0.2);">
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-8 py-4 rounded shadow-lg text-center max-w-md w-full">
+                        <span class="font-semibold text-lg">Login Gagal</span>
+                        <div class="mt-2">
+                            {{ session('error') ?? $errors->first('error') ?? $errors->first('email') }}
+                        </div>
+                    </div>
+                </div>
+                @endif
                 <form action="" method="POST" class="space-y-6">
                     @csrf
                     <div>
@@ -98,4 +111,31 @@
             eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7z" />`;
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const errorDiv = document.getElementById('login-error');
+        if (errorDiv) {
+            setTimeout(() => {
+                errorDiv.classList.remove('opacity-0');
+                errorDiv.classList.add('opacity-100');
+            }, 10);
+
+            // Fade out after 3 seconds
+            setTimeout(() => {
+                errorDiv.classList.remove('opacity-100');
+                errorDiv.classList.add('opacity-0');
+            }, 3000);
+
+            // Optional: Remove from DOM after fade out
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 3500);
+
+            setTimeout(() => {
+                onclick = function() {
+                    errorDiv.style.display = 'none';
+                };
+            })
+        }
+    });
 </script>

@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('mahasiswa_preferences', function (Blueprint $table) {
             $table->string("nim");
             $table->foreign("nim")->references("nim")->on("mahasiswa");
-            $table->integer("id_tag");
+            $table->unsignedBigInteger("id_tag");
             $table->foreign("id_tag")->references("id")->on("tag");
+
+            $table->primary(['nim', 'id_tag']);
         });
     }
 

@@ -2,16 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\RoleSupervisor;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Tag;
+use App\Models\Dosen;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RoleSupervisor>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DosenPreference>
  */
-class RoleSupervisorFactory extends Factory
+class DosenPreferenceFactory extends Factory
 {
-    protected $model = RoleSupervisor::class;
-
     /**
      * Define the model's default state.
      *
@@ -20,7 +19,8 @@ class RoleSupervisorFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => fake()->sentence(),
+            'nidn' => Dosen::pluck("nidn")->random(),
+            'id_tag' => Tag::pluck('id')->random(),
         ];
     }
 }

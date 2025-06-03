@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Admin;
 use App\Models\User;
+use App\Enums\UserRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,7 +25,7 @@ class AdminFactory extends Factory
             'nip' => $nip = fake()->unique()->numerify('##########'),
             'id_user' => User::factory()->state([
                 'username' => $nip,
-                'role' => \App\Enums\UserRoleEnum::ADMIN,
+                'role' => UserRoleEnum::ADMIN,
             ]),
             'name' => fake()->name(),
         ];

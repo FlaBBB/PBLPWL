@@ -20,7 +20,7 @@ return new class extends Migration
                 "MEMBER",
                 "PERSONAL"
             ]);
-            $table->integer("id_tag");
+            $table->unsignedBigInteger("id_tag");
             $table->foreign("id_tag")->references("id")->on("tag");
         });
     }

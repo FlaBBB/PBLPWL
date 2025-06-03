@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\LaporanController as AdminLaporanController;
 use App\Http\Controllers\Admin\RekomendasiController;
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 use App\Http\Controllers\Dosen\VerifikasiPrestasiController;
+use App\Http\Controllers\Dosen\ManajemenMahasiswaController;
 use App\Http\Controllers\Mahasiswa\ProfileController as MahasiswaProfileController;
 use App\Http\Controllers\Dosen\ProfileController as DosenProfileController;
 use App\Http\Controllers\AuthController; // Import AuthController
@@ -138,5 +139,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dosen/tambah-lomba', [DosenLombaController::class, 'tambah'])->name('dosen.tambah-lomba');
         Route::get('/dosen/detail-lomba', [DosenLombaController::class, 'detail'])->name('dosen.detail-lomba');
         Route::get('/dosen/histori-tambah-lomba', [DosenLombaController::class, 'histori'])->name('dosen.histori-tambah-lomba');
+    });
+});
+// Route for Admin
+
+Route::prefix('dosen')->group(function () {
+    Route::get('/dashboard', [DosenDashboardController::class, 'index'])->name('dosen.dashboard');
+    Route::get('/manajemen-mahasiswa', [ManajemenMahasiswaController::class, 'index'])->name('dosen.manajemen-mahasiswa');
+    
+    Route::prefix('kelola-lomba')->group(function () {
+        Route::get('/daftar', [DosenLombaController::class, 'daftar'])->name('dosen.daftar-lomba');
+        Route::get('/tambah', [DosenLombaController::class, 'tambah'])->name('dosen.tambah-lomba');
     });
 });

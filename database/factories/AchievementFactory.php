@@ -23,7 +23,6 @@ class AchievementFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->randomNumber(),
             'upload_at' => fake()->dateTimeThisYear(),
             'competition_type' => fake()->word(),
             'competition_name' => fake()->sentence(),
@@ -45,7 +44,7 @@ class AchievementFactory extends Factory
             'place' => fake()->numberBetween(1, 3),
             'status' => fake()->randomElement(AchievementStatusEnum::cases()),
             'note' => fake()->paragraph(),
-            'verificator' => Admin::inRandomOrder()->first()->nip,
+            'verificator' => Admin::pluck("nip")->random(),
             'verified_at' => fake()->date(),
         ];
     }

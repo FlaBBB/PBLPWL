@@ -22,8 +22,8 @@ class CompetitionTagFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_competition' => Competition::factory(),
-            'id_tag' => Tag::factory(),
+            'id_competition' => Competition::pluck('id')->random(),
+            'id_tag' => Tag::pluck('id')->random(),
         ];
     }
 }

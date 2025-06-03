@@ -23,9 +23,9 @@ class SupervisorAchievementFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_achievement' => Achievement::factory(),
-            'nidn' => Dosen::inRandomOrder()->first()->nidn,
-            'role' => RoleSupervisor::inRandomOrder()->first()->id,
+            'id_achievement' => Achievement::pluck('id')->random(),
+            'nidn' => Dosen::pluck('nidn')->random(),
+            'role' => RoleSupervisor::pluck('id')->random(),
         ];
     }
 }

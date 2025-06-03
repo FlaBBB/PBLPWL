@@ -45,10 +45,10 @@ class AuthController extends Controller
         }
 
 
-        return back()
-            ->withErrors(['email' => 'The provided credentials do not match our records.'])
-            ->with('login_failed', true)
-            ->onlyInput('email');
+        return back()->withErrors([
+            'username' => 'The provided credentials do not match our records.',
+            'error' => 'Login failed. Please check your username and password.',
+        ])->onlyInput('username');
     }
 
     public function logout(Request $request)

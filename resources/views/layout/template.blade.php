@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SIPRESTA')</title>
+    <link rel="icon" href="{{ asset('images/icon.svg') }}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -17,10 +18,20 @@
 </head>
 
 <body class="bg-gray-50 min-h-screen">
-
+    @php
+    use App\Enums\UserRoleEnum;
+    @endphp
     <!-- Sidebar/Navbar -->
     <aside class="fixed top-0 left-0 h-screen w-64 bg-white z-20 overflow-y-auto hidden lg:block">
+        @auth
+        @if(Auth::user()->role->value === UserRoleEnum::ADMIN->value)
+        @include('layout.navbar-admin')
+        @elseif(Auth::user()->role->value === UserRoleEnum::MAHASISWA->value)
         @include('layout.navbar-mahasiswa')
+        @elseif(Auth::user()->role->value === UserRoleEnum::DOSEN->value)
+        @include('layout.navbar-dosen')
+        @endif
+        @endauth
     </aside>
 
     <!-- Main Content -->

@@ -22,10 +22,10 @@ class MarkFactory extends Factory
     public function definition(): array
     {
         return [
-            'nim' => Mahasiswa::factory(),
+            'nim' => Mahasiswa::pluck('nim')->random(),
             'ipk' => fake()->randomFloat(2, 0, 4),
             'updated_at' => fake()->dateTimeThisYear(),
-            'updated_by' => Admin::inRandomOrder()->first()->nip,
+            'updated_by' => Admin::pluck('nip')->random(),
         ];
     }
 }
