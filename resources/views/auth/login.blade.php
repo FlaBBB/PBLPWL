@@ -25,16 +25,17 @@
                     <p class="text-gray-500 mb-8">Enter your username and password to access your account</p>
                 </div>
                 @if(session('error') || $errors->has('error') || $errors->has('email'))
-                <div id="login-error"
-                    class="fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-500 opacity-0"
-                    style="background: rgba(0,0,0,0.2);">
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-8 py-4 rounded shadow-lg text-center max-w-md w-full">
-                        <span class="font-semibold text-lg">Login Gagal</span>
-                        <div class="mt-2">
-                            {{ session('error') ?? $errors->first('error') ?? $errors->first('email') }}
+                    <div id="login-error"
+                        class="fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-500 opacity-0"
+                        style="background: rgba(0,0,0,0.2);">
+                        <div
+                            class="bg-red-100 border border-red-400 text-red-700 px-8 py-4 rounded shadow-lg text-center max-w-md w-full">
+                            <span class="font-semibold text-lg">Login Gagal</span>
+                            <div class="mt-2">
+                                {{ session('error') ?? $errors->first('error') ?? $errors->first('email') }}
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endif
                 <form action="" method="POST" class="space-y-6">
                     @csrf
@@ -112,7 +113,7 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const errorDiv = document.getElementById('login-error');
         if (errorDiv) {
             setTimeout(() => {
@@ -132,7 +133,7 @@
             }, 3500);
 
             setTimeout(() => {
-                onclick = function() {
+                onclick = function () {
                     errorDiv.style.display = 'none';
                 };
             })
