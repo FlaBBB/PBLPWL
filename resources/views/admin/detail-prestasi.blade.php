@@ -1,8 +1,8 @@
 @extends('layout.template')
 
 @section('content')
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-[500px]">
+<body class="bg-white flex items-center justify-center min-h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-sm w-full mb-10">
         <h2 class="text-2xl font-bold mb-6">Detail Prestasi</h2>
         <div class="grid grid-cols-2 gap-6">
             <div>

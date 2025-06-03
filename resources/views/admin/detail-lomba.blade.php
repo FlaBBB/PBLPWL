@@ -1,4 +1,4 @@
-@extends('layout.template')Add commentMore actions
+@extends('layout.template')
 
 @section('content')
     <main class="flex-1 px-10">

@@ -1,34 +1,20 @@
 @extends('layout.template')
 
 @section('content')
-    <main class="flex-1 px-6">
-        <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg relative">
-            <div class="mb-4 flex space-x-4 border-b border-gray-200">
-                <button id="tab-tambah" data-tab="tambah"
-                    class="tab-btn text-sm font-medium py-2 px-3  border-b-4 text-[#1E6AAE] border-[#1E6AAE]" data-tab="tambah"
-                    type="button">
-                    Tambah Lomba
-                </button>
-                <a href="{{ route('dosen.histori-lomba') }}">
-                    <button id="tab-histori"
-                        class=" tab-btn text-sm font-medium py-2 px-3 border-b-4 text-gray-500 border-transparent hover:text-[#1E6AAE]"
-                        data-tab="histori" type="button">
-                        Riwayat Tambah Lomba
-                    </button>
-                </a>
+<main class="flex-1 px-6">
+    <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg relative">
 
-            </div>
-
-            <div id="content-tambah" class="tab-content p-6">
-                <h2 class="text-xl font-semibold mb-2">Tambah Lomba Baru</h2>
-                <p class="text-sm text-gray-400">Lengkapi data prestasi yang telah kamu raih selama masa studi. Pastikan
-                    kamu
-                    mengunggah bukti yang valid seperti sertifikat atau surat keterangan resmi.</p>
-                <div class="relative p-8 pt-14 mt-8 border border-gray-200 rounded-sm">
-                    <div class="absolute inset-x-0 top-0 h-10 w-full bg-[#1E6AAE] flex rounded-t-md items-center">
-                        <span class="text-white font-medium pl-4">Data Lomba</span>
-                    </div>
-                    <form class="space-y-6">
+        <div id="content-tambah" class="tab-content p-4">
+            <h2 class="text-xl font-semibold mb-2">Tambah Lomba Baru</h2>
+            <p class="text-sm text-gray-400">Lengkapi data prestasi yang telah kamu raih selama masa studi. Pastikan
+                kamu
+                mengunggah bukti yang valid seperti sertifikat atau surat keterangan resmi.</p>
+            <div class="relative p-8 pt-14 mt-8 border border-gray-200 rounded-sm">
+                <div class="absolute inset-x-0 top-0 h-10 w-full bg-[#1E6AAE] flex rounded-t-md items-center">
+                    <span class="text-white font-medium pl-4">Data Lomba</span>
+                </div>
+                <form class="space-y-6">
+                    <div class="flex flex-col space-y-4">
                         <!-- Nama Lomba -->
                         <div class="flex items-center space-x-4">
                             <label for="nama" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nama Lomba</label>
@@ -133,17 +119,18 @@
                             <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
                                 class="block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                         </div>
-                        <!-- Tombol Submit -->
-                        <div class="mt-8 text-right">
-                            <button type="submit"
-                                class="w-32 bg-[#1E6AAE] text-white py-2 px-2 rounded-sm hover:bg-[#17497C] transition duration-200">
-                                Submit
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <!-- Tombol Submit -->
+                    <div class="mt-8 text-right">
+                        <button type="submit"
+                            class="w-32 bg-[#1E6AAE] text-white py-2 px-2 rounded-sm hover:bg-[#17497C] transition duration-200">
+                            Submit
+                        </button>
+                    </div>
+                </form>
             </div>
-    </main>
+        </div>
+</main>
 
-   
+
 @endsection

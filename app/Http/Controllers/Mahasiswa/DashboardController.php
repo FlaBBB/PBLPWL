@@ -10,15 +10,24 @@ use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+
 class DashboardController extends Controller
 {
     public function index()
     {
         $activeMenu = 'dashboard';
         $role = 'mahasiswa';
+        $name = Mahasiswa::query()
+            ->where('id_user', Auth::user()->id)
+            ->value('name');
+
+        $headerTitle = 'Welcome Back, ' . $name . ' 👋';
+        $headerDesc = 'This is your dashboard, where you can manage all the data related to your achievements.';
 
         return view('mahasiswa.dashboard', [
             'activeMenu' => $activeMenu,
+            'headerTitle' => $headerTitle,
+            'headerDesc' => $headerDesc,
             'role' => $role,
             'data' => $this->data()
         ]);

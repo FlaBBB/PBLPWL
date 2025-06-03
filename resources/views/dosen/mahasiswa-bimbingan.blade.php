@@ -1,8 +1,8 @@
 @extends('layout.template')
 
 @section('content')
-    <main class="flex-1 px-6">
-        <div class="w-full mx-auto mb-12 p-6 border border-gray-200 rounded-lg relative">
+    <main class="flex-1 px-6 pb-10">
+        <div class="w-full bg-white mx-auto p-6 border border-gray-200 rounded-lg relative">
             <h2 class="text-xl font-semibold mb-2">Daftar Mahasiswa Bimbingan Anda</h2>
             <p class="text-sm text-gray-400">Berikut adalah daftar mahasiswa bimbingan yang telah kamu bina sebelumnya.</p>
 

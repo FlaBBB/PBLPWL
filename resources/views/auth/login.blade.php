@@ -24,7 +24,7 @@
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
                     <p class="text-gray-500 mb-8">Enter your username and password to access your account</p>
                 </div>
-                @if(session('error') || $errors->has('error') || $errors->has('email'))
+                <!-- @if(session('error') || $errors->has('error') || $errors->has('email'))
                     <div id="login-error"
                         class="fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-500 opacity-0"
                         style="background: rgba(0,0,0,0.2);">
@@ -36,7 +36,7 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                @endif -->
                 <form action="" method="POST" class="space-y-6">
                     @csrf
                     <div>
@@ -78,11 +78,16 @@
         <!-- Right Side -->
         <div class="hidden md:flex h-screen max-w-[640px] relative">
             <div class="relative flex flex-col items-right justify-end w-full right-0">
-                <img src="{{ asset('images/login-image.svg') }}" alt="Login Illustration" class="w-screen">
+                <img src="{{ asset('images/login-image.svg') }}" alt="Login Illustration" class="w-screen rounded-l-lg">
             </div>
         </div>
     </div>
 
+
+
+</body>
+
+</html>
     <!-- Notyf JS -->
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
@@ -90,15 +95,10 @@
         const notyf = new Notyf();
 
         // Cek apakah login gagal dari server-side (contoh pakai session Laravel)
-        @if (session('login_failed'))
+        @if (session('error') || $errors->has('error') || $errors->has('email'))
             notyf.error("Login gagal! Periksa kembali username dan password.");
         @endif
     </script>
-
-
-</body>
-
-</html>
 
 <script>
     function togglePassword() {
@@ -113,30 +113,4 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const errorDiv = document.getElementById('login-error');
-        if (errorDiv) {
-            setTimeout(() => {
-                errorDiv.classList.remove('opacity-0');
-                errorDiv.classList.add('opacity-100');
-            }, 10);
-
-            // Fade out after 3 seconds
-            setTimeout(() => {
-                errorDiv.classList.remove('opacity-100');
-                errorDiv.classList.add('opacity-0');
-            }, 3000);
-
-            // Optional: Remove from DOM after fade out
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 3500);
-
-            setTimeout(() => {
-                onclick = function () {
-                    errorDiv.style.display = 'none';
-                };
-            })
-        }
-    });
 </script>

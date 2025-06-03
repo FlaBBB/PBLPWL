@@ -1,8 +1,8 @@
 @extends('layout.template')
 
 @section('content')
-<div class="flex min-h-screen bg-gray-50">
-    <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex min-h-screen bg-white">
+    <main class="flex-1 px-6 sm:px-8 lg:px-10 py-4">
         <div class="max-w-7xl mx-auto bg-white rounded-lg shadow border border-gray-200 p-6 space-y-6">
             <h2 class="text-xl font-bold">Verifikasi</h2>
             <p class="text-gray-400 text-sm">Kelola dan pantau seluruh akun pengguna dalam sistem, termasuk mahasiswa, dosen pembimbing, dan admin. Pastikan data pengguna selalu akurat dan terverifikasi untuk mendukung pengelolaan prestasi dan lomba secara optimal</p>
