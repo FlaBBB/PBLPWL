@@ -4,8 +4,8 @@
 <div class="flex min-h-screen bg-gray-50">
     <!-- Sidebar -->
     <aside x-data="{ openDropdown: '' }" x-init="() => {
-    if (['kelola-pengguna', 'kelola-dosen', 'kelola-admin'].includes('{{ $activeMenu }}')) {
-        openDropdown = 'kelola-pengguna-group';
+    if (['kelola-mahasiswa', 'kelola-dosen', 'kelola-admin'].includes('{{ $activeMenu }}')) {
+        openDropdown = 'kelola-mahasiswa-group';
     } else if (['verifikasi-prestasi', 'daftar-prestasi'].includes('{{ $activeMenu }}')) {
         openDropdown = 'kelola-prestasi-group';
     } else if (['tambah-lomba', 'daftar-lomba'].includes('{{ $activeMenu }}')) {
@@ -31,11 +31,11 @@
                         </svg>
                         Dashboard
                     </a>
-                    <!-- Dropdown 1: Kelola Pengguna -->
+                    <!-- Dropdown 1: Kelola mahasiswa -->
                     <div>
                         <a href="#"
                             @click.prevent="openDropdown = (openDropdown === 'kelola-pengguna-group' ? '' : 'kelola-pengguna-group')"
-                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['kelola-pengguna', 'kelola-dosen', 'kelola-admin']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
+                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['kelola-mahasiswa', 'kelola-dosen', 'kelola-admin']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -51,8 +51,8 @@
                         </a>
                         <div x-show="openDropdown === 'kelola-pengguna-group'" x-transition
                             class="ml-10 my-3 flex flex-col gap-3">
-                            <a href="{{ route('admin.kelola-pengguna') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'kelola-pengguna' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] text-sm font-medium hover:bg-blue-50 transition' }}">
+                            <a href="{{ route('admin.kelola-mahasiswa') }}"
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'kelola-mahasiswa' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] text-sm font-medium hover:bg-blue-50 transition' }}">
                                 Mahasiswa
                             </a>
                             <a href="{{ route('admin.kelola-dosen') }}"

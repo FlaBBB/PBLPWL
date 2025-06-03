@@ -9,18 +9,18 @@ class KelolaPenggunaController extends Controller
 {
     public function index()
     {
-        $activeMenu = 'kelola-pengguna';
+        $activeMenu = 'kelola-mahasiswa';
         $breadcrumbs = [
             [
                 'label' => 'Kelola Mahasiswa',
-                'url' => route('admin.kelola-pengguna')
+                'url' => route('admin.kelola-mahasiswa')
             ],
         ];
 
-        $headerTitle = 'Kelola Mahasiswa';
-        $headerDesc = 'Kelola mahasiswa yang ada di dalam sistem.';
+        $headerTitle = 'Kelola Pengguna';
+        $headerDesc = 'Kelola pengguna yang ada di dalam sistem.';
 
-        return view('admin.kelola-pengguna', [
+        return view('admin.kelola-mahasiswa', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
@@ -37,9 +37,8 @@ class KelolaPenggunaController extends Controller
                 'url' => route('admin.kelola-dosen')
             ],
         ];
-
-        $headerTitle = 'Kelola Dosen';
-        $headerDesc = 'Kelola dosen yang ada di dalam sistem.';
+        $headerTitle = 'Kelola Pengguna';
+        $headerDesc = 'Kelola pengguna yang ada di dalam sistem.';
 
         return view('admin.kelola-dosen', [
             'activeMenu' => $activeMenu,
@@ -59,8 +58,8 @@ class KelolaPenggunaController extends Controller
             ],
         ];
 
-        $headerTitle = 'Kelola Admin';
-        $headerDesc = 'Kelola admin yang ada di dalam sistem.';
+        $headerTitle = 'Kelola Pengguna';
+        $headerDesc = 'Kelola pengguna yang ada di dalam sistem.';
 
         return view('admin.kelola-admin', [
             'activeMenu' => $activeMenu,

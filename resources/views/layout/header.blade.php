@@ -51,7 +51,7 @@
             aria-orientation="vertical" 
             aria-labelledby="user-menu-button"
         >
-            <a href="mahasiswa.edit-profile" class="block px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150" role="menuitem">
+            <a href="{{route('dosen.profil-dosen')}}" class="block px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150" role="menuitem">
                 Edit Profil
             </a>
             <a href="#" class="block px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150" role="menuitem">
