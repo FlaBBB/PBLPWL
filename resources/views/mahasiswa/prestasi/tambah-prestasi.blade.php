@@ -188,6 +188,7 @@
                                 <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
                                     1
                                 </td>
+                                {{-- kalau nurut SIAKAD, ini nanti select nama mahasiswa, coba lihat yang tambah kompetisi di SIAKAD --}}
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <input type="text" name="nama_mahasiswa[]"
                                         class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
@@ -195,7 +196,7 @@
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <select name="peran_mahasiswa[]"
                                         class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                                        <option value="peserta">Peserta</option>
+                                        <option value="peserta">Personal</option>
                                         <option value="ketua">Ketua</option>
                                         <option value="anggota">Anggota</option>
                                     </select>
@@ -306,10 +307,12 @@
                         <tbody id="dosenTableBody">
                             <tr class="bg-white border-b border-gray-300">
                                 <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">1</td>
+                                {{-- kalau nurut SIAKAD, ini nanti select nama mahasiswa, coba lihat yang tambah kompetisi di SIAKAD --}}
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <input type="text" name="nama_dosen[]"
                                         class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
                                 </td>
+                                {{-- FIk iki aku bingung peran e opo wae --}}
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <select name="peran_dosen[]"
                                         class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
@@ -412,7 +415,7 @@
             <div class="mt-8 text-right ">
                 <a href="">
                     <button type="Cancel"
-                        class="w-32 mr-2 bg-gray-300 text-gray-700 py-2 px-4 rounded-sm hover:bg-gray-400 transition duration-200">
+                        class="w-32 mr-2 bg-gray-200 text-gray-700 py-2 px-4 rounded-sm hover:bg-gray-300 transition duration-200">
                         Batal
                     </button>
                     <button type="submit"

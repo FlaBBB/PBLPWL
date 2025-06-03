@@ -148,8 +148,9 @@
                                 </span>
                             </td>
                             <td class="py-2 px-3">
-                                <div class="flex space-x-2">
-                                    <button onclick="openModal('modal-detail')"
+                                <div class="flex space-x-2"> {{-- Ini kasihin pengkondisian untuk openModal nya, ada
+                                    modal-detail, modal-waiting, dll --}}
+                                    <button onclick="openModal('modal-waiting')"
                                         class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white  px-2 py-2 rounded text-xs flex items-center gap-1"
                                         title="Lihat Detail">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -272,27 +273,33 @@
                     <div class="space-y-6">
                         <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama Peserta 1</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama
+                                    Peserta 1</td>
                                 <td class="border border-gray-200 px-3 py-2 w-2/3">Adi</td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Role Peserta 1</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Role
+                                    Peserta 1</td>
                                 <td class="border border-gray-200 px-3 py-2 w-2/3">Ketua</td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama Peserta 2</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama
+                                    Peserta 2</td>
                                 <td class="border border-gray-200 px-3 py-2 w-2/3">Sujatmiko</td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Role Peserta 2</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Role
+                                    Peserta 2</td>
                                 <td class="border border-gray-200 px-3 py-2 w-2/3">Anggota</td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama Peserta 3</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama
+                                    Peserta 3</td>
                                 <td class="border border-gray-200 px-3 py-2 w-2/3">Budiono</td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Role Peserta 3</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Role
+                                    Peserta 3</td>
                                 <td class="border border-gray-200 px-3 py-2 w-2/3">Anggota</td>
                             </tr>
                         </table>
@@ -466,7 +473,7 @@
 
                 <div class="mt-8 text-right flex justify-end gap-4">
                     <button
-                        class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white  px-4 py-3 rounded text-base font-medium w-1/3 flex items-center gap-1 h-12"
+                        class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white px-4 py-3 rounded text-base font-medium flex items-center justify-center gap-1 h-12"
                         title="Edit">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="size-5">
@@ -475,8 +482,8 @@
                         </svg>
                         Edit
                     </button>
-                    <button
-                        class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-2 py-3 rounded text-base font-medium w-1/3 flex items-center gap-1 h-12"
+                    <button onclick="openModal('modal-hapus')"
+                        class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-4 py-3 rounded text-base font-medium flex items-center justify-center gap-1 h-12"
                         title="Hapus">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="size-4">
@@ -844,6 +851,46 @@
                         </svg>
                         Lakukan Revisi
                     </button>
+                </div>
+            </div>
+        </div>
+
+        {{-- MODAL HAPUS --}}
+        <div id="modal-hapus"
+            class="fixed inset-0 z-50 flex items-start justify-center bg-gray-900/70 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out pt-16 sm:pt-20 overflow-y-auto"
+            data-state="closed">
+            <div
+                class="modal-dialog bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 sm:p-8 transform -translate-y-full scale-95 transition-all duration-500 ease-out">
+                <button onclick="closeModal('modal-hapus')"
+                    class="absolute top-3 right-3 p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+                <div class="text-center">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                        <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Hapus Prestasi</h3>
+                    <p class="text-sm text-gray-500 mb-6">
+                        Apakah Anda yakin ingin menghapus prestasi ini? Tindakan ini tidak dapat dibatalkan dan data
+                        prestasi akan hilang secara permanen.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-3">
+                        <button type="button" onclick="closeModal('modal-hapus')"
+                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            Batal
+                        </button>
+                        <button type="button"
+                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Hapus Prestasi
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
