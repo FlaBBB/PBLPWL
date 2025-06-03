@@ -26,6 +26,24 @@
                             class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
                     </div>
 
+                     <!-- Juara Lomba -->
+                    <div class="flex items-center space-x-4">
+                        <label for="partisipasi" class="block text-sm font-medium text-gray-700 w-50 mb-0">Ranking Lomba</label>
+                        <div class="relative">
+                            <select id="partisipasi" name="partisipasi"
+                                class="block w-64 text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 pr-8 focus:outline-none focus:ring-2 focus:ring-[#1e6aae] appearance-none">
+                                <option disabled selected hidden>Pilih Tingkat</option>
+                                <option>Juara 1</option>
+                                <option>Juara 2</option>
+                                <option>Juara 3</option>
+                            </select>
+                            <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+
                     <!-- Tingkat Lomba -->
                     <div class="flex items-center space-x-4">
                         <label for="partisipasi" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tingkat
@@ -111,7 +129,7 @@
                         <label for="deskripsi_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">Deskripsi
                             Singkat</label>
                         <textarea type="text" id="deskripsi_lomba" name="deskripsi_lomba"
-                            class="flex-1 block border p-4 h-32 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]"
+                            class="flex-1 block border p-4 h-32 border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1e6aae]"
                             placeholder="Tuliskan deskripsi singkat mengenai lomba"></textarea>
                     </div>
 
@@ -120,25 +138,25 @@
                         <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">File Surat
                             Tugas</label>
                         <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
-                            class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-[#1e6aae] file:text-white hover:file:bg-[#17497C]" />
+                            class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
                     </div>
                     <div class="flex items-center space-x-4">
                         <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">File
                             Sertifikat</label>
                         <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
-                            class="block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-[#1e6aae] file:text-white hover:file:bg-[#17497C]" />
+                            class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
                     </div>
                     <div class="flex items-center space-x-4">
                         <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">File
                             Poster</label>
                         <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
-                            class="block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-[#1e6aae] file:text-white hover:file:bg-[#17497C]" />
+                            class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
                     </div>
                     <div class="flex items-center space-x-4">
                         <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">Foto
                             Kegiatan</label>
                         <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
-                            class="block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-[#1e6aae] file:text-white hover:file:bg-[#17497C]" />
+                            class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
                     </div>
                 </form>
             </div>
@@ -170,6 +188,7 @@
                                 <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
                                     1
                                 </td>
+                                {{-- kalau nurut SIAKAD, ini nanti select nama mahasiswa, coba lihat yang tambah kompetisi di SIAKAD --}}
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <input type="text" name="nama_mahasiswa[]"
                                         class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
@@ -177,7 +196,7 @@
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <select name="peran_mahasiswa[]"
                                         class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                                        <option value="peserta">Peserta</option>
+                                        <option value="peserta">Personal</option>
                                         <option value="ketua">Ketua</option>
                                         <option value="anggota">Anggota</option>
                                     </select>
@@ -288,10 +307,12 @@
                         <tbody id="dosenTableBody">
                             <tr class="bg-white border-b border-gray-300">
                                 <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">1</td>
+                                {{-- kalau nurut SIAKAD, ini nanti select nama mahasiswa, coba lihat yang tambah kompetisi di SIAKAD --}}
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <input type="text" name="nama_dosen[]"
                                         class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
                                 </td>
+                                {{-- FIk iki aku bingung peran e opo wae --}}
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <select name="peran_dosen[]"
                                         class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
@@ -394,7 +415,7 @@
             <div class="mt-8 text-right ">
                 <a href="">
                     <button type="Cancel"
-                        class="w-32 mr-2 bg-gray-300 text-gray-700 py-2 px-4 rounded-sm hover:bg-gray-400 transition duration-200">
+                        class="w-32 mr-2 bg-gray-200 text-gray-700 py-2 px-4 rounded-sm hover:bg-gray-300 transition duration-200">
                         Batal
                     </button>
                     <button type="submit"

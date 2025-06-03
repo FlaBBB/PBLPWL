@@ -154,13 +154,13 @@ class PrestasiController extends Controller
                         break;
                     case 'REJECTED':
                         $statusText = 'Ditolak';
-                        $statusClass = 'bg-red-100 text-red-700';
-                        $statusDotClass = 'bg-red-500';
+                        $statusClass = 'bg-gray-100 text-gray-700';
+                        $statusDotClass = 'bg-gray-500';
                         break;
                     case 'REVISION':
                         $statusText = 'Revisi';
-                        $statusClass = 'bg-blue-100 text-blue-700';
-                        $statusDotClass = 'bg-blue-500';
+                        $statusClass = 'bg-red-100 text-red-700';
+                        $statusDotClass = 'bg-red-500';
                         break;
                     default:
                         $statusText = 'Unknown';
