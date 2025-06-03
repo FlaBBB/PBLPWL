@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold">
-                {{ $headerTitle ?? 'Welcome Back, Dennis 👋' }}
+                {{ $headerTitle ?? 'Welcome Back, ' . $userName . ' 👋' }}
             </h1>
             @if(!empty($headerDesc) || !isset($headerTitle))
                 <p class="text-gray-400 mt-1">
@@ -23,10 +23,10 @@
         <button 
             @click="isOpen = !isOpen" 
             @keydown.escape.window="isOpen = false"
-            class="flex items-center gap-2 px-3 py-1 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-[#1e6aae] transition-colors duration-150"
+            class="flex items-center gap-2 px-3 py-1 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-[#1e6aae] transition-colors duration-150 min-w-[192px]"
         >
             <img src="{{ asset('images/user-avatar.jpg') }}" alt="User" class="w-9 h-9 rounded-full object-cover">
-            <span class="font-semibold text-gray-700 hidden sm:inline">Dennis Adit</span> <svg 
+            <span class="font-semibold text-gray-700 hidden sm:inline max-w-[150px] truncate">{{ $userName }}</span> <svg 
                 class="w-4 h-4 text-gray-400 transition-transform duration-200 ease-in-out" 
                 :class="{'rotate-180': isOpen}" 
                 fill="none" 
