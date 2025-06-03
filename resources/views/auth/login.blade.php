@@ -6,7 +6,11 @@
     <title>Login - SIPRESTA</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @vite(['resources/css/app.css'])
+    <!-- Notyf CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
 </head>
+
 
 
 <body class="bg-gray-50 min-h-screen flex items-center justify-between">
@@ -49,21 +53,35 @@
                         <a href="#" class="text-xs text-blue-600 hover:underline">Forgot your password?</a>
                     </div>
                     <button type="submit"
-                        class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200">Login</button>
+                        class="w-full bg-[#1E6AAE] text-white font-semibold py-2 rounded-md hover:bg-[#17497C] transition duration-200">Login</button>
                 </form>
             </div>
-            <div class="w-full flex justify-between items-center mt-30 text-xs text-gray-400">
+            {{-- <div class="w-full flex justify-between items-center mt-30 text-xs text-gray-400">
                 <span>Copyright &copy;2025 Kelompok 2 Enterprise</span>
                 <a href="#" class="hover:underline">Privacy Policy</a>
-            </div>
+            </div> --}}
         </div>
         <!-- Right Side -->
-        <div class="hidden md:flex w-130 relative">
+        <div class="hidden md:flex h-screen max-w-[640px] relative">
             <div class="relative flex flex-col items-right justify-end w-full right-0">
-                <img src="{{ asset('images/log-image.svg') }}" alt="Login Illustration" class="w-screen">
+                <img src="{{ asset('images/login-image.svg') }}" alt="Login Illustration" class="w-screen">
             </div>
         </div>
     </div>
+
+    <!-- Notyf JS -->
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+    <script>
+        const notyf = new Notyf();
+
+        // Cek apakah login gagal dari server-side (contoh pakai session Laravel)
+        @if (session('login_failed'))
+            notyf.error("Login gagal! Periksa kembali username dan password.");
+        @endif
+    </script>
+
+
 </body>
 
 </html>

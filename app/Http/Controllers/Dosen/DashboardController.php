@@ -17,4 +17,15 @@ class DashboardController extends Controller
             'role' => $role,
         ]);
     }
+
+    public function showProfile()
+    {
+        $activeMenu = 'profile';
+        $role = 'dosen';
+
+        return view('dosen.profile', [
+            'activeMenu' => $activeMenu,
+            'role' => $role,
+        ]);
+    }
 }

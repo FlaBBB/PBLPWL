@@ -7,6 +7,7 @@
     <title>@yield('title', 'SIPRESTA')</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -15,56 +16,33 @@
     @vite(['resources/css/app.css'])
 </head>
 
-<body>
-@php
-use App\Enums\UserRoleEnum;
-@endphp
-<section>
-    <!-- Navbar -->
-    <nav class="fixed lg:flex lg:flex-grow lg:justify-between lg:items-center overflow-y-auto">
-        <div class="w-full h-screen">
-            @auth
-                @if(Auth::user()->role->value === UserRoleEnum::ADMIN->value)
-                    @include('layout.navbar-admin')
-                @elseif(Auth::user()->role->value === UserRoleEnum::MAHASISWA->value)
-                    @include('layout.navbar-mahasiswa')
-                @elseif(Auth::user()->role->value === UserRoleEnum::DOSEN->value)
-                    @include('layout.navbar-dosen')
-                @endif
-            @endauth
-        </div>
-    </nav>
-    <div class="flex-grow ml-64">
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Sidebar/Navbar -->
+    <aside class="fixed top-0 left-0 h-screen w-64 bg-white z-20 overflow-y-auto hidden lg:block">
+        @include('layout.navbar-mahasiswa')
+    </aside>
+
+    <!-- Main Content -->
+    <div class="bg-white lg:ml-64">
         <!-- Header -->
-        <header>
-            <div class="container">
+        <header class="sticky top-0 z-20 bg-white">
+            <div class="container mx-auto px-6 py-4">
                 @include('layout.header')
             </div>
         </header>
-    
-        <main>
-            <div class="content">
-                @yield('content')
-            </div>
+
+        <!-- Breadcrumb -->
+        <div class="container mx-auto px-6 mt-2">
+            @include('layout.breadcrumb')
+        </div>
+
+        <!-- Main -->
+        <main class="container mx-auto px-6">
+            @yield('content')
         </main>
     </div>
 
-</section>
-<script>
-     function toggleDropdown() {
-    const dropdown = document.getElementById('dropdown');
-    dropdown.classList.toggle('hidden');
-  }
-
-  // Optional: close dropdown when clicked outside
-  document.addEventListener('click', function(e) {
-    const dropdown = document.getElementById('dropdown');
-    const button = e.target.closest('button');
-    if (!dropdown.contains(e.target) && !button) {
-      dropdown.classList.add('hidden');
-    }
-  });
-</script>
 </body>
 
 </html>

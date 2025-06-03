@@ -10,9 +10,9 @@ class ProfileController extends Controller
     public function index()
     {
         $activeMenu = 'profile';
-        $role = 'mahasiswa';
+        $role = 'MAHASISWA';
 
-        return view('mahasiswa.profile', [
+        return view('mahasiswa.edit-profile', [
             'activeMenu' => $activeMenu,
             'role' => $role,
         ]);

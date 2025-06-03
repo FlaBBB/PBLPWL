@@ -9,7 +9,7 @@
                     type="button">
                     Tambah Lomba
                 </button>
-                <a href="{{ route('dosen.histori-lomba') }}">
+                <a href="{{ route('dosen.histori-tambah-lomba') }}">
                     <button id="tab-histori"
                         class=" tab-btn text-sm font-medium py-2 px-3 border-b-4 text-gray-500 border-transparent hover:text-[#1E6AAE]"
                         data-tab="histori" type="button">

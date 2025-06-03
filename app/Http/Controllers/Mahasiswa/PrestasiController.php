@@ -7,45 +7,66 @@ use Illuminate\Http\Request;
 
 class PrestasiController extends Controller
 {
-    public function index()
+    public function daftar()
     {
-        $activeMenu = 'prestasi';
+        
+        $activeMenu = 'daftar-prestasi';
         $breadcrumbs = [
             [
                 'label' => 'Daftar Prestasi',
-                'url' => route('prestasi')
-            ]
+                'url' => route('mahasiswa.daftar-prestasi')
+            ],
         ];
+        $headerTitle = 'Prestasi';
+        $headerDesc = 'Jelajahi katalog prestasi dan tambahkan prestasi baru dengan mudah.';
 
-        $headerTitle = 'Daftar Prestasi';
-        $headerDesc = 'Berikut adalah daftar prestasi yang telah Anda capai.';
-
-        return view('mahasiswa.prestasi.index', [
+        return view('mahasiswa.prestasi.daftar-prestasi', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
-            'headerDesc' => $headerDesc
+            'headerDesc' => $headerDesc,
         ]);
     }
 
-    public function create()
+    public function tambah()
     {
-        $activeMenu = 'prestasi-tambah';
+        // Logic to display the form for adding a new competition
+        $activeMenu = 'tambah-prestasi';
         $breadcrumbs = [
             [
                 'label' => 'Tambah Prestasi',
-                'url' => route('prestasi')
-            ]
+                'url' => route('mahasiswa.tambah-prestasi')
+            ],
         ];
-
-        $headerTitle = 'Tambah Prestasi';
-        $headerDesc = 'Silakan isi form berikut untuk menambahkan prestasi baru.';
-
-        return view('mahasiswa.prestasi.tambah', [
+        $headerTitle = 'Prestasi';
+        $headerDesc = 'Jelajahi daftar prestasi dan tambahkan prestasi baru dengan mudah.';
+        return view('mahasiswa.prestasi.tambah-prestasi', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
-            'headerDesc' => $headerDesc
+            'headerDesc' => $headerDesc,
+        ]);
+    }
+    public function detail()
+    {
+        $activeMenu = 'daftar-prestasi';
+        $breadcrumbs = [
+            [
+                'label' => 'Daftar prestasi',
+                'url' => route('mahasiswa.daftar-prestasi')
+            ],
+            [
+                'label' => 'Detail Prestasi',
+                'url' => route('mahasiswa.detail-prestasi')
+            ],
+        ];
+        $headerTitle = 'Prestasi';
+        $headerDesc = 'Jelajahi katalog prestasi dan tambahkan prestasi baru dengan mudah.';
+        return view('mahasiswa.prestasi.detail-prestasi', [
+            'activeMenu' => $activeMenu,
+            'breadcrumbs' => $breadcrumbs,
+            'headerTitle' => $headerTitle,
+            'headerDesc' => $headerDesc,
         ]);
     }
 }

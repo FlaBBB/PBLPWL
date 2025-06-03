@@ -12,7 +12,7 @@ class DashboardController extends Controller
         $activeMenu = 'dashboard';
         $role = 'mahasiswa';
 
-        return view('mahasiswa.mainContent', [
+        return view('mahasiswa.dashboard', [
             'activeMenu' => $activeMenu,
             'role' => $role,
         ]);

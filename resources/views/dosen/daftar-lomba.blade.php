@@ -3,7 +3,7 @@
 @section('content')
     <main class="flex-1 px-6">
         <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
-            <h2 class="text-xl font-semibold mb-4">Daftar Lomba ADMIN</h2>
+            <h2 class="text-xl font-semibold mb-4">Katalog Lomba</h2>
             <div class="flex flex-wrap gap-4 py-4 items-center">
                 <!-- Search Input -->
                 <div class="relative">
@@ -98,7 +98,7 @@
                     $end = min($start + $perPage - 1, $total);
                 @endphp
                 @for($i = $start; $i <= $end; $i++)
-                    <a href="">
+                    <a href="{{ route('dosen.detail-lomba') }}">
                         <div
                             class="h-63 border border-gray-200 rounded-lg transform hover:-translate-y-1 transition duration-300 hover:shadow-lg hover:border-[#1e6aae] ">
                             <img src="https://placehold.co/400x120?text=Poster&font=poppins" alt="Banner Event"

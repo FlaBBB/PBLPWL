@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Mahasiswa;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\Dosen;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class LombaController extends Controller
 {
-   public function daftar()
+    public function daftar()
     {
         
         $activeMenu = 'daftar-lomba';
         $breadcrumbs = [
             [
                 'label' => 'Daftar Lomba',
-                'url' => route('mahasiswa.daftar-lomba')
+                'url' => route('dosen.daftar-lomba')
             ],
         ];
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
 
-        return view('mahasiswa.lomba.daftar-lomba', [
+        return view('dosen.daftar-lomba', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
@@ -35,12 +35,12 @@ class LombaController extends Controller
         $breadcrumbs = [
             [
                 'label' => 'Tambah Lomba',
-                'url' => route('mahasiswa.tambah-lomba')
+                'url' => route('dosen.tambah-lomba')
             ],
         ];
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
-        return view('mahasiswa.lomba.tambah-lomba', [
+        return view('dosen.tambah-lomba', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
@@ -53,16 +53,16 @@ class LombaController extends Controller
         $breadcrumbs = [
             [
                 'label' => 'Daftar Lomba',
-                'url' => route('mahasiswa.daftar-lomba')
+                'url' => route('dosen.daftar-lomba')
             ],
             [
                 'label' => 'Detail Lomba',
-                'url' => route('mahasiswa.detail-lomba')
+                'url' => route('dosen.detail-lomba')
             ],
         ];
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
-        return view('mahasiswa.lomba.detail-lomba', [
+        return view('dosen.detail-lomba', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
@@ -75,12 +75,12 @@ class LombaController extends Controller
         $breadcrumbs = [
             [
                 'label' => 'Riwayat Tambah Lomba',
-                'url' => route('mahasiswa.histori-tambah-lomba')
+                'url' => route('dosen.histori-tambah-lomba')
             ],
         ];
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
-        return view('mahasiswa.lomba.histori-tambah-lomba', [
+        return view('dosen.histori-tambah-lomba', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,

@@ -1,7 +1,7 @@
 @extends('layout.template')
 
 @section('content')
-    <main class="flex-1 p-10">
+    <main class="flex-1 px-6">
         <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
             <h2 class="text-xl font-semibold mb-4">Katalog Lomba</h2>
             <div class="flex flex-wrap gap-4 py-4 items-center">
@@ -62,9 +62,9 @@
                 </div>
                 <!-- Button: Tambah Lomba -->
                 <div class="ml-auto">
-                    <a href="{{ route('lomba.create') }}">
+                    <a href="{{route('mahasiswa.tambah-lomba')}}">
                         <button
-                            class="text-sm bg-blue-500 text-white px-5 py-2 rounded-md hover:bg-blue-600 transition flex items-center gap-2">
+                            class="text-sm bg-[#1e6aae] text-white px-5 py-2 rounded-md hover:bg-[#17497C] transition flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                             </svg>
@@ -74,17 +74,38 @@
                 </div>
             </div>
 
+            {{-- Opsi jumlah baris per halaman --}}
+            <div class="flex items-center justify-between mt-2 mb-4">
+            <div>
+                <form method="GET" action="">
+                <label for="perPage" class="text-sm text-gray-700">Tampilkan</label>
+                <select name="perPage" id="perPage" onchange="this.form.submit()" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                    @foreach ([12, 24, 36, 48] as $size)
+                    <option value="{{ $size }}" {{ request('perPage', 12) == $size ? 'selected' : '' }}>{{ $size }}</option>
+                    @endforeach
+                </select>
+                <span class="ml-1 text-sm text-gray-700">item</span>
+                </form>
+            </div>
+            </div>
 
-
-            <div class="mt-4 grid grid-cols-[repeat(auto-fit,_minmax(240px,_1fr))] gap-4">
-                @for($i = 0; $i < 10; $i++)
-                    <a href="{{ route('lomba.detail' )}}">
+            <div class="mt-4 grid grid-cols-[repeat(auto-fit,_minmax(260px,_1fr))] gap-4">
+                @php
+                    $perPage = request('perPage', 12);
+                    $page = request('page', 1);
+                    $total = 37; // total data, ganti sesuai kebutuhan
+                    $start = ($page - 1) * $perPage + 1;
+                    $end = min($start + $perPage - 1, $total);
+                @endphp
+                @for($i = $start; $i <= $end; $i++)
+                    <a href="{{ route('mahasiswa.detail-lomba') }}">
                         <div
-                            class="h-66 border border-gray-200 rounded-lg transform hover:-translate-y-1 transition duration-300 hover:shadow-lg hover:border-blue-700 ">
-                            <img src="{{ asset('images/poster.jpeg') }}" alt="Banner Event"
+                            class="h-63 border border-gray-200 rounded-lg transform hover:-translate-y-1 transition duration-300 hover:shadow-lg hover:border-[#1e6aae] ">
+                            <img src="https://placehold.co/400x120?text=Poster&font=poppins" alt="Banner Event"
                                 class="w-full rounded-t-lg h-30 object-cover object-top">
+
                             <div class="p-4">
-                                <p class="text-xs text-blue-600 font-bold">Cyber Security, IoT</p>
+                                <p class="text-xs text-[#1e6aae] font-bold">Cyber Security, IoT</p>
                                 <h2 class="text-base font-semibold text-gray-800 mt-1">Hackathon Merdeka Jawa</h2>
                                 <div class="flex items-center text-xs text-gray-600 mt-3 gap-1">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2"
@@ -109,6 +130,30 @@
                         </div>
                     </a>
                 @endfor
+            </div>
+
+            {{-- Navigasi halaman --}}
+            @php
+            $lastPage = ceil($total / $perPage);
+            @endphp
+            
+            <div class="flex justify-end mt-6">
+            <nav class="inline-flex -space-x-px">
+                <a href="?perPage={{ $perPage }}&page={{ max(1, $page-1) }}"
+                class="px-3 py-1 border border-gray-300 rounded-l {{ $page == 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
+                &laquo;
+                </a>
+                @for ($p = 1; $p <= $lastPage; $p++)
+                <a href="?perPage={{ $perPage }}&page={{ $p }}"
+                    class="px-3 py-1 border-t text-gray-600 border-b border-gray-300 {{ $p == $page ? 'bg-[#1e6aae] text-white' : 'hover:bg-gray-200' }}">
+                    {{ $p }}
+                </a>
+                @endfor
+                <a href="?perPage={{ $perPage }}&page={{ min($lastPage, $page+1) }}"
+                class="px-3 py-1 border border-gray-300 rounded-r {{ $page == $lastPage ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
+                &raquo;
+                </a>
+            </nav>
             </div>
         </div>
     </main>

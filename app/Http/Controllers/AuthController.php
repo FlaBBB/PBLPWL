@@ -37,7 +37,7 @@ class AuthController extends Controller
                 case UserRoleEnum::DOSEN->value:
                     return redirect()->intended('/dosen/dashboard');
                 case UserRoleEnum::MAHASISWA->value:
-                    return redirect()->intended('/mahasiswa/dashboard');
+                    return redirect()->intended('/dashboard');
                 default:
                     Auth::logout();
                     return redirect('/login')->withErrors(['email' => 'Invalid role.']);
@@ -45,9 +45,10 @@ class AuthController extends Controller
         }
 
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return back()
+            ->withErrors(['email' => 'The provided credentials do not match our records.'])
+            ->with('login_failed', true)
+            ->onlyInput('email');
     }
 
     public function logout(Request $request)

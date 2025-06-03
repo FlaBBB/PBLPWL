@@ -1,16 +1,12 @@
-@extends('layout.template')
+@extends('layout.template')Add commentMore actions
 
 @section('content')
     <main class="flex-1 p-10">
-        <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
-            <h2 class="text-xl font-semibold mb-4">Tambah Lomba Baru</h2>
-            <p class="text-sm text-gray-400">Lengkapi data prestasi yang telah kamu raih selama masa studi. Pastikan kamu mengunggah
-                bukti yang valid seperti sertifikat atau surat keterangan resmi.</p>
+        <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">Add commentMore actions
+            <h2 class="text-xl font-semibold mb-4">Tambah Mahasiswa</h2>
+            <p class="text-sm text-gray-400">Lengkapi data profil kamu. Pastikan kamu mengisikan data dengan benar dan lengkap.</p>
 
             <div class="relative p-8 pt-14 mt-4 border border-gray-200 rounded-sm">
-                <div class="absolute inset-x-0 top-0 h-10 w-full bg-blue-500 flex rounded-t-md items-center">
-                    <span class="text-white font-medium pl-4">Data Lomba</span>
-                </div>
                 <form class="space-y-6">
                     <!-- Nama Lomba -->
                     <div class="flex items-center space-x-4">
@@ -115,24 +111,45 @@
                             placeholder="Tuliskan deskripsi singkat mengenai lomba"></textarea>
                     </div>
 
-                    <!-- Poster Lomba -->
+                    <!-- Choose Browser -->
                     <div class="flex items-center space-x-4">
-                        <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">Poster Lomba</label>
+                        <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">File Surat
+                            Tugas</label>
+                        <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
+                            class="block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">File
+                            Sertifikat</label>
+                        <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
+                            class="block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">File
+                            Poster</label>
+                        <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
+                            class="block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">Foto
+                            Kegiatan</label>
                         <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
                             class="block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4  file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                     </div>
 
-
                     <!-- Tombol Submit -->
                     <div class="mt-8 text-right">
-                        <button type="submit"
-                            class="w-32 bg-blue-500 text-white py-2 px-4 rounded-sm hover:bg-blue-700 transition duration-200">
-                            Submit
-                        </button>
+                            <button type="Cancel"
+                                class="w-32 bg-gray-300 text-gray-700 py-2 px-4 rounded-sm hover:bg-gray-400 transition duration-200">
+                                Batal
+                            </button>
+                            <button type="submit"
+                                class="w-32 bg-blue-500 text-white py-2 px-4 rounded-sm hover:bg-blue-700 transition duration-200">
+                                Submit
+                            </button>
                     </div>
                 </form>
             </div>
-
         </div>
     </main>
 @endsection
