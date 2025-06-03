@@ -70,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('prestasi')->group(function () {
                 Route::get('/daftar-prestasi', [PrestasiController::class, 'daftar'])->name('mahasiswa.daftar-prestasi');
                 Route::get('/tambah-prestasi', [PrestasiController::class, 'tambah'])->name('mahasiswa.tambah-prestasi');
+                Route::get('/detail/{id}', [PrestasiController::class, 'detail'])->name('mahasiswa.detail-prestasi');
+                Route::get('/data', [PrestasiController::class, 'getData'])->name('mahasiswa.prestasi.data');
             });
             // Route Lomba
             Route::prefix('lomba')->group(function () {
