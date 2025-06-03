@@ -16,7 +16,7 @@ $activeMenu = $activeMenu ?? '';
         class="w-64 bg-white flex flex-col py-8 h-screen"
     >
         <div class="flex pl-10">
-            <img src="{{ asset('images/Logo-blue.svg') }}" alt="SIPRESTA Logo" class="h-11">
+            <img src="{{ asset('images/Logo-Blue.svg') }}" alt="SIPRESTA Logo" class="h-11">
         </div>
         <div class="flex flex-col justify-between h-screen border-r-[#E6EDFF] border-r-2">
             <div class="flex flex-col gap-2">
