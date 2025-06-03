@@ -7,7 +7,7 @@
         <div class="grid grid-cols-3 gap-6 mb-8">
             <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
                 <div class="flex justify-between w-full">
-                    <span class="text-2xl font-bold">24</span>
+                    <span class="text-2xl font-bold">{{ $data['totalPrestasi'] }}</span>
                     <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path d="M5 3v18l7-5 7 5V3a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" stroke-width="2" stroke-linecap="round"
@@ -15,11 +15,10 @@
                     </svg>
                 </div>
                 <span class="text-gray-500 text-sm">Total prestasi</span>
-                <span class="text-green-500 text-xs mt-2">↑ 10.2 <span class="text-gray-400">+1.01% this month</span></span>
             </div>
             <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
                 <div class="flex justify-between w-full">
-                    <span class="text-2xl font-bold">2</span>
+                    <span class="text-2xl font-bold">{{ $data['totalWaitedPrestasi'] }}</span>
                     <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke-width="2" stroke-linecap="round"
@@ -28,11 +27,10 @@
                     </svg>
                 </div>
                 <span class="text-gray-500 text-sm">Prestasi menunggu verifikasi</span>
-                <span class="text-green-500 text-xs mt-2">↑ 3.1 <span class="text-gray-400">+0.49% this week</span></span>
             </div>
             <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
                 <div class="flex justify-between w-full">
-                    <span class="text-2xl font-bold">12</span>
+                    <span class="text-2xl font-bold">{{ $data['totalActiveCompetition'] }}</span>
                     <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <circle cx="12" cy="8" r="6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -41,7 +39,6 @@
                     </svg>
                 </div>
                 <span class="text-gray-500 text-sm">Lomba aktif saat ini</span>
-                <span class="text-green-500 text-xs mt-2">↑ 7.2 <span class="text-gray-400">+1.51% this week</span></span>
             </div>
         </div>
         <!-- Recommendations & Chart -->
@@ -138,10 +135,14 @@
                     <canvas id="prestasiChart" width="120" height="120"></canvas>
                 </div>
                 <div class="flex flex-col gap-1 text-xs text-gray-500">
-                    <span><span class="inline-block w-3 h-3 bg-blue-500 rounded-full mr-2"></span>IT (7)</span>
-                    <span><span class="inline-block w-3 h-3 bg-pink-500 rounded-full mr-2"></span>Olahraga (3)</span>
-                    <span><span class="inline-block w-3 h-3 bg-yellow-400 rounded-full mr-2"></span>Essay (2)</span>
-                    <span><span class="inline-block w-3 h-3 bg-orange-400 rounded-full mr-2"></span>Lorem (2)</span>
+                    @php
+                        $colors = ['#3B82F6', '#EC4899', '#FACC15', '#FB923C', '#6B7280', '#10B981', '#EF4444']; // Add more colors if needed
+                        $i = 0;
+                    @endphp
+                    @foreach($data['acceptedAchievementsByTag'] as $achievement)
+                        <span><span class="inline-block w-3 h-3 rounded-full mr-2" style="background-color: {{ $colors[$i % count($colors)] }}"></span>{{ $achievement->name }} ({{ $achievement->total }})</span>
+                        @php $i++; @endphp
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -172,22 +173,36 @@
                     </tr>
                 </thead>
                 <tbody class="text-gray-700">
-                    @for ($i = 0; $i < 3; $i++)
+                    @foreach($data['listPrestasi'] as $index => $prestasi)
                         <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">{{ $i + 1 }}</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
+                            <td class="py-2 px-3">{{ $index + 1 }}</td>
+                            <td class="py-2 px-3">{{ $prestasi->competition_name }}</td>
+                            <td class="py-2 px-3">{{ $prestasi->tag_name }}</td>
+                            <td class="py-2 px-3">{{ $prestasi->place }}</td>
+                            <td class="py-2 px-3">{{ $prestasi->level }}</td>
                             <td class="py-2 px-3">
-                                <span
-                                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                                    Terverifikasi
-                                </span>
+                                @if($prestasi->status == \App\Enums\AchievementStatusEnum::ACCEPTED->value)
+                                    <span
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                                        Terverifikasi
+                                    </span>
+                                @elseif($prestasi->status == \App\Enums\AchievementStatusEnum::WAITING->value)
+                                    <span
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
+                                        <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                                        Sedang Diproses
+                                    </span>
+                                @else
+                                    <span
+                                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                                        <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                        DITOLAK
+                                    </span>
+                                @endif
                             </td>
                         </tr>
-                    @endfor
+                    @endforeach
                 </tbody>
             </table>
 
@@ -211,9 +226,9 @@
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['IT', 'Olahraga', 'Essay', 'Lorem'],
+                    labels: @json($data['acceptedAchievementsByTag']->pluck('name')),
                     datasets: [{
-                        data: [7, 3, 2, 2],
+                        data: @json($data['acceptedAchievementsByTag']->pluck('total')),
                         backgroundColor: [
                             '#3B82F6', // blue-500
                             '#EC4899', // pink-500
