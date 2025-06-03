@@ -11,31 +11,75 @@
                 <div class="absolute inset-x-0 top-0 h-10 w-full bg-[#1e6aae] flex rounded-t-md items-center">
                     <span class="text-white font-medium pl-4">Data Kompetisi</span>
                 </div>
-                <form class="space-y-6">
+                <form action="{{ route('mahasiswa.store-prestasi') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    @csrf
                     <!-- Nama Lomba -->
                     <div class="flex items-center space-x-4">
-                        <label for="nama" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nama Lomba</label>
-                        <input type="text" id="nama" name="nama"
+                        <label for="competition_name" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nama Lomba</label>
+                        <input type="text" id="competition_name" name="competition_name" required
                             class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
                     </div>
 
-                    <!-- Penyelenggara -->
+                    <!-- Nama Lomba (English) -->
                     <div class="flex items-center space-x-4">
-                        <label for="nama" class="block text-sm font-medium text-gray-700 w-50 mb-0">Penyelenggara</label>
-                        <input type="text" id="nama" name="nama"
+                        <label for="competition_name_english" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nama Lomba (English)</label>
+                        <input type="text" id="competition_name_english" name="competition_name_english"
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
+                    </div>
+
+
+                    <!-- Lokasi Lomba -->
+                    <div class="flex items-center space-x-4">
+                        <label for="competition_location" class="block text-sm font-medium text-gray-700 w-50 mb-0">Lokasi Lomba</label>
+                        <input type="text" id="competition_location" name="competition_location" required
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
+                    </div>
+
+                    <!-- Lokasi Lomba (English) -->
+                    <div class="flex items-center space-x-4">
+                        <label for="competition_location_english" class="block text-sm font-medium text-gray-700 w-50 mb-0">Lokasi Lomba (English)</label>
+                        <input type="text" id="competition_location_english" name="competition_location_english"
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
+                    </div>
+
+                    <!-- Nomor Surat Tugas -->
+                    <div class="flex items-center space-x-4">
+                        <label for="assignment_letter_number" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nomor Surat Tugas</label>
+                        <input type="text" id="assignment_letter_number" name="assignment_letter_number" required
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
+                    </div>
+
+                    <!-- Tanggal Surat Tugas -->
+                    <div class="flex items-center space-x-4">
+                        <label for="assignment_letter_date" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tanggal Surat Tugas</label>
+                        <input type="date" id="assignment_letter_date" name="assignment_letter_date" required
+                            class="w-64 block text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
+                    </div>
+
+                    <!-- PT Partition Number -->
+                    <div class="flex items-center space-x-4">
+                        <label for="pt_partition_number" class="block text-sm font-medium text-gray-700 w-50 mb-0">Total Partisi PT</label>
+                        <input type="number" id="pt_partition_number" name="pt_partition_number" required
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
+                    </div>
+
+                    <!-- Partition Number -->
+                    <div class="flex items-center space-x-4">
+                        <label for="partition_number" class="block text-sm font-medium text-gray-700 w-50 mb-0">Total Partisi</label>
+                        <input type="number" id="partition_number" name="partition_number" required
                             class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
                     </div>
 
                      <!-- Juara Lomba -->
                     <div class="flex items-center space-x-4">
-                        <label for="partisipasi" class="block text-sm font-medium text-gray-700 w-50 mb-0">Ranking Lomba</label>
+                        <label for="place" class="block text-sm font-medium text-gray-700 w-50 mb-0">Ranking Lomba</label>
                         <div class="relative">
-                            <select id="partisipasi" name="partisipasi"
-                                class="block w-64 text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 pr-8 focus:outline-none focus:ring-2 focus:ring-[#1e6aae] appearance-none">
-                                <option disabled selected hidden>Pilih Tingkat</option>
-                                <option>Juara 1</option>
-                                <option>Juara 2</option>
-                                <option>Juara 3</option>
+                            <select id="place" name="place"
+                                class="block w-64 text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 pr-8 focus:outline-none focus:ring-2 focus:ring-[#1e6aae] appearance-none" required>
+                                <option disabled selected hidden>Pilih Rangking</option>
+                                <option value="1">Juara 1</option>
+                                <option value="2">Juara 2</option>
+                                <option value="3">Juara 3</option>
                             </select>
                             <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -46,38 +90,17 @@
 
                     <!-- Tingkat Lomba -->
                     <div class="flex items-center space-x-4">
-                        <label for="partisipasi" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tingkat
+                        <label for="level" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tingkat
                             Lomba</label>
                         <div class="relative">
-                            <select id="partisipasi" name="partisipasi"
-                                class="block w-64 text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 pr-8 focus:outline-none focus:ring-2 focus:ring-[#1e6aae] appearance-none">
+                            <select id="level" name="level"
+                                class="block w-64 text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 pr-8 focus:outline-none focus:ring-2 focus:ring-[#1e6aae] appearance-none" required>
                                 <option disabled selected hidden>Pilih Tingkat</option>
-                                <option>Internasional</option>
-                                <option>Nasional</option>
-                                <option>Provinsi</option>
-                                <option>Kota/Kabupaten</option>
-                                <option>Internal</option>
-                            </select>
-                            <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Bidang Lomba -->
-                    <div class="flex items-center space-x-4">
-                        <label for="partisipasi" class="block text-sm font-medium text-gray-700 w-50 mb-0">Bidang
-                            Lomba</label>
-                        <div class="relative">
-                            <select id="partisipasi" name="partisipasi"
-                                class="block w-64 text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 pr-8 focus:outline-none focus:ring-2 focus:ring-[#1e6aae] appearance-none">
-                                <option disabled selected hidden>Pilih Bidang</option>
-                                <option>Cyber Security</option>
-                                <option>IoT</option>
-                                <option>Software Development</option>
-                                <option>UI/UX Design</option>
-                                <option>Essay</option>
+                                <option value="INTERNATIONAL">Internasional</option>
+                                <option value="NATIONAL">Nasional</option>
+                                <option value="PROVINCE">Provinsi</option>
+                                <option value="KOTA_KABUPATEN">Kota/Kabupaten</option>
+                                <option value="INTERNAL">Internal</option>
                             </select>
                             <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -88,74 +111,58 @@
 
                     <!-- Tanggal Mulai -->
                     <div class="flex items-center space-x-4">
-                        <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tanggal
+                        <label for="start_at" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tanggal
                             Mulai</label>
-                        <input type="date" id="tanggal_mulai" name="tanggal_mulai"
+                        <input type="date" id="start_at" name="start_at" required
                             class="w-64 block text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
                     </div>
                     <!-- Tanggal Berakhir -->
                     <div class="flex items-center space-x-4">
-                        <label for="tanggal_berakhir" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tanggal
+                        <label for="end_at" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tanggal
                             Berakhir</label>
-                        <input type="date" id="tanggal_berakhir" name="tanggal_berakhir"
+                        <input type="date" id="end_at" name="end_at" required
                             class="w-64 block text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
-                    </div>
-
-                    <!-- Tanggal Pendaftaran -->
-                    <div class="flex items-center space-x-4">
-                        <label for="tenggat_pendaftaran" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tenggat
-                            Pendaftaran</label>
-                        <input type="date" id="tenggat_pendaftaran" name="tenggat_pendaftaran"
-                            class="w-64 block text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
-                    </div>
-
-                    <!-- Jumlah Peserta -->
-                    <div class="flex items-center space-x-4">
-                        <label for="jumlah_peserta" class="block text-sm font-medium text-gray-700 w-50 mb-0">Jumlah
-                            Peserta</label>
-                        <input type="text" id="jumlah_peserta" name="jumlah_peserta"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
                     </div>
 
                     <!-- URL Lomba -->
                     <div class="flex items-center space-x-4">
-                        <label for="url_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">URL Lomba</label>
-                        <input type="text" id="url_lomba" name="url_lomba"
+                        <label for="competition_url" class="block text-sm font-medium text-gray-700 w-50 mb-0">URL Lomba</label>
+                        <input type="text" id="competition_url" name="competition_url"
                             class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
                     </div>
 
                     <!-- Deskripsi -->
                     <div class="flex items-center space-x-4">
-                        <label for="deskripsi_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">Deskripsi
+                        <label for="note" class="block text-sm font-medium text-gray-700 w-50 mb-0">Deskripsi
                             Singkat</label>
-                        <textarea type="text" id="deskripsi_lomba" name="deskripsi_lomba"
+                        <textarea type="text" id="note" name="note"
                             class="flex-1 block border p-4 h-32 border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1e6aae]"
                             placeholder="Tuliskan deskripsi singkat mengenai lomba"></textarea>
                     </div>
 
-                    <!-- Choose Browser -->
+                    <!-- File Uploads -->
                     <div class="flex items-center space-x-4">
-                        <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">File Surat
+                        <label for="file_assignment_letter" class="block text-sm font-medium text-gray-700 w-50 mb-0">File Surat
                             Tugas</label>
-                        <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
+                        <input type="file" id="file_assignment_letter" name="file_assignment_letter" accept="application/pdf" required
                             class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
                     </div>
                     <div class="flex items-center space-x-4">
-                        <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">File
+                        <label for="file_certificate" class="block text-sm font-medium text-gray-700 w-50 mb-0">File
                             Sertifikat</label>
-                        <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
+                        <input type="file" id="file_certificate" name="file_certificate" accept="application/pdf" required
                             class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
                     </div>
                     <div class="flex items-center space-x-4">
-                        <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">File
+                        <label for="file_poster" class="block text-sm font-medium text-gray-700 w-50 mb-0">File
                             Poster</label>
-                        <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
+                        <input type="file" id="file_poster" name="file_poster" accept="image/*"
                             class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
                     </div>
                     <div class="flex items-center space-x-4">
-                        <label for="poster_lomba" class="block text-sm font-medium text-gray-700 w-50 mb-0">Foto
+                        <label for="file_activity_photo" class="block text-sm font-medium text-gray-700 w-50 mb-0">Foto
                             Kegiatan</label>
-                        <input type="file" id="poster_lomba" name="poster_lomba" accept="image/*"
+                        <input type="file" id="file_activity_photo" name="file_activity_photo" accept="image/*"
                             class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
                     </div>
                 </form>
@@ -178,6 +185,9 @@
                                 <th scope="col" class="px-6 py-3 border-r border-gray-300">
                                     Peran
                                 </th>
+                                <th scope="col" class="px-6 py-3 border-r border-gray-300">
+                                    Tags
+                                </th>
                                 <th scope="col" class="px-6 py-3">
                                     Aksi
                                 </th>
@@ -188,10 +198,13 @@
                                 <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
                                     1
                                 </td>
-                                {{-- kalau nurut SIAKAD, ini nanti select nama mahasiswa, coba lihat yang tambah kompetisi di SIAKAD --}}
                                 <td class="px-6 py-2 border-r border-gray-300">
-                                    <input type="text" name="nama_mahasiswa[]"
-                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
+                                    <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                                        <option value="">Pilih Mahasiswa</option>
+                                        @foreach ($mahasiswaList as $mhs)
+                                            <option value="{{ $mhs->nim }}">{{ $mhs->nim }} - {{ $mhs->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </td>
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <select name="peran_mahasiswa[]"
@@ -199,6 +212,14 @@
                                         <option value="peserta">Personal</option>
                                         <option value="ketua">Ketua</option>
                                         <option value="anggota">Anggota</option>
+                                    </select>
+                                </td>
+                                <td class="px-6 py-2 border-r border-gray-300">
+                                    <select name="tags_mahasiswa[]" class="tag-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
+                                        <option value="">Pilih Tag</option>
+                                        @foreach ($tags as $tag)
+                                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                        @endforeach
                                     </select>
                                 </td>
                                 <td class="w-1/8 px-4 py-2">
@@ -226,69 +247,6 @@
                 </div>
             </div>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const addMahasiswaButton = document.getElementById('addMahasiswa');
-                    const mahasiswaTableBody = document.getElementById('mahasiswaTableBody');
-
-                    addMahasiswaButton.addEventListener('click', function () {
-                        const newRow = document.createElement('tr');
-                        newRow.classList.add('bg-white', 'border-b', 'border-gray-300');
-
-                        const rowCount = mahasiswaTableBody.children.length + 1;
-
-                        newRow.innerHTML = `
-                                          <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
-                                                         ${rowCount}
-                                                    </td>
-                                                    <td class="px-6 py-2 border-r border-gray-300">
-                                                         <input type="text" name="nama_mahasiswa[]"
-                                                              class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                                                    </td>
-                                                    <td class="px-6 py-2 border-r border-gray-300">
-                                                         <select name="peran_mahasiswa[]"
-                                                              class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                                                              <option value="peserta">Peserta</option>
-                                                              <option value="ketua">Ketua</option>
-                                                              <option value="anggota">Anggota</option>
-                                                         </select>
-                                                    </td>
-                                                    <td class="w-1/8 px-4 py-2">
-                                                         <button type="button" class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
-                                                              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                                              </svg>
-                                                              Hapus
-                                                         </button>
-                                                    </td>           
-                                         `;
-
-                        mahasiswaTableBody.appendChild(newRow);
-
-                        // Add event listener for the remove button
-                        const removeButton = newRow.querySelector('.removeMahasiswa');
-                        removeButton.addEventListener('click', function () {
-                            newRow.remove();
-                            updateRowNumbers();
-                        });
-                    });
-
-                    mahasiswaTableBody.addEventListener('click', function (event) {
-                        if (event.target.classList.contains('removeMahasiswa')) {
-                            event.target.closest('tr').remove();
-                            updateRowNumbers();
-                        }
-                    });
-
-                    function updateRowNumbers() {
-                        const rows = mahasiswaTableBody.querySelectorAll('tr');
-                        rows.forEach((row, index) => {
-                            row.querySelector('td:first-child').textContent = index + 1;
-                        });
-                    }
-                });
-            </script>
-
             <!-- Data Dosen -->
             <div class="relative p-8 pt-14 mt-4 border border-gray-200 rounded-sm">
                 <div class="absolute inset-x-0 top-0 h-10 w-full bg-[#1e6aae] flex rounded-t-md items-center">
@@ -309,16 +267,21 @@
                                 <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">1</td>
                                 {{-- kalau nurut SIAKAD, ini nanti select nama mahasiswa, coba lihat yang tambah kompetisi di SIAKAD --}}
                                 <td class="px-6 py-2 border-r border-gray-300">
-                                    <input type="text" name="nama_dosen[]"
-                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
+                                    <select name="nidn_dosen[]" class="dosen-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                                        <option value="">Pilih Dosen</option>
+                                        @foreach ($dosenList as $dosen)
+                                            <option value="{{ $dosen->nidn }}">{{ $dosen->nidn }} - {{ $dosen->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </td>
                                 {{-- FIk iki aku bingung peran e opo wae --}}
                                 <td class="px-6 py-2 border-r border-gray-300">
                                     <select name="peran_dosen[]"
-                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                                        <option value="pembimbing">Pembimbing</option>
-                                        <option value="penguji">Penguji</option>
-                                        <option value="koordinator">Koordinator</option>
+                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                                        <option disabled selected hidden>Pilih Peran</option>
+                                        @foreach ($roleSupervisorList as $role)
+                                            <option value="{{ $role->id }}">{{ $role->description }}</option>
+                                        @endforeach
                                     </select>
                                 </td>
                                 <td class="w-1/8 px-4 py-2">
@@ -348,8 +311,102 @@
 
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
+                    const addMahasiswaButton = document.getElementById('addMahasiswa');
+                    const mahasiswaTableBody = document.getElementById('mahasiswaTableBody');
                     const addDosenButton = document.getElementById('addDosen');
                     const dosenTableBody = document.getElementById('dosenTableBody');
+
+                    const tags = @json($tags);
+                    const mahasiswaList = @json($mahasiswaList);
+                    const dosenList = @json($dosenList);
+                    const roleSupervisorList = @json($roleSupervisorList);
+
+                    // Initialize Select2 for existing elements
+                    $('.mahasiswa-select').select2({
+                        placeholder: "Pilih Mahasiswa",
+                        allowClear: true,
+                        dropdownParent: $('#mahasiswaTableBody').closest('.relative') // Ensure dropdown is within the form
+                    });
+                    $('.dosen-select').select2({
+                        placeholder: "Pilih Dosen",
+                        allowClear: true,
+                        dropdownParent: $('#dosenTableBody').closest('.relative') // Ensure dropdown is within the form
+                    });
+                    $('.tag-select').select2({
+                        placeholder: "Pilih Tag",
+                        allowClear: true,
+                        dropdownParent: $('#mahasiswaTableBody').closest('.relative') // Ensure dropdown is within the form
+                    });
+
+
+                    addMahasiswaButton.addEventListener('click', function () {
+                        const newRow = document.createElement('tr');
+                        newRow.classList.add('bg-white', 'border-b', 'border-gray-300');
+
+                        const rowCount = mahasiswaTableBody.children.length + 1;
+
+                        newRow.innerHTML = `
+                            <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
+                                ${rowCount}
+                            </td>
+                            <td class="px-6 py-2 border-r border-gray-300">
+                                <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                                    <option value="">Pilih Mahasiswa</option>
+                                    ${mahasiswaList.map(mhs => `<option value="${mhs.nim}">${mhs.nim} - ${mhs.name}</option>`).join('')}
+                                </select>
+                            </td>
+                            <td class="px-6 py-2 border-r border-gray-300">
+                                <select name="peran_mahasiswa[]" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
+                                    <option value="PERSONAL">Personal</option>
+                                    <option value="LEADER">Ketua</option>
+                                    <option value="MEMBER">Anggota</option>
+                                </select>
+                            </td>
+                            <td class="px-6 py-2 border-r border-gray-300">
+                                <select name="tags_mahasiswa[]" class="tag-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
+                                    <option value="">Pilih Tag</option>
+                                    ${tags.map(tag => `<option value="${tag.id}">${tag.name}</option>`).join('')}
+                                </select>
+                            </td>
+                            <td class="w-1/8 px-4 py-2">
+                                <button type="button" class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    Hapus
+                                </button>
+                            </td>
+                        `;
+
+                        mahasiswaTableBody.appendChild(newRow);
+
+                        // Initialize Select2 for the newly added row
+                        $(newRow).find('.mahasiswa-select').select2({
+                            placeholder: "Pilih Mahasiswa",
+                            allowClear: true,
+                            dropdownParent: $(newRow).find('.mahasiswa-select').closest('td')
+                        });
+                        $(newRow).find('.tag-select').select2({
+                            placeholder: "Pilih Tag",
+                            allowClear: true,
+                            dropdownParent: $(newRow).find('.tag-select').closest('td')
+                        });
+
+                    });
+
+                    mahasiswaTableBody.addEventListener('click', function (event) {
+                        const removeButton = event.target.closest('.removeMahasiswa');
+                        if (removeButton) {
+                            event.preventDefault(); // Prevent default button action
+                            if (mahasiswaTableBody.children.length > 1) {
+                                removeButton.closest('tr').remove();
+                                updateRowNumbers(mahasiswaTableBody);
+                            } else {
+                                alert('Minimal harus ada satu data Mahasiswa.');
+                            }
+                        }
+                    });
+
 
                     addDosenButton.addEventListener('click', function () {
                         const newRow = document.createElement('tr');
@@ -358,51 +415,57 @@
                         const rowCount = dosenTableBody.children.length + 1;
 
                         newRow.innerHTML = `
-                    <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
-                        ${rowCount}
-                    </td>
-                    <td class="px-6 py-2 border-r border-gray-300">
-                        <input type="text" name="nama_dosen[]"
-                            class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                    </td>
-                    <td class="px-6 py-2 border-r border-gray-300">
-                        <select name="peran_dosen[]"
-                            class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                            <option value="pembimbing">Pembimbing</option>
-                            <option value="penguji">Penguji</option>
-                            <option value="koordinator">Koordinator</option>
-                        </select>
-                    </td>
-                    <td class="w-1/8 px-4 py-2">
-                        <button type="button"
-                            class="removeDosen border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                            Hapus
-                        </button>
-                    </td>
-                `;
+                            <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
+                                ${rowCount}
+                            </td>
+                            <td class="px-6 py-2 border-r border-gray-300">
+                                <select name="nidn_dosen[]" class="dosen-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                                    <option value="">Pilih Dosen</option>
+                                    ${dosenList.map(dosen => `<option value="${dosen.nidn}">${dosen.nidn} - ${dosen.name}</option>`).join('')}
+                                </select>
+                            </td>
+                            <td class="px-6 py-2 border-r border-gray-300">
+                                <select name="peran_dosen[]" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                                    <option disabled selected hidden>Pilih Peran</option>
+                                    ${roleSupervisorList.map(role => `<option value="${role.id}">${role.description}</option>`).join('')}
+                                </select>
+                            </td>
+                            <td class="w-1/8 px-4 py-2">
+                                <button type="button" class="removeDosen border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    Hapus
+                                </button>
+                            </td>
+                        `;
 
                         dosenTableBody.appendChild(newRow);
 
-                        const removeButton = newRow.querySelector('.removeDosen');
-                        removeButton.addEventListener('click', function () {
-                            newRow.remove();
-                            updateRowNumbers();
+                        // Initialize Select2 for the newly added row
+                        $(newRow).find('.dosen-select').select2({
+                            placeholder: "Pilih Dosen",
+                            allowClear: true,
+                            dropdownParent: $(newRow).find('.dosen-select').closest('td')
                         });
+
                     });
 
                     dosenTableBody.addEventListener('click', function (event) {
-                        if (event.target.classList.contains('removeDosen')) {
-                            event.target.closest('tr').remove();
-                            updateRowNumbers();
+                        const removeButton = event.target.closest('.removeDosen');
+                        if (removeButton) {
+                            event.preventDefault(); // Prevent default button action
+                            if (dosenTableBody.children.length > 1) {
+                                removeButton.closest('tr').remove();
+                                updateRowNumbers(dosenTableBody);
+                            } else {
+                                alert('Minimal harus ada satu data Dosen.');
+                            }
                         }
                     });
 
-                    function updateRowNumbers() {
-                        const rows = dosenTableBody.querySelectorAll('tr');
+                    function updateRowNumbers(tableBody) {
+                        const rows = tableBody.querySelectorAll('tr');
                         rows.forEach((row, index) => {
                             row.querySelector('td:first-child').textContent = index + 1;
                         });
@@ -426,3 +489,4 @@
         </div>
     </main>
 @endsection
+

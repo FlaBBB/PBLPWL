@@ -14,6 +14,18 @@ class RoleSupervisorSeeder extends Seeder
      */
     public function run(): void
     {
-        RoleSupervisorFactory::new()->count(5)->create();
+        $descriptions = [
+            'Melakukan pembinaan kegiatan mahasiswa di bidang akademik (PA) dan kemahasiswaan (BEM, Maperwa, dan lain-lain)',
+            'Membimbing mahasiswa menghasilkan produk saintifik bereputasi dan mendapat pengakuan tingkat Internasional',
+            'Membimbing mahasiswa menghasilkan produk saintifik bereputasi dan mendapat pengakuan tingkat Nasional',
+            'Membimbing mahasiswa mengikuti kompetisi dibidang akademik dan kemahasiswaan bereputasi dan mencapai juara tingkat Internasional',
+            'Membimbing mahasiswa mengikuti kompetisi dibidang akademik dan kemahasiswaan bereputasi dan mencapai juara tingkat Nasional',
+        ];
+
+        foreach ($descriptions as $description) {
+            RoleSupervisor::create([
+                'description' => $description,
+            ]);
+        }
     }
 }

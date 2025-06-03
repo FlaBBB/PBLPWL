@@ -677,9 +677,7 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
-        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+        @push('scripts')
         <script>
             const DIALOG_TRANSITION_DURATION = 500; // Corresponds to duration-500 in Tailwind for the dialog
             const OVERLAY_TRANSITION_DURATION = 300; // Corresponds to duration-300 in Tailwind for the overlay
@@ -1004,7 +1002,10 @@
                         { data: 'level', name: 'level' },
                         { data: 'status', name: 'status' },
                         { data: 'action', name: 'action', orderable: false, searchable: false },
-                    ]
+                    ],
+                    language: {
+                        emptyTable: "Tidak ada data prestasi yang tersedia."
+                    }
                 });
 
                 $('#filterForm select, #search').on('change keyup', function() {
@@ -1012,4 +1013,5 @@
                 });
             });
         </script>
+    @endpush
 @endsection
