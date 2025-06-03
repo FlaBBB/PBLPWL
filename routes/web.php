@@ -64,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
     // Mahasiswa Routes
     Route::middleware(['role:' . UserRoleEnum::MAHASISWA->value])->group(function () {
 
-            Route::get('/dashboard', [DashboardController::class, 'index'])->name('mahasiswa.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('mahasiswa.dashboard');
 
             // Route Prestasi
             Route::prefix('prestasi')->group(function () {
@@ -98,7 +98,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
             // Pengguna
             Route::prefix('kelola-pengguna')->group(function () {
-                Route::get('/', [KelolaPenggunaController::class, 'index'])->name('admin.kelola-pengguna');
+                Route::get('/mahasiswa', [KelolaPenggunaController::class, 'index'])->name('admin.kelola-mahasiswa');
                 Route::get('/dosen', [KelolaPenggunaController::class, 'dosen'])->name('admin.kelola-dosen');
                 Route::get('/admin', [KelolaPenggunaController::class, 'admin'])->name('admin.kelola-admin');
             });
@@ -144,14 +144,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dosen/histori-tambah-lomba', [DosenLombaController::class, 'histori'])->name('dosen.histori-tambah-lomba');
     });
 });
+
 // Route for Admin
 
-Route::prefix('dosen')->group(function () {
-    Route::get('/dashboard', [DosenDashboardController::class, 'index'])->name('dosen.dashboard');
-    Route::get('/manajemen-mahasiswa', [ManajemenMahasiswaController::class, 'index'])->name('dosen.manajemen-mahasiswa');
+// Route::prefix('dosen')->group(function () {
+//     Route::get('/dashboard', [DosenDashboardController::class, 'index'])->name('dosen.dashboard');
+//     Route::get('/manajemen-mahasiswa', [ManajemenMahasiswaController::class, 'index'])->name('dosen.manajemen-mahasiswa');
     
     Route::prefix('kelola-lomba')->group(function () {
         Route::get('/daftar', [DosenLombaController::class, 'daftar'])->name('dosen.daftar-lomba');
         Route::get('/tambah', [DosenLombaController::class, 'tambah'])->name('dosen.tambah-lomba');
     });
-});
+//});
