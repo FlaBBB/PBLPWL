@@ -22,6 +22,8 @@ return new class extends Migration
             ]);
             $table->unsignedBigInteger("id_tag");
             $table->foreign("id_tag")->references("id")->on("tag");
+
+            $table->primary(['id_achievement', 'nim']);
         });
     }
 
