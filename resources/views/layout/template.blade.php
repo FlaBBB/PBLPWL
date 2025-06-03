@@ -49,7 +49,7 @@
         </div>
 
         <!-- Main -->
-        <main class="container mx-auto px-6">
+        <main class="container mx-auto px-6 bg-white">
             @yield('content')
         </main>
     </div>

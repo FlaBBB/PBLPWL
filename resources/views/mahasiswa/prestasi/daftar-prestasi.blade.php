@@ -6,13 +6,13 @@
             <h2 class="text-xl font-semibold mb-2">Daftar Prestasi</h2>
             <p class="text-sm text-gray-400">Lihat dan pantau seluruh prestasi yang telah Anda unggah selama masa studi.
                 Pastikan setiap prestasi disertai bukti sah seperti sertifikat atau surat keterangan resmi.</p>
-            <div class="flex flex-wrap gap-4 py-4 items-center">
+            <form id="filterForm" class="flex flex-wrap gap-4 py-4 items-center">
                 <div class="flex flex-wrap gap-4 py-4 items-center w-full">
                     <!-- Search Input -->
-                    <!-- Search Input -->
                     <div class="relative">
-                        <input type="text" placeholder="Cari disini"
-                            class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+                        <input type="text" id="search" name="search" placeholder="Cari disini"
+                            class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            value="{{ $currentSearch }}" />
                         <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -22,12 +22,12 @@
 
                     <!-- Dropdown: Kategori -->
                     <div class="relative w-54">
-                        <select
+                        <select id="kategori" name="kategori"
                             class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Pilih Kategori</option>
-                            <option>Cyber Security</option>
-                            <option>IoT</option>
-                            <option>Software Development</option>
+                            <option value="">Semua Kategori</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->name }}" {{ $currentKategori == $category->name ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -37,14 +37,12 @@
 
                     <!-- Dropdown: Tingkat prestasi -->
                     <div class="relative w-40">
-                        <select
+                        <select id="tingkat" name="tingkat"
                             class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Pilih Tingkat</option>
-                            <option>Internasional</option>
-                            <option>Nasional</option>
-                            <option>Provinsi</option>
-                            <option>Kota/Kabupaten</option>
-                            <option>Internal</option>
+                            <option value="">Semua Tingkat</option>
+                            <option value="INTERNATIONAL" {{ $currentTingkat == 'INTERNATIONAL' ? 'selected' : '' }}>Internasional</option>
+                            <option value="NATIONAL" {{ $currentTingkat == 'NATIONAL' ? 'selected' : '' }}>Nasional</option>
+                            <option value="PROVINCE" {{ $currentTingkat == 'PROVINCE' ? 'selected' : '' }}>Provinsi</option>
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -53,12 +51,13 @@
                     </div>
                     <!-- Dropdown: Partisipan -->
                     <div class="relative w-44">
-                        <select
+                        <select id="status" name="status"
                             class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Pilih Status</option>
-                            <option>Terverifikasi</option>
-                            <option>Menunggu</option>
-                            <option>Ditolak</option>
+                            <option value="">Semua Status</option>
+                            <option value="ACCEPTED" {{ $currentStatus == 'ACCEPTED' ? 'selected' : '' }}>Terverifikasi</option>
+                            <option value="WAITING" {{ $currentStatus == 'WAITING' ? 'selected' : '' }}>Menunggu</option>
+                            <option value="REJECTED" {{ $currentStatus == 'REJECTED' ? 'selected' : '' }}>Ditolak</option>
+                            <option value="REVISION" {{ $currentStatus == 'REVISION' ? 'selected' : '' }}>Revisi</option>
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -68,7 +67,7 @@
                     <!-- Button: Tambah prestasi -->
                     <div class="ml-auto">
                         <a href="{{route('mahasiswa.tambah-prestasi')}}">
-                            <button
+                            <button type="button"
                                 class="text-sm bg-[#1e6aae] text-white px-5 py-2 rounded-md hover:bg-[#17497C] transition flex items-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -78,93 +77,21 @@
                         </a>
                     </div>
                 </div>
-                <table class="w-full text-left text-sm bg-white rounded-lg overflow-hidden">
-                    <thead class="text-gray-500">
+            </form>
+                <table id="achievements-table" class="w-full text-left text-sm bg-white rounded-lg overflow-hidden">
+                    <thead>
                         <tr class="border-b border-gray-200">
                             <th class="py-2 px-3">No</th>
-                            <th class="py-2 px-3 flex items-center gap-1">
-                                Nama Lomba <button type="button"
-                                    class="ml-1 p-1 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor"
-                                        class="size-6 text-gray-400 inline-block align-middle">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
-                                    </svg>
-                                </button>
-                            </th>
+                            <th class="py-2 px-3">Nama Lomba</th>
                             <th class="py-2 px-3">Kategori</th>
-                            <th class="py-2 px-3">Ranking <button type="button"
-                                    class="ml-1 p-1 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor"
-                                        class="size-6 text-gray-400 inline-block align-middle">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
-                                    </svg>
-                                </button>
-                            </th>
+                            <th class="py-2 px-3">Ranking</th>
                             <th class="py-2 px-3">Tingkat</th>
-                            <th class="py-2 px-3">Status <button type="button"
-                                    class="ml-1 p-1 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                </button>
-                            </th>
+                            <th class="py-2 px-3">Status</th>
                             <th class="py-2 px-3">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-700 font-base">
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-2 px-3">1</td>
-                            <td class="py-2 px-3">Hackathon Merdeka</td>
-                            <td class="py-2 px-3">Software Development</td>
-                            <td class="py-2 px-3">Juara 2</td>
-                            <td class="py-2 px-3">Nasional</td>
-                            <td class="py-2 px-3">
-                                {{-- Aku ngga paham if-else e, tulung --}}
-                                {{-- Ini buat tampilan VERIFIED --}}
-                                <span
-                                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                                    Terverifikasi
-                                </span>
-                                {{-- Ini buat tampilan WAITING --}}
-                                <span
-                                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
-                                    <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
-                                    Menunggu
-                                </span>
-
-                                {{-- Ini buat tampilan REJECTED --}}
-                                <span
-                                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
-                                    <span class="w-2 h-2 rounded-full bg-gray-500"></span>
-                                    Ditolak
-                                </span>
-                                {{-- Ini buat tampilan REVISED --}}
-                                <span
-                                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-                                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
-                                    Perlu Revisi
-                                </span>
-                            </td>
-                            <td class="py-2 px-3">
-                                <div class="flex space-x-2"> {{-- Ini kasihin pengkondisian untuk openModal nya, ada
-                                    modal-detail, modal-waiting, dll --}}
-                                    <button onclick="openModal('modal-waiting')"
-                                        class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white  px-2 py-2 rounded text-xs flex items-center gap-1"
-                                        title="Lihat Detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="2" stroke="currentColor" class="size-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        </svg>
-                                        Lihat detail
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                    <tbody>
+                        {{-- DataTables will populate this --}}
                     </tbody>
                 </table>
             </div>
@@ -186,8 +113,8 @@
                         </path>
                     </svg>
                 </button>
-                <h3 class="text-xl font-semibold mb-2 text-gray-800 inline-block mr-2">Detail Prestasi</h3>
-                <span
+                <h3 class="text-xl font-semibold mb-6 text-gray-800 inline-block mr-2">Detail Prestasi</h3>
+                <span id="detail-status-badge"
                     class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 align-middle">
                     <span class="w-2 h-2 rounded-full bg-green-500"></span>
                     Terverifikasi
@@ -198,123 +125,125 @@
                     <table class="w-full max-w-auto text-gray-800 text-left text-sm">
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium">Nama Lomba</td>
-                            <td class="border border-gray-200 px-3 py-2">Prestasi Inovasi Digital</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-competition-name"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Penyelenggara
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Institut Teknologi Malang</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-organizer"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Ranking Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Juara 2</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-place"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Tingkat Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Nasional</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-level"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Bidang Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Web Development</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-type"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Tanggal Mulai
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">2024-06-01</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-start-date"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Tanggal
                                 Berakhir</td>
-                            <td class="border border-gray-200 px-3 py-2">2024-06-03</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-end-date"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Tenggat
+                                Pendaftaran</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-registration-deadline"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Jumlah
                                 Peserta</td>
-                            <td class="border border-gray-200 px-3 py-2">3</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-participants"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">URL prestasi
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">www.tidaktahu.com</td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="detail-url" href="#" target="_blank" class="text-blue-600 hover:underline"></a></td>
                         </tr>
+                        <tr>
+                            <td class="border border-gray-200 px-3 py-2 align-top font-medium">Deskripsi</td>
+                            <td class="border border-gray-200 px-3 py-2 max-w-xs align-top">
+                                <div id="detail-description" class="line-clamp-2 break-words text-ellipsis overflow-hidden"
+                                    style="max-width: 24rem;"
+                                    title="">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="w-full max-w-auto text-gray-800 text-left text-sm">
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium">File Surat Tugas</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="detail-file-assignment-letter" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-200 px-3 py-2 font-medium">File Sertifikat</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
+                            <td class="border border-gray-200 px-3 py-2 font-medium whitespace-nowrap">File Sertifikat
                             </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="detail-file-certificate" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-200 px-3 py-2 font-medium">File Poster</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
+                            <td class="border border-gray-200 px-3 py-2 font-medium whitespace-nowrap">File Foto Kegiatan
                             </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="detail-file-activity-photo" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-200 px-3 py-2 font-medium">Foto Kegiatan</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
+                            <td class="border border-gray-200 px-3 py-2 font-medium whitespace-nowrap">File Poster
                             </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="detail-file-poster" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                     </table>
                     {{-- table kanan --}}
                     <div class="space-y-6">
                         <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama
-                                    Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2 w-2/3">Adi</td>
+                                <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta 1</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-name-1"></td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Role
-                                    Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2 w-2/3">Ketua</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 1</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-role-1"></td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama
-                                    Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2 w-2/3">Sujatmiko</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 2</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-name-2"></td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Role
-                                    Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2 w-2/3">Anggota</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 2</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-role-2"></td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama
-                                    Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2 w-2/3">Budiono</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 3</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-name-3"></td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Role
-                                    Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2 w-2/3">Anggota</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 3</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-role-3"></td>
                             </tr>
+
                         </table>
                         <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Nama Dosen
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Nama Dosen
                                     Pembimbing
                                 </td>
-                                <td class="border border-gray-200 px-3 py-2">Budiono Siregar</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-supervisor-name"></td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap w-1/3">Peran Dosen
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Peran Dosen
                                     Pembimbing
                                 </td>
-                                <td class="border border-gray-200 px-3 py-2">Gatau</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-supervisor-role"></td>
                             </tr>
                         </table>
                     </div>
@@ -329,12 +258,11 @@
             </div>
         </div>
 
-        {{-- MODAL WAITING/ DIPROSES --}} {{-- MAHASISWA BISA HAPUS ATAU EDIT DATANYA --}}
         <div id="modal-waiting"
             class="fixed inset-0 z-50 flex items-start justify-center bg-gray-900/70 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out py-8 item-center overflow-y-auto"
             data-state="closed">
             <div
-                class="modal-dialog bg-white rounded-md shadow-2xl max-w-7xl w-full p-6 sm:p-8 transform -translate-y-full scale-95 transition-all duration-500 ease-out">
+                class="modal-dialog bg-white rounded-md shadow-2xl max-w-3xl w-full p-6 sm:p-8 transform -translate-y-full scale-95 transition-all duration-500 ease-out">
                 <button onclick="closeModal('modal-waiting')"
                     class="absolute top-3 right-3 p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -343,134 +271,14 @@
                         </path>
                     </svg>
                 </button>
-                <h3 class="text-xl font-semibold mb-2 text-gray-800 inline-block mr-2">Detail Prestasi</h3>
+                <h3 class="text-xl font-semibold mb-6 text-gray-800 inline-block mr-2">Detail Prestasi</h3>
                 <span
                     class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
                     <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
                     Sedang diproses
                 </span>
-                <div class="overflow-x-auto grid grid-cols-2 gap-8 mt-6 items-start">
-                    {{-- table kiri --}}
-                    <table class="w-full max-w-auto text-gray-800 text-left text-sm">
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium">Nama Lomba</td>
-                            <td class="border border-gray-200 px-3 py-2">Prestasi Inovasi Digital</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Penyelenggara
-                            </td>
-                            <td class="border border-gray-200 px-3 py-2">Institut Teknologi Malang</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Ranking Lomba
-                            </td>
-                            <td class="border border-gray-200 px-3 py-2">Juara 2</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Tingkat Lomba
-                            </td>
-                            <td class="border border-gray-200 px-3 py-2">Nasional</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Bidang Lomba
-                            </td>
-                            <td class="border border-gray-200 px-3 py-2">Web Development</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Tanggal Mulai
-                            </td>
-                            <td class="border border-gray-200 px-3 py-2">2024-06-01</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Tanggal
-                                Berakhir</td>
-                            <td class="border border-gray-200 px-3 py-2">2024-06-03</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">Jumlah
-                                Peserta</td>
-                            <td class="border border-gray-200 px-3 py-2">3</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">URL prestasi
-                            </td>
-                            <td class="border border-gray-200 px-3 py-2">www.tidaktahu.com</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-200 px-3 py-2 font-medium">File Surat Tugas</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-200 px-3 py-2 font-medium">File Sertifikat</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-200 px-3 py-2 font-medium">File Poster</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-200 px-3 py-2 font-medium">Foto Kegiatan</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
-                        </tr>
-                    </table>
-                    {{-- table kanan --}}
-                    <div class="space-y-6">
-                        <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2">Adi</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2">Ketua</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2">Sujatmiko</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2">Anggota</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2">Budiono</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2">Anggota</td>
-                            </tr>
-
-                        </table>
-                        <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Nama Dosen
-                                    Pembimbing
-                                </td>
-                                <td class="border border-gray-200 px-3 py-2">Budiono Siregar</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Peran Dosen
-                                    Pembimbing
-                                </td>
-                                <td class="border border-gray-200 px-3 py-2">Gatau</td>
-                            </tr>
-                        </table>
-                    </div>
+                <div id="waiting-detail-content">
                 </div>
-
                 <div class="mt-8 text-right flex justify-end gap-4">
                     <button
                         class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white px-4 py-3 rounded text-base font-medium flex items-center justify-center gap-1 h-12"
@@ -512,7 +320,7 @@
                 </button>
                 <h3 class="text-xl font-semibold mb-2 text-gray-800 inline-block mr-2">Detail Prestasi</h3>
                 {{-- Ini buat tampilan REJECTED --}}
-                <span
+                <span id="rejected-status-badge"
                     class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
                     <span class="w-2 h-2 rounded-full bg-gray-500"></span>
                     Ditolak
@@ -523,103 +331,91 @@
                     <table class="w-full max-w-auto text-gray-800 text-left text-sm">
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Lomba</td>
-                            <td class="border border-gray-200 px-3 py-2">Prestasi Inovasi Digital</td>
+                            <td class="border border-gray-200 px-3 py-2" id="rejected-competition-name"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Penyelenggara
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Institut Teknologi Malang</td>
+                            <td class="border border-gray-200 px-3 py-2" id="rejected-organizer"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Ranking Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Juara 2</td>
+                            <td class="border border-gray-200 px-3 py-2" id="rejected-place"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Tingkat Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Nasional</td>
+                            <td class="border border-gray-200 px-3 py-2" id="rejected-level"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Bidang Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Web Development</td>
+                            <td class="border border-gray-200 px-3 py-2" id="rejected-type"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Tanggal Mulai
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">2024-06-01</td>
+                            <td class="border border-gray-200 px-3 py-2" id="rejected-start-date"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Tanggal
                                 Berakhir</td>
-                            <td class="border border-gray-200 px-3 py-2">2024-06-03</td>
+                            <td class="border border-gray-200 px-3 py-2" id="rejected-end-date"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Jumlah
                                 Peserta</td>
-                            <td class="border border-gray-200 px-3 py-2">3</td>
+                            <td class="border border-gray-200 px-3 py-2" id="rejected-participants"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">URL prestasi
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">www.tidaktahu.com</td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="rejected-url" href="#" target="_blank" class="text-blue-600 hover:underline"></a></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium w-1/3">File Surat Tugas</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="rejected-file-assignment-letter" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium w-1/3">File Sertifikat</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="rejected-file-certificate" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium w-1/3">File Poster</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="rejected-file-poster" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium w-1/3">Foto Kegiatan</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="rejected-file-activity-photo" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                     </table>
                     {{-- table kanan --}}
                     <div class="space-y-6">
                         <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2">Adi</td>
+                                <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta 1</td>
+                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-name-1"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2">Ketua</td>
+                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-role-1"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2">Sujatmiko</td>
+                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-name-2"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2">Anggota</td>
+                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-role-2"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2">Budiono</td>
+                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-name-3"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2">Anggota</td>
+                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-role-3"></td>
                             </tr>
 
                         </table>
@@ -629,13 +425,13 @@
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Nama Dosen
                                     Pembimbing
                                 </td>
-                                <td class="border border-gray-200 px-3 py-2">Budiono Siregar</td>
+                                <td class="border border-gray-200 px-3 py-2" id="rejected-supervisor-name"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Peran Dosen
                                     Pembimbing
                                 </td>
-                                <td class="border border-gray-200 px-3 py-2">Gatau</td>
+                                <td class="border border-gray-200 px-3 py-2" id="rejected-supervisor-role"></td>
                             </tr>
                         </table>
 
@@ -654,7 +450,7 @@
                                         Alasan Penolakan
                                     </h4>
                                     <div class="mt-2 text-sm text-red-700">
-                                        <p>Data prestasi yang disubmit tidak sesuai dengan kriteria yang telah ditetapkan.
+                                        <p id="rejected-reason-text">Data prestasi yang disubmit tidak sesuai dengan kriteria yang telah ditetapkan.
                                             Silakan periksa kembali kelengkapan berkas dan pastikan semua data sesuai dengan
                                             ketentuan yang berlaku.</p>
                                     </div>
@@ -689,7 +485,7 @@
                 </button>
                 <h3 class="text-xl font-semibold mb-6 text-gray-800 inline-block mr-2">Detail Prestasi</h3>
                 {{-- Ini buat tampilan REVISED --}}
-                <span
+                <span id="revised-status-badge"
                     class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
                     <span class="w-2 h-2 rounded-full bg-red-500"></span>
                     Perlu Revisi
@@ -699,103 +495,91 @@
                     <table class="w-full max-w-auto text-gray-800 text-left text-sm">
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Lomba</td>
-                            <td class="border border-gray-200 px-3 py-2">Prestasi Inovasi Digital</td>
+                            <td class="border border-gray-200 px-3 py-2" id="revised-competition-name"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Penyelenggara
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Institut Teknologi Malang</td>
+                            <td class="border border-gray-200 px-3 py-2" id="revised-organizer"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Ranking Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Juara 2</td>
+                            <td class="border border-gray-200 px-3 py-2" id="revised-place"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Tingkat Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Nasional</td>
+                            <td class="border border-gray-200 px-3 py-2" id="revised-level"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Bidang Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">Web Development</td>
+                            <td class="border border-gray-200 px-3 py-2" id="revised-type"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Tanggal Mulai
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">2024-06-01</td>
+                            <td class="border border-gray-200 px-3 py-2" id="revised-start-date"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Tanggal
                                 Berakhir</td>
-                            <td class="border border-gray-200 px-3 py-2">2024-06-03</td>
+                            <td class="border border-gray-200 px-3 py-2" id="revised-end-date"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Jumlah
                                 Peserta</td>
-                            <td class="border border-gray-200 px-3 py-2">3</td>
+                            <td class="border border-gray-200 px-3 py-2" id="revised-participants"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">URL prestasi
                             </td>
-                            <td class="border border-gray-200 px-3 py-2">www.tidaktahu.com</td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="revised-url" href="#" target="_blank" class="text-blue-600 hover:underline"></a></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium w-1/3">File Surat Tugas</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="revised-file-assignment-letter" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium w-1/3">File Sertifikat</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="revised-file-certificate" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium w-1/3">File Poster</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="revised-file-poster" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium w-1/3">Foto Kegiatan</td>
-                            <td class="border border-gray-200 px-3 py-2"><input type="file" id="poster_lomba"
-                                    name="poster_lomba" accept="image/*"
-                                    class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-1 file:px-4  file:border-1 file:rounded-l-lg file:border-[#1e6aae]  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                            </td>
+                            <td class="border border-gray-200 px-3 py-2"><a id="revised-file-activity-photo" href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a></td>
                         </tr>
                     </table>
                     {{-- table kanan --}}
                     <div class="space-y-6">
                         <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2">Adi</td>
+                                <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta 1</td>
+                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-name-1"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2">Ketua</td>
+                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-role-1"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2">Sujatmiko</td>
+                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-name-2"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2">Anggota</td>
+                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-role-2"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2">Budiono</td>
+                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-name-3"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2">Anggota</td>
+                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-role-3"></td>
                             </tr>
 
                         </table>
@@ -805,51 +589,49 @@
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Nama Dosen
                                     Pembimbing
                                 </td>
-                                <td class="border border-gray-200 px-3 py-2">Budiono Siregar</td>
+                                <td class="border border-gray-200 px-3 py-2" id="revised-supervisor-name"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">Peran Dosen
                                     Pembimbing
                                 </td>
-                                <td class="border border-gray-200 px-3 py-2">Gatau</td>
+                                <td class="border border-gray-200 px-3 py-2" id="revised-supervisor-role"></td>
                             </tr>
                         </table>
 
-                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4">
+                        <div class="bg-red-50 border-l-4 border-red-400 p-4">
                             <div class="flex">
                                 <div class="flex-shrink-0">
-                                    <svg class="h-5 w-5 text-amber-400" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20" fill="currentColor">
+                                    <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                        fill="currentColor">
                                         <path fill-rule="evenodd"
                                             d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
                                             clip-rule="evenodd" />
                                     </svg>
                                 </div>
                                 <div class="ml-3">
-                                    <h4 class="text-sm font-medium text-amber-800">
-                                        Pesan Revisi
+                                    <h4 class="text-sm font-medium w-1/3 text-red-800">
+                                        Alasan Revisi
                                     </h4>
-                                    <div class="mt-2 text-sm text-amber-700">
-                                        <p>Data prestasi yang disubmit tidak sesuai dengan kriteria yang telah ditetapkan.
+                                    <div class="mt-2 text-sm text-red-700">
+                                        <p id="revised-reason-text">Data prestasi yang disubmit tidak sesuai dengan kriteria yang telah ditetapkan.
                                             Silakan periksa kembali kelengkapan berkas dan pastikan semua data sesuai dengan
                                             ketentuan yang berlaku.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
-
-                <div class="mt-8 text-right flex justify-end gap-4">
+                <div class="mt-8 text-right">
                     <button
-                        class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white  px-4 py-3 rounded text-base font-medium flex items-center gap-1 h-12"
-                        title="Edit">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" class="size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                        </svg>
+                        class="px-4 py-2 rounded-lg bg-blue-200 text-blue-800 hover:bg-blue-300 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
                         Lakukan Revisi
+                    </button>
+                    <button type="button" onclick="closeModal('modal-revised')"
+                        class="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400">
+                        Tutup
                     </button>
                 </div>
             </div>
@@ -895,74 +677,64 @@
             </div>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
         <script>
             const DIALOG_TRANSITION_DURATION = 500; // Corresponds to duration-500 in Tailwind for the dialog
             const OVERLAY_TRANSITION_DURATION = 300; // Corresponds to duration-300 in Tailwind for the overlay
 
             function openModal(modalId) {
                 const modal = document.getElementById(modalId);
-                // Exit if modal doesn't exist or is already open/opening
                 if (!modal || modal.dataset.state === 'opened' || modal.dataset.state === 'opening') {
                     return;
                 }
                 const modalDialog = modal.querySelector('.modal-dialog');
 
                 modal.dataset.state = 'opening';
-                // Make overlay visible and interactive
                 modal.classList.remove('opacity-0', 'pointer-events-none');
-                // Force browser to recognize the initial state before adding transition classes
-                void modal.offsetWidth;
+                void modal.offsetWidth; // Force reflow
                 modal.classList.add('opacity-100', 'pointer-events-auto');
-
 
                 if (modalDialog) {
                     modalDialog.classList.remove('-translate-y-full', 'scale-95');
                     modalDialog.classList.add('translate-y-0', 'scale-100');
                 }
 
-                // Determine which element and duration to monitor for transition end
-                const targetElement = modalDialog || modal; // Fallback to modal overlay if dialog isn't there
+                const targetElement = modalDialog || modal;
                 const duration = modalDialog ? DIALOG_TRANSITION_DURATION : OVERLAY_TRANSITION_DURATION;
 
                 let openTransitionEnded = false;
                 const onOpenTransitionEnd = (event) => {
-                    // Ensure the event is from the target element and not a child
                     if (event.target === targetElement && modal.dataset.state === 'opening' && !openTransitionEnded) {
                         openTransitionEnded = true;
                         modal.dataset.state = 'opened';
                         targetElement.removeEventListener('transitionend', onOpenTransitionEnd);
                     }
                 };
-                // Make sure to add the event listener only once if openModal can be called multiple times rapidly
-                targetElement.removeEventListener('transitionend', onOpenTransitionEnd); // Remove previous just in case
+                targetElement.removeEventListener('transitionend', onOpenTransitionEnd);
                 targetElement.addEventListener('transitionend', onOpenTransitionEnd);
 
-                // Fallback timeout in case transitionend doesn't fire (e.g., element becomes display:none unexpectedly)
                 setTimeout(() => {
                     if (modal.dataset.state === 'opening' && !openTransitionEnded) {
                         openTransitionEnded = true;
                         modal.dataset.state = 'opened';
-                        targetElement.removeEventListener('transitionend', onOpenTransitionEnd); // Clean up listener
+                        targetElement.removeEventListener('transitionend', onOpenTransitionEnd);
                     }
-                }, duration + 70); // A little buffer, slightly increased
+                }, duration + 70);
             }
 
             function closeModal(modalId) {
                 const modal = document.getElementById(modalId);
-                // Exit if modal doesn't exist or is already closed/closing
                 if (!modal || modal.dataset.state === 'closed' || modal.dataset.state === 'closing') {
                     return;
                 }
                 const modalDialog = modal.querySelector('.modal-dialog');
 
                 modal.dataset.state = 'closing';
-                // Start fading out overlay
                 modal.classList.remove('opacity-100');
                 modal.classList.add('opacity-0');
-                // Remove 'pointer-events-auto' immediately so it can't be re-triggered during closing,
-                // 'pointer-events-none' will be added after transition.
                 modal.classList.remove('pointer-events-auto');
-
 
                 if (modalDialog) {
                     modalDialog.classList.remove('translate-y-0', 'scale-100');
@@ -976,15 +748,14 @@
                 const onCloseTransitionEnd = (event) => {
                     if (event.target === targetElement && modal.dataset.state === 'closing' && !closeTransitionEnded) {
                         closeTransitionEnded = true;
-                        modal.classList.add('pointer-events-none'); // Fully non-interactive
+                        modal.classList.add('pointer-events-none');
                         modal.dataset.state = 'closed';
                         targetElement.removeEventListener('transitionend', onCloseTransitionEnd);
                     }
                 };
-                targetElement.removeEventListener('transitionend', onCloseTransitionEnd); // Remove previous just in case
+                targetElement.removeEventListener('transitionend', onCloseTransitionEnd);
                 targetElement.addEventListener('transitionend', onCloseTransitionEnd);
 
-                // Fallback timeout
                 setTimeout(() => {
                     if (modal.dataset.state === 'closing' && !closeTransitionEnded) {
                         closeTransitionEnded = true;
@@ -992,7 +763,253 @@
                         modal.dataset.state = 'closed';
                         targetElement.removeEventListener('transitionend', onCloseTransitionEnd);
                     }
-                }, duration + 70); // A little buffer
+                }, duration + 70);
             }
+
+            async function openDetailModal(achievementId) {
+                try {
+                    const response = await fetch(`/prestasi/detail/${achievementId}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const achievement = await response.json();
+
+                    // Populate modal-detail
+                    const modalDetail = document.getElementById('modal-detail');
+                    modalDetail.querySelector('#detail-competition-name').textContent = achievement.competition_name;
+                    modalDetail.querySelector('#detail-organizer').textContent = achievement.competition_location;
+                    modalDetail.querySelector('#detail-place').textContent = achievement.place;
+                    modalDetail.querySelector('#detail-level').textContent = achievement.level;
+                    modalDetail.querySelector('#detail-type').textContent = achievement.competition_type;
+                    modalDetail.querySelector('#detail-start-date').textContent = achievement.start_at;
+                    modalDetail.querySelector('#detail-end-date').textContent = achievement.end_at;
+                    modalDetail.querySelector('#detail-registration-deadline').textContent = achievement.assignment_letter_date;
+                    modalDetail.querySelector('#detail-participants').textContent = achievement.partition_number;
+                    modalDetail.querySelector('#detail-url').textContent = achievement.competition_url;
+                    modalDetail.querySelector('#detail-url').href = achievement.competition_url;
+                    modalDetail.querySelector('#detail-description').textContent = achievement.note;
+
+                    // File links
+                    modalDetail.querySelector('#detail-file-assignment-letter').href = achievement.assignment_letter_file_path || '#';
+                    modalDetail.querySelector('#detail-file-certificate').href = achievement.certificate_file_path || '#';
+                    modalDetail.querySelector('#detail-file-activity-photo').href = achievement.activity_photo_file_path || '#';
+                    modalDetail.querySelector('#detail-file-poster').href = achievement.poster_file_path || '#';
+
+                    // Participants (assuming achievement.mahasiswa_achievements is an array of objects with nim, role)
+                    // This part needs to be dynamic based on the actual data structure
+                    // For now, I'll just show placeholders or first few if available
+                    if (achievement.mahasiswa_achievements && achievement.mahasiswa_achievements.length > 0) {
+                        for (let i = 0; i < 3; i++) { // Assuming max 3 participants for now
+                            const participant = achievement.mahasiswa_achievements[i];
+                            if (participant) {
+                                modalDetail.querySelector(`#detail-participant-name-${i + 1}`).textContent = participant.mahasiswa_name || ''; // Assuming mahasiswa_name exists
+                                modalDetail.querySelector(`#detail-participant-role-${i + 1}`).textContent = participant.role || '';
+                            } else {
+                                modalDetail.querySelector(`#detail-participant-name-${i + 1}`).textContent = '';
+                                modalDetail.querySelector(`#detail-participant-role-${i + 1}`).textContent = '';
+                            }
+                        }
+                    } else {
+                        for (let i = 0; i < 3; i++) {
+                            modalDetail.querySelector(`#detail-participant-name-${i + 1}`).textContent = '';
+                            modalDetail.querySelector(`#detail-participant-role-${i + 1}`).textContent = '';
+                        }
+                    }
+
+                    // Supervisor (assuming achievement.supervisor_achievement is an object with name, role)
+                    if (achievement.supervisor_achievement) {
+                        modalDetail.querySelector('#detail-supervisor-name').textContent = achievement.supervisor_achievement.dosen_name || ''; // Assuming dosen_name exists
+                        modalDetail.querySelector('#detail-supervisor-role').textContent = achievement.supervisor_achievement.role || '';
+                    } else {
+                        modalDetail.querySelector('#detail-supervisor-name').textContent = '';
+                        modalDetail.querySelector('#detail-supervisor-role').textContent = '';
+                    }
+
+
+                    // Update status badge in modal-detail
+                    const statusBadgeDetail = modalDetail.querySelector('#detail-status-badge');
+                    let statusText = '';
+                    let statusClass = '';
+                    let statusDotClass = '';
+
+                    switch (achievement.status) {
+                        case 'ACCEPTED':
+                            statusText = 'Terverifikasi';
+                            statusClass = 'bg-green-100 text-green-700';
+                            statusDotClass = 'bg-green-500';
+                            break;
+                        case 'WAITING':
+                            statusText = 'Menunggu';
+                            statusClass = 'bg-yellow-100 text-yellow-700';
+                            statusDotClass = 'bg-yellow-500';
+                            break;
+                        case 'REJECTED':
+                            statusText = 'Ditolak';
+                            statusClass = 'bg-red-100 text-red-700'; // Changed to red for rejected
+                            statusDotClass = 'bg-red-500'; // Changed to red for rejected
+                            break;
+                        case 'REVISION':
+                            statusText = 'Revisi';
+                            statusClass = 'bg-blue-100 text-blue-700'; // Changed to blue for revision
+                            statusDotClass = 'bg-blue-500'; // Changed to blue for revision
+                            break;
+                        default:
+                            statusText = 'Unknown';
+                            statusClass = 'bg-gray-100 text-gray-700';
+                            statusDotClass = 'bg-gray-500';
+                    }
+                    statusBadgeDetail.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold align-middle ' + statusClass);
+                    statusBadgeDetail.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClass}"></span>${statusText}`;
+
+
+                    // Open the correct modal based on status
+                    if (achievement.status === 'WAITING') {
+                        const modalWaiting = document.getElementById('modal-waiting');
+                        modalWaiting.querySelector('#waiting-detail-content').textContent = `Detail untuk prestasi "${achievement.competition_name}" sedang menunggu verifikasi.`;
+                        openModal('modal-waiting');
+                    } else if (achievement.status === 'REJECTED') {
+                        const modalRejected = document.getElementById('modal-rejected');
+                        modalRejected.querySelector('#rejected-competition-name').textContent = achievement.competition_name;
+                        modalRejected.querySelector('#rejected-organizer').textContent = achievement.competition_location;
+                        modalRejected.querySelector('#rejected-place').textContent = achievement.place;
+                        modalRejected.querySelector('#rejected-level').textContent = achievement.level;
+                        modalRejected.querySelector('#rejected-type').textContent = achievement.competition_type;
+                        modalRejected.querySelector('#rejected-start-date').textContent = achievement.start_at;
+                        modalRejected.querySelector('#rejected-end-date').textContent = achievement.end_at;
+                        modalRejected.querySelector('#rejected-participants').textContent = achievement.partition_number;
+                        modalRejected.querySelector('#rejected-url').textContent = achievement.competition_url;
+                        modalRejected.querySelector('#rejected-url').href = achievement.competition_url;
+
+                        modalRejected.querySelector('#rejected-file-assignment-letter').href = achievement.assignment_letter_file_path || '#';
+                        modalRejected.querySelector('#rejected-file-certificate').href = achievement.certificate_file_path || '#';
+                        modalRejected.querySelector('#rejected-file-activity-photo').href = achievement.activity_photo_file_path || '#';
+                        modalRejected.querySelector('#rejected-file-poster').href = achievement.poster_file_path || '#';
+
+                        if (achievement.mahasiswa_achievements && achievement.mahasiswa_achievements.length > 0) {
+                            for (let i = 0; i < 3; i++) {
+                                const participant = achievement.mahasiswa_achievements[i];
+                                if (participant) {
+                                    modalRejected.querySelector(`#rejected-participant-name-${i + 1}`).textContent = participant.mahasiswa_name || '';
+                                    modalRejected.querySelector(`#rejected-participant-role-${i + 1}`).textContent = participant.role || '';
+                                } else {
+                                    modalRejected.querySelector(`#rejected-participant-name-${i + 1}`).textContent = '';
+                                    modalRejected.querySelector(`#rejected-participant-role-${i + 1}`).textContent = '';
+                                }
+                            }
+                        } else {
+                            for (let i = 0; i < 3; i++) {
+                                modalRejected.querySelector(`#rejected-participant-name-${i + 1}`).textContent = '';
+                                modalRejected.querySelector(`#rejected-participant-role-${i + 1}`).textContent = '';
+                            }
+                        }
+
+                        if (achievement.supervisor_achievement) {
+                            modalRejected.querySelector('#rejected-supervisor-name').textContent = achievement.supervisor_achievement.dosen_name || '';
+                            modalRejected.querySelector('#rejected-supervisor-role').textContent = achievement.supervisor_achievement.role || '';
+                        } else {
+                            modalRejected.querySelector('#rejected-supervisor-name').textContent = '';
+                            modalRejected.querySelector('#rejected-supervisor-role').textContent = '';
+                        }
+
+                        modalRejected.querySelector('#rejected-reason-text').textContent = achievement.note; // Assuming 'note' contains rejection reason
+
+                        // Update status badge in modal-rejected
+                        const statusBadgeRejected = modalRejected.querySelector('#rejected-status-badge');
+                        statusBadgeRejected.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ' + statusClass);
+                        statusBadgeRejected.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClass}"></span>${statusText}`;
+
+                        openModal('modal-rejected');
+                    } else if (achievement.status === 'REVISION') {
+                        const modalRevised = document.getElementById('modal-revised');
+                        modalRevised.querySelector('#revised-competition-name').textContent = achievement.competition_name;
+                        modalRevised.querySelector('#revised-organizer').textContent = achievement.competition_location;
+                        modalRevised.querySelector('#revised-place').textContent = achievement.place;
+                        modalRevised.querySelector('#revised-level').textContent = achievement.level;
+                        modalRevised.querySelector('#revised-type').textContent = achievement.competition_type;
+                        modalRevised.querySelector('#revised-start-date').textContent = achievement.start_at;
+                        modalRevised.querySelector('#revised-end-date').textContent = achievement.end_at;
+                        modalRevised.querySelector('#revised-participants').textContent = achievement.partition_number;
+                        modalRevised.querySelector('#revised-url').textContent = achievement.competition_url;
+                        modalRevised.querySelector('#revised-url').href = achievement.competition_url;
+
+                        modalRevised.querySelector('#revised-file-assignment-letter').href = achievement.assignment_letter_file_path || '#';
+                        modalRevised.querySelector('#revised-file-certificate').href = achievement.certificate_file_path || '#';
+                        modalRevised.querySelector('#revised-file-activity-photo').href = achievement.activity_photo_file_path || '#';
+                        modalRevised.querySelector('#revised-file-poster').href = achievement.poster_file_path || '#';
+
+                        if (achievement.mahasiswa_achievements && achievement.mahasiswa_achievements.length > 0) {
+                            for (let i = 0; i < 3; i++) {
+                                const participant = achievement.mahasiswa_achievements[i];
+                                if (participant) {
+                                    modalRevised.querySelector(`#revised-participant-name-${i + 1}`).textContent = participant.mahasiswa_name || '';
+                                    modalRevised.querySelector(`#revised-participant-role-${i + 1}`).textContent = participant.role || '';
+                                } else {
+                                    modalRevised.querySelector(`#revised-participant-name-${i + 1}`).textContent = '';
+                                    modalRevised.querySelector(`#revised-participant-role-${i + 1}`).textContent = '';
+                                }
+                            }
+                        } else {
+                            for (let i = 0; i < 3; i++) {
+                                modalRevised.querySelector(`#revised-participant-name-${i + 1}`).textContent = '';
+                                modalRevised.querySelector(`#revised-participant-role-${i + 1}`).textContent = '';
+                            }
+                        }
+
+                        if (achievement.supervisor_achievement) {
+                            modalRevised.querySelector('#revised-supervisor-name').textContent = achievement.supervisor_achievement.dosen_name || '';
+                            modalRevised.querySelector('#revised-supervisor-role').textContent = achievement.supervisor_achievement.role || '';
+                        } else {
+                            modalRevised.querySelector('#revised-supervisor-name').textContent = '';
+                            modalRevised.querySelector('#revised-supervisor-role').textContent = '';
+                        }
+
+                        modalRevised.querySelector('#revised-reason-text').textContent = achievement.note; // Assuming 'note' contains revision reason
+
+                        // Update status badge in modal-revised
+                        const statusBadgeRevised = modalRevised.querySelector('#revised-status-badge');
+                        statusBadgeRevised.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ' + statusClass);
+                        statusBadgeRevised.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClass}"></span>${statusText}`;
+
+                        openModal('modal-revised');
+                    } else {
+                        openModal('modal-detail');
+                    }
+
+                } catch (error) {
+                    console.error('Error fetching achievement details:', error);
+                    alert('Failed to load achievement details.');
+                }
+            }
+
+            $(document).ready(function() {
+                var table = $('#achievements-table').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    searching: false, // Disable default search bar
+                    lengthChange: false, // Disable "Show X entries" dropdown
+                    ajax: {
+                        url: "{{ route('mahasiswa.prestasi.data') }}",
+                        data: function (d) {
+                            d.search = $('#search').val();
+                            d.kategori = $('#kategori').val();
+                            d.tingkat = $('#tingkat').val();
+                            d.status = $('#status').val();
+                        }
+                    },
+                    columns: [
+                        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                        { data: 'competition_name', name: 'competition_name' },
+                        { data: 'tag_name', name: 'tag_name' },
+                        { data: 'place', name: 'place' },
+                        { data: 'level', name: 'level' },
+                        { data: 'status', name: 'status' },
+                        { data: 'action', name: 'action', orderable: false, searchable: false },
+                    ]
+                });
+
+                $('#filterForm select, #search').on('change keyup', function() {
+                    table.draw();
+                });
+            });
         </script>
 @endsection
