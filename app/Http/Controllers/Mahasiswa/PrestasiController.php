@@ -13,6 +13,7 @@ use App\Models\RoleSupervisor; // Import RoleSupervisor model
 use App\Models\SupervisorAchievement; // Import SupervisorAchievement model
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log; // Import Log facade
+use Illuminate\Support\Facades\Validator; // Import Validator facade
 use App\Enums\CompetitionLevelEnum;
 use App\Enums\AchievementStatusEnum;
 use Yajra\DataTables\DataTables;
@@ -222,7 +223,7 @@ class PrestasiController extends Controller
         }
 
         // 1. Validate the incoming data
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'competition_name' => 'required|string|max:255',
             'competition_name_english' => 'nullable|string|max:255',
             'competition_location' => 'required|string|max:255',
@@ -248,6 +249,15 @@ class PrestasiController extends Controller
             'nidn_dosen.*' => 'required|string|max:255', // Changed from nama_dosen to nidn_dosen
             'peran_dosen.*' => 'required|exists:role_supervisor,id', // Validate against role_supervisor table IDs
         ]);
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error);
+            }
+            return redirect()->back()->withInput();
+        }
+
+        $validatedData = $validator->validated();
 
         // 2. Handle file uploads
         $filePaths = [];
