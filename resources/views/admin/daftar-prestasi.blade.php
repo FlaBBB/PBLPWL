@@ -3,7 +3,7 @@
 @section('content')
     <main class="flex-1 px-10">
         <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg">
-            <h2 class="text-xl font-semibold">Verifikasi Prestasi</h2>
+            <h2 class="text-xl font-semibold">Daftar Prestasi</h2>
             <div class="flex flex-wrap gap-4 pb-4 items-center">
                 <div class="flex flex-wrap gap-4 py-4 items-center w-full">
                     <!-- Search Input -->
@@ -41,21 +41,6 @@
                             <option>Regional</option>
                             <option>Nasional</option>
                             <option>Internasional</option>
-                        </select>
-                        <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                    <!-- Dropdown: Status -->
-                    <div class="relative w-40">
-                        <select
-                            class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Status</option>
-                            <option value="ACCEPTED">Terverifikasi</option>
-                            <option value="WAITING">Menunggu</option>
-                            <option value="REJECTED">Ditolak</option>
-                            <option value="REVISION">Revisi</option>
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -100,10 +85,11 @@
                     <thead class="text-gray-500">
                         <tr class="border-b border-gray-200">
                             <th class="w-[5%] px-4 py-2 text-left">No</th>
-                            <th class="w-[30%] px-2 py-2 text-left">Nama Lomba</th>
-                            <th class="w-[25%] px-2 py-2 text-left">Nama Mahasiswa</th>
+                            <th class="w-[25%] px-2 py-2 text-left">Nama Lomba</th>
+                            <th class="w-[20%] px-2 py-2 text-left">Nama Mahasiswa</th>
                             <th class="w-[10%] px-2 py-2 text-left">Ranking</th>
-                            <th class="w-[15%] px-2 py-2 text-left">Status</th>
+                            <th class="w-[10%] px-2 py-2 text-left">Tingkat</th>
+                            <th class="w-[10%] px-2 py-2 text-left">Bidang</th>
                             <th class="w-[15%] px-2 py-2 text-left">Action</th>
                         </tr>
                     </thead>
@@ -122,43 +108,40 @@
                                 <td class="px-2 py-2">Kompetisi Programming Nasional 2024</td>
                                 <td class="px-2 py-2">Muhammad Alif Febriansyah</td>
                                 <td class="px-2 py-2 text-left">Juara 1</td>
-                                <td class="px-2 py-2">
-                                     @php
-                                        $status = 'WAITING'; 
-                                    @endphp 
-                                     @if($status == 'WAITING') 
-                                        <span
-                                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-[#1e6aae]/10 text-[#1e6aae]">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-[#1e6aae]"></span>
-                                            Perlu Verifikasi
-                                        </span>
-                                     @elseif($status == 'REJECTED') 
-                                        <span
-                                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
-                                            Ditolak
-                                        </span>
-                                     @elseif($status == 'REVISION') 
-                                        <span
-                                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                                            Revisi
-                                        </span>
-                                     @endif 
-                                </td>
-                                <td class="px-2 py-2">
-                                    <button type="button" onclick="openModal('modal-detail')"
-                                        class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white px-2 py-2 rounded text-sm flex items-center gap-1"
-                                        title="Lihat Detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                            stroke="currentColor" class="size-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        </svg>
-                                        Detail
-                                    </button>
+                                <td class="px-2 py-2 text-left">Nasional</td>
+                                <td class="px-2 py-2 text-left">Programming</td>
+                                <td class="px-2 py-2 flex  gap-2">
+                                    <div class="flex space-x-2">
+                                        <button type="button" onclick="openModal('modal-detail')"
+                                            class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white  px-2 py-2 rounded text-xs flex items-center gap-1"
+                                            title="Lihat Detail">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="2" stroke="currentColor" class="size-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" onclick="openModal('modal-edit')"
+                                            class="border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
+                                            title="Edit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="2" stroke="currentColor" class="size-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" onclick="openModal('modal-hapus')"
+                                            class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
+                                            title="Hapus">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="2" stroke="currentColor" class="size-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         @endfor
@@ -325,32 +308,22 @@
                     </div>
                 </div>
 
-                <div class="mt-8 flex justify-end">
-                    <div class="flex gap-3">
-                        <button type="button" onclick="openMessageModal('revision')"
-                            class="px-4 py-2 text-sm font-medium text-amber-500 border border-amber-500 rounded-md hover:bg-amber-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600">
-                            Minta Revisi
-                        </button>
-                        <button type="button" onclick="openMessageModal('reject')"
-                            class="px-4 py-2 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">
-                            Tolak
-                        </button>
-                        <button type="button" onclick="handleVerification('approve')"
-                            class="px-4 py-2 text-sm font-medium text-[#1E6AAE] border border-[#1E6AAE] rounded-md hover:bg-[#1E6AAE] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
-                            Verifikasi
-                        </button>
-                    </div>
+                <div class="mt-8 text-right">
+                    <button type="button" onclick="closeModal('modal-detail')"
+                        class="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400">
+                        Tutup
+                    </button>
                 </div>
             </div>
         </div>
 
-        {{-- MODAL MESSAGE (untuk revisi dan tolak) --}}
-        <div id="modal-message"
-            class="fixed inset-0 z-60 flex items-start justify-center bg-gray-900/70 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out pt-16 sm:pt-20 overflow-y-auto"
+        {{-- MODAL HAPUS PRESTASI --}}
+        <div id="modal-hapus"
+            class="fixed inset-0 z-50 flex items-start justify-center bg-gray-900/70 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out pt-16 sm:pt-20 overflow-y-auto"
             data-state="closed">
             <div
                 class="modal-dialog bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 sm:p-8 transform -translate-y-full scale-95 transition-all duration-500 ease-out">
-                <button type="button" onclick="closeModal('modal-message')"
+                <button type="button" onclick="closeModal('modal-hapus')"
                     class="absolute top-3 right-3 p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -359,38 +332,247 @@
                     </svg>
                 </button>
                 <div class="text-center">
-                    <div id="message-icon" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4">
-                        <!-- Icon will be set dynamically -->
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                        <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z">
+                            </path>
+                        </svg>
                     </div>
-                    <h3 id="message-title" class="text-lg font-medium text-gray-900 mb-2">
-                        <!-- Title will be set dynamically -->
-                    </h3>
-                    <div class="mb-4">
-                        <label for="message-text" class="block text-sm font-medium text-gray-700 mb-2 text-left">
-                            <span id="message-label">Pesan:</span>
-                        </label>
-                        <textarea id="message-text" rows="4"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                            placeholder="Masukkan pesan..."></textarea>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Hapus Data Prestasi</h3>
+                    <div class="mb-4 space-y-4">
+                        <p class="text-sm text-gray-500 mb-2">
+                            Apakah Anda yakin ingin menghapus data prestasi berikut?
+                        </p>
+                        <div class="bg-gray-50 p-3 space-y-2 rounded-lg text-left">
+                            <div class="text-sm"><strong>Nama Lomba:</strong> Kompetisi Programming Nasional 2024</div>
+                            <div class="text-sm"><strong>Mahasiswa:</strong> Muhammad Alif Febriansyah</div>
+                            <div class="text-sm"><strong>Ranking:</strong> Juara 1</div>
+                        </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-3 justify-end">
-                        <button type="button" onclick="closeModal('modal-message')"
+                        <button type="button" onclick="closeModal('modal-hapus')"
                             class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Batal
                         </button>
-                        <button type="button" id="confirm-action-btn" onclick="confirmAction()"
-                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2">
-                            <!-- Button text and color will be set dynamically -->
+                        <button type="button" onclick=""
+                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Hapus
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- MODAL EDIT PRESTASI --}}
+        <div id="modal-edit"
+            class="fixed inset-0 z-50 flex items-start justify-center bg-gray-900/70 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out py-8 item-center overflow-y-auto"
+            data-state="closed">
+            <div
+                class="modal-dialog bg-white rounded-md shadow-2xl max-w-5xl w-full p-6 sm:p-8 transform -translate-y-full scale-95 transition-all duration-500 ease-out">
+                <button type="button" onclick="closeModal('modal-edit')"
+                    class="absolute top-3 right-3 p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+                <h3 class="text-xl font-semibold mb-6 text-gray-800">Edit Data Prestasi</h3>
+
+                <form class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Kolom Kiri -->
+                    <div class="space-y-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">Data Lomba</h4>
+                        <table class="w-full text-gray-800 text-left text-sm">
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Nama Lomba</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <input type="text" name="nama_lomba" value="Kompetisi Programming Nasional 2024"
+                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Penyelenggara</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <input type="text" name="penyelenggara" value="Universitas Indonesia"
+                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Ranking</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <select name="ranking"
+                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                        <option value="Juara 1" selected>Juara 1</option>
+                                        <option value="Juara 2">Juara 2</option>
+                                        <option value="Juara 3">Juara 3</option>
+                                        <option value="Juara Harapan">Juara Harapan</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tingkat Lomba</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <select name="tingkat_lomba"
+                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                        <option value="Lokal">Lokal</option>
+                                        <option value="Regional">Regional</option>
+                                        <option value="Nasional" selected>Nasional</option>
+                                        <option value="Internasional">Internasional</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Bidang</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <select name="bidang"
+                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                        <option value="Programming" selected>Programming</option>
+                                        <option value="UI/UX Design">UI/UX Design</option>
+                                        <option value="Data Science">Data Science</option>
+                                        <option value="Cyber Security">Cyber Security</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tanggal Mulai</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <input type="date" name="tanggal_mulai" value="2024-10-15"
+                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tanggal Berakhir</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <input type="date" name="tanggal_berakhir" value="2024-10-17"
+                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Jumlah Peserta</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <input type="text" name="jumlah_peserta" value="150 Tim"
+                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">URL Lomba</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <input type="url" name="url_lomba" value="https://programming-contest.ui.ac.id"
+                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Kolom Kanan -->
+                    <div class="space-y-4">
+                        <!-- Data Mahasiswa -->
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Data Mahasiswa</h4>
+                            <table class="w-full text-gray-800 text-left text-sm">
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Nama Mahasiswa
+                                    </td>
+                                    <td class="border border-gray-200 px-3 py-2">
+                                        <input type="text" name="nama_mahasiswa" value="Muhammad Alif Febriansyah"
+                                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Role Mahasiswa</td>
+                                    <td class="border border-gray-200 px-3 py-2">
+                                        <select name="role_mahasiswa"
+                                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                            <option value="Ketua Tim" selected>Ketua Tim</option>
+                                            <option value="Anggota Tim">Anggota Tim</option>
+                                            <option value="Individual">Individual</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Data Dosen Pembimbing -->
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Data Dosen Pembimbing</h4>
+                            <table class="w-full text-gray-800 text-left text-sm">
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Nama Dosen
+                                    </td>
+                                    <td class="border border-gray-200 px-3 py-2">
+                                        <input type="text" name="nama_dosen" value="Dr. Ahmad Suryanto, M.Kom"
+                                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Role Dosen</td>
+                                    <td class="border border-gray-200 px-3 py-2">
+                                        <select name="role_dosen"
+                                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                            <option value="Pembimbing Utama" selected>Pembimbing Utama</option>
+                                            <option value="Pembimbing Pendamping">Pembimbing Pendamping</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Dokumen</h4>
+                            <table class="w-full text-gray-800 text-left text-sm">
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Surat Tugas
+                                    </td>
+                                    <td class="border border-gray-200 px-3 py-2">
+                                        <input type="file" name="file_surat_tugas" accept=".pdf,.doc,.docx"
+                                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Sertifikat</td>
+                                    <td class="border border-gray-200 px-3 py-2">
+                                        <input type="file" name="file_sertifikat" accept=".pdf,.jpg,.jpeg,.png"
+                                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Poster</td>
+                                    <td class="border border-gray-200 px-3 py-2">
+                                        <input type="file" name="file_poster" accept=".jpg,.jpeg,.png,.pdf"
+                                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Foto Kegiatan</td>
+                                    <td class="border border-gray-200 px-3 py-2">
+                                        <input type="file" name="foto_kegiatan" accept=".jpg,.jpeg,.png"
+                                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" onclick="closeModal('modal-edit')"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        Batal
+                    </button>
+                    <button type="button"
+                        class="px-4 py-2 text-sm font-medium text-white bg-[#1e6aae] border border-transparent rounded-md hover:bg-[#17497C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1e6aae]">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <script>
-        let currentAction = '';
 
+    <script>
         // Prevent default behavior dan event bubbling
         function openModal(modalId, event) {
             if (event) {
@@ -507,74 +689,9 @@
             }
         }
 
-        function handleVerification(action) {
-            if (action === 'approve') {
-                // Handle direct approval without message
-                console.log('Prestasi diverifikasi');
-                // Add your approval logic here
-                closeModal('modal-detail');
-            }
-        }
-
-        function openMessageModal(action) {
-            currentAction = action;
-            const messageIcon = document.getElementById('message-icon');
-            const messageTitle = document.getElementById('message-title');
-            const messageLabel = document.getElementById('message-label');
-            const confirmBtn = document.getElementById('confirm-action-btn');
-
-            if (action === 'revision') {
-                messageIcon.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 mb-4';
-                messageIcon.innerHTML = `
-                        <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                        </svg>
-                    `;
-                messageTitle.textContent = 'Minta Revisi Prestasi';
-                messageLabel.textContent = 'Alasan revisi:';
-                confirmBtn.textContent = 'Kirim Revisi';
-                confirmBtn.className = 'w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-yellow-600 border border-transparent rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500';
-            } else if (action === 'reject') {
-                messageIcon.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4';
-                messageIcon.innerHTML = `
-                        <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    `;
-                messageTitle.textContent = 'Tolak Prestasi';
-                messageLabel.textContent = 'Alasan penolakan:';
-                confirmBtn.textContent = 'Tolak Prestasi';
-                confirmBtn.className = 'w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500';
-            }
-
-            // Clear previous message
-            document.getElementById('message-text').value = '';
-            openModal('modal-message');
-        }
-
-        function confirmAction() {
-            const message = document.getElementById('message-text').value.trim();
-
-            if (!message) {
-                alert('Pesan tidak boleh kosong!');
-                return;
-            }
-
-            if (currentAction === 'revision') {
-                console.log('Prestasi diminta revisi dengan pesan:', message);
-                // Add your revision logic here
-            } else if (currentAction === 'reject') {
-                console.log('Prestasi ditolak dengan pesan:', message);
-                // Add your rejection logic here
-            }
-
-            closeModal('modal-message');
-            closeModal('modal-detail');
-        }
-
         // Close modal when clicking outside
         document.addEventListener('click', function (event) {
-            const modals = ['modal-detail', 'modal-message'];
+            const modals = ['modal-detail', 'modal-edit', 'modal-hapus', 'modal-tambah'];
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && modal.dataset.state === 'opened') {
@@ -582,6 +699,15 @@
                         closeModal(modalId, event);
                     }
                 }
+            });
+        });
+
+        // Prevent form submission in modals
+        document.querySelectorAll('#modal-edit form, #modal-tambah form').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                // Handle form submission via AJAX here
+                console.log('Form submitted via AJAX');
             });
         });
     </script>

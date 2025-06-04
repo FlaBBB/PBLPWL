@@ -533,7 +533,7 @@
                             <td class="border border-gray-200 px-3 py-2" id="revised-participants"></td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">URL prestasi
+                            <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 whitespace-nowrap">URL Lomba
                             </td>
                             <td class="border border-gray-200 px-3 py-2"><a id="revised-url" href="#" target="_blank" class="text-blue-600 hover:underline"></a></td>
                         </tr>
