@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Enums\UserRoleEnum;
+use App\Helpers\NotificationHelper;
 
 class AuthController extends Controller
 {
@@ -29,6 +30,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            NotificationHelper::success('Login successful!');
 
             $user = Auth::user();
             switch ($user->role->value) {
@@ -45,9 +47,9 @@ class AuthController extends Controller
         }
 
 
+        NotificationHelper::error('Login failed. Please check your username and password.');
         return back()->withErrors([
             'username' => 'The provided credentials do not match our records.',
-            'error' => 'Login failed. Please check your username and password.',
         ])->onlyInput('username');
     }
 
