@@ -8,10 +8,16 @@ use App\Models\Achievement;
 use App\Models\Mahasiswa;
 use App\Models\Tag;
 use App\Models\MahasiswaAchievement;
+use App\Models\Dosen; // Import Dosen model
+use App\Models\RoleSupervisor; // Import RoleSupervisor model
+use App\Models\SupervisorAchievement; // Import SupervisorAchievement model
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log; // Import Log facade
+use Illuminate\Support\Facades\Validator; // Import Validator facade
 use App\Enums\CompetitionLevelEnum;
 use App\Enums\AchievementStatusEnum;
 use Yajra\DataTables\DataTables;
+use App\Helpers\NotificationHelper; // Import NotificationHelper
 
 class PrestasiController extends Controller
 {
@@ -31,7 +37,8 @@ class PrestasiController extends Controller
         $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
 
         if (!$mahasiswa) {
-            return redirect()->back()->with('error', 'Mahasiswa data not found.');
+            NotificationHelper::error('Mahasiswa data not found.');
+            return redirect()->back();
         }
 
         $query = Achievement::query()
@@ -188,13 +195,147 @@ class PrestasiController extends Controller
         ];
         $headerTitle = 'Prestasi';
         $headerDesc = 'Jelajahi daftar prestasi dan tambahkan prestasi baru dengan mudah.';
+        $tags = Tag::orderBy('name')->get(); // Fetch all tags ordered lexically by name
+        $mahasiswaList = Mahasiswa::orderBy('name')->get(['nim', 'name']); // Fetch all mahasiswa
+        $dosenList = Dosen::orderBy('name')->get(['nidn', 'name']); // Fetch all dosen
+        $roleSupervisorList = RoleSupervisor::orderBy('description')->get(['id', 'description']); // Fetch all roles for supervisors
+
         return view('mahasiswa.prestasi.tambah-prestasi', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
+            'tags' => $tags, // Pass tags to the view
+            'mahasiswaList' => $mahasiswaList, // Pass mahasiswa list to the view
+            'dosenList' => $dosenList, // Pass dosen list to the view
+            'roleSupervisorList' => $roleSupervisorList, // Pass role supervisor list to the view
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
+
+        if (!$mahasiswa) {
+            NotificationHelper::error('Mahasiswa data not found.');
+            return redirect()->back();
+        }
+
+        // 1. Validate the incoming data
+        $validator = Validator::make($request->all(), [
+            'competition_name' => 'required|string|max:255',
+            'competition_name_english' => 'nullable|string|max:255',
+            'competition_location' => 'required|string|max:255',
+            'competition_location_english' => 'nullable|string|max:255',
+            'assignment_letter_number' => 'required|string|max:255',
+            'assignment_letter_date' => 'required|date',
+            'pt_partition_number' => 'required|integer',
+            'partition_number' => 'required|integer',
+            'place' => 'required|integer',
+            'level' => 'required|in:' . implode(',', array_column(CompetitionLevelEnum::cases(), 'value')),
+            'competition_type' => 'required|string|max:255',
+            'start_at' => 'required|date',
+            'end_at' => 'required|date|after_or_equal:start_at',
+            'competition_url' => 'nullable|url|max:255',
+            'note' => 'nullable|string',
+            'file_assignment_letter' => 'required|file|mimes:pdf|max:2048', // 2MB Max
+            'file_certificate' => 'required|file|mimes:pdf|max:2048',
+            'file_poster' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'file_activity_photo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'nim_mahasiswa.*' => 'required|string|max:255', // Changed from nama_mahasiswa to nim_mahasiswa
+            'peran_mahasiswa.*' => 'required|in:LEADER,MEMBER,PERSONAL', // Updated roles based on MahasiswaAchievementRoleEnum
+            'tags_mahasiswa.*' => 'nullable|exists:tag,id', // Validate against tag table IDs
+            'nidn_dosen.*' => 'required|string|max:255', // Changed from nama_dosen to nidn_dosen
+            'peran_dosen.*' => 'required|exists:role_supervisor,id', // Validate against role_supervisor table IDs
+        ]);
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error);
+            }
+            return redirect()->back()->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        // 2. Handle file uploads
+        $filePaths = [];
+        foreach (['file_assignment_letter', 'file_certificate', 'file_poster', 'file_activity_photo'] as $fileField) {
+            if ($request->hasFile($fileField)) {
+                $fileName = time() . '_' . $request->file($fileField)->getClientOriginalName();
+                $filePath = $request->file($fileField)->storeAs('uploads/achievements', $fileName, 'public');
+                $filePaths[$fileField] = $filePath;
+            }
+        }
+
+        // 3. Create a new Achievement record
+        $achievement = Achievement::create([
+            'upload_at' => now(),
+            'competition_type' => $validatedData['competition_type'],
+            'competition_name' => $validatedData['competition_name'],
+            'competition_name_english' => $validatedData['competition_name_english'],
+            'competition_location' => $validatedData['competition_location'],
+            'competition_location_english' => $validatedData['competition_location_english'],
+            'competition_url' => $validatedData['competition_url'],
+            'start_at' => $validatedData['start_at'],
+            'end_at' => $validatedData['end_at'],
+            'pt_partition_number' => $validatedData['pt_partition_number'],
+            'partition_number' => $validatedData['partition_number'],
+            'assignment_letter_number' => $validatedData['assignment_letter_number'],
+            'assignment_letter_date' => $validatedData['assignment_letter_date'],
+            'file_assignment_letter' => $filePaths['file_assignment_letter'] ?? null,
+            'file_certificate' => $filePaths['file_certificate'] ?? null,
+            'file_activity_photo' => $filePaths['file_activity_photo'] ?? null,
+            'file_poster' => $filePaths['file_poster'] ?? null,
+            'level' => CompetitionLevelEnum::from($validatedData['level']),
+            'place' => $validatedData['place'],
+            'status' => AchievementStatusEnum::WAITING, // Default status
+            'note' => $validatedData['note'],
+            'verificator' => null, // Will be set by admin
+            'verified_at' => null,
+        ]);
+
+        // 4. Associate the achievement with Mahasiswa
+        if (isset($validatedData['nim_mahasiswa'])) {
+            foreach ($validatedData['nim_mahasiswa'] as $key => $nim_mahasiswa) {
+                $mahasiswaRecord = Mahasiswa::where('nim', $nim_mahasiswa)->first();
+                if (!$mahasiswaRecord) {
+                    // If mahasiswa not found, log a warning and skip or handle as appropriate
+                    Log::warning("Mahasiswa with NIM '{$nim_mahasiswa}' not found when creating achievement.");
+                    continue; // Skip this entry if student not found
+                }
+
+                MahasiswaAchievement::create([
+                    'nim' => $mahasiswaRecord->nim,
+                    'id_achievement' => $achievement->id,
+                    'role' => $validatedData['peran_mahasiswa'][$key],
+                    'id_tag' => $validatedData['tags_mahasiswa'][$key] ?? null,
+                ]);
+            }
+        }
+
+        // 5. Associate the achievement with Dosen (Supervisors)
+        if (isset($validatedData['nidn_dosen'])) {
+            foreach ($validatedData['nidn_dosen'] as $key => $nidn_dosen) {
+                $dosenRecord = Dosen::where('nidn', $nidn_dosen)->first();
+                if ($dosenRecord) {
+                    SupervisorAchievement::create([
+                        'nidn' => $dosenRecord->nidn,
+                        'id_achievement' => $achievement->id,
+                        'role' => $validatedData['peran_dosen'][$key],
+                    ]);
+                } else {
+                    Log::warning("Dosen with NIDN '{$nidn_dosen}' not found when creating achievement.");
+                }
+            }
+        }
+
+
+        NotificationHelper::success('Prestasi berhasil ditambahkan!');
+        return redirect()->route('mahasiswa.daftar-prestasi');
+    }
+
     public function detail($id)
     {
         $achievement = Achievement::find($id);
