@@ -52,8 +52,7 @@ class PrestasiController extends Controller
         if ($request->has('search') && $request->input('search') != '') {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
-                $q->where('achievement.competition_name', 'like', '%' . $search . '%')
-                  ->orWhere('achievement.competition_type', 'like', '%' . $search . '%');
+                $q->where('achievement.competition_name', 'like', '%' . $search . '%');
             });
         }
 
@@ -138,7 +137,7 @@ class PrestasiController extends Controller
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tag_name', function($achievement) {
-                return $achievement->tag_name ?? $achievement->competition_type;
+                return $achievement->tag_name;
             })
             ->addColumn('level', function($achievement) {
                 return $achievement->level->value;
@@ -234,7 +233,6 @@ class PrestasiController extends Controller
             'partition_number' => 'required|integer',
             'place' => 'required|integer',
             'level' => 'required|in:' . implode(',', array_column(CompetitionLevelEnum::cases(), 'value')),
-            'competition_type' => 'required|string|max:255',
             'start_at' => 'required|date',
             'end_at' => 'required|date|after_or_equal:start_at',
             'competition_url' => 'nullable|url|max:255',
@@ -272,7 +270,6 @@ class PrestasiController extends Controller
         // 3. Create a new Achievement record
         $achievement = Achievement::create([
             'upload_at' => now(),
-            'competition_type' => $validatedData['competition_type'],
             'competition_name' => $validatedData['competition_name'],
             'competition_name_english' => $validatedData['competition_name_english'],
             'competition_location' => $validatedData['competition_location'],
