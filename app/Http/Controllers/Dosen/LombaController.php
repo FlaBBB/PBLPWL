@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Competition; // Assuming you have a Competition model
 
 class LombaController extends Controller
 {
@@ -20,11 +21,15 @@ class LombaController extends Controller
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
 
+        $competition = Competition::with('tags')->paginate(request('perPage', 9)); // Fetch the competition by ID
+
+
         return view('dosen.daftar-lomba', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
+            'competition' => $competition,
         ]);
     }
 
@@ -47,7 +52,7 @@ class LombaController extends Controller
             'headerDesc' => $headerDesc,
         ]);
     }
-    public function detail()
+    public function detail($id)
     {
         $activeMenu = 'daftar-lomba';
         $breadcrumbs = [
@@ -57,16 +62,20 @@ class LombaController extends Controller
             ],
             [
                 'label' => 'Detail Lomba',
-                'url' => route('dosen.detail-lomba')
+                'url' => route('dosen.detail-lomba', $id)
             ],
         ];
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
+
+        $competition = Competition::with('tags')->findOrFail($id); // Fetch the competition by ID
+
         return view('dosen.detail-lomba', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
+            'competition' => $competition,
         ]);
     }
     public function histori()

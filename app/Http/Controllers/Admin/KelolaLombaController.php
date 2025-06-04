@@ -24,7 +24,6 @@ class KelolaLombaController extends Controller
 
         $competition = Competition::with('tags')->paginate(request('perPage', 9)); // Fetch the competition by ID
 
-
         return view('admin.daftar-lomba', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
