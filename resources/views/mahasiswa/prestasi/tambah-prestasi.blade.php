@@ -109,6 +109,9 @@
                         </div>
                     </div>
 
+                    <!-- Competition Type (Hidden Field) -->
+                    <input type="hidden" id="competition_type" name="competition_type" value="Lomba">
+
                     <!-- Tanggal Mulai -->
                     <div class="flex items-center space-x-4">
                         <label for="start_at" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tanggal
@@ -165,328 +168,322 @@
                         <input type="file" id="file_activity_photo" name="file_activity_photo" accept="image/*"
                             class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
                     </div>
+                    <!-- Data Mahasiswa -->
+                    <div class="relative p-8 pt-14 mt-4 border border-gray-200 rounded-sm">
+                        <div class="absolute inset-x-0 top-0 h-10 w-full bg-[#1e6aae] flex rounded-t-md items-center">
+                            <span class="text-white font-medium pl-4">Data Mahasiswa</span>
+                        </div>
+                        <div class="mt-4 overflow-x-auto">
+                            <table class="w-full text-sm text-left text-gray-500 border border-gray-300">
+                                <thead class="text-xs text-gray-700 border-b border-gray-300">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">
+                                            No
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">
+                                            Nama Mahasiswa
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">
+                                            Peran
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">
+                                            Tags
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Aksi
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mahasiswaTableBody">
+                                    <tr class="bg-white border-b border-gray-300">
+                                        <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
+                                            1
+                                        </td>
+                                        <td class="px-6 py-2 border-r border-gray-300">
+                                            <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                                                <option value="">Pilih Mahasiswa</option>
+                                                @foreach ($mahasiswaList as $mhs)
+                                                    <option value="{{ $mhs->nim }}">{{ $mhs->nim }} - {{ $mhs->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td class="px-6 py-2 border-r border-gray-300">
+                                            <select name="peran_mahasiswa[]"
+                                                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
+                                                <option value="peserta">Personal</option>
+                                                <option value="ketua">Ketua</option>
+                                                <option value="anggota">Anggota</option>
+                                            </select>
+                                        </td>
+                                        <td class="px-6 py-2 border-r border-gray-300">
+                                            <select name="tags_mahasiswa[]" class="tag-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
+                                                <option value="">Pilih Tag</option>
+                                                @foreach ($tags as $tag)
+                                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td class="w-1/8 px-4 py-2">
+                                            <button type="button"
+                                                class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                                Hapus
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-4 text-left">
+                            <button id="addMahasiswa"
+                                class="text-sm bg-green-600 text-white px-5 py-2 rounded-md hover:bg-green-700  transition flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                Tambah Mahasiswa
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Data Dosen -->
+                    <div class="relative p-8 pt-14 mt-4 border border-gray-200 rounded-sm">
+                        <div class="absolute inset-x-0 top-0 h-10 w-full bg-[#1e6aae] flex rounded-t-md items-center">
+                            <span class="text-white font-medium pl-4">Data Dosen</span>
+                        </div>
+                        <div class="mt-4 overflow-x-auto">
+                            <table class="w-full text-sm text-left text-gray-500 border border-gray-300">
+                                <thead class="text-xs text-gray-700 border-b border-gray-300">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">No</th>
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">Nama Dosen</th>
+                                        <th scope="col" class="px-6 py-3 border-r border-gray-300">Peran</th>
+                                        <th scope="col" class="px-6 py-3">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dosenTableBody">
+                                    <tr class="bg-white border-b border-gray-300">
+                                        <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">1</td>
+                                        {{-- kalau nurut SIAKAD, ini nanti select nama mahasiswa, coba lihat yang tambah kompetisi di SIAKAD --}}
+                                        <td class="px-6 py-2 border-r border-gray-300">
+                                            <select name="nidn_dosen[]" class="dosen-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                                                <option value="">Pilih Dosen</option>
+                                                @foreach ($dosenList as $dosen)
+                                                    <option value="{{ $dosen->nidn }}">{{ $dosen->nidn }} - {{ $dosen->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        {{-- FIk iki aku bingung peran e opo wae --}}
+                                        <td class="px-6 py-2 border-r border-gray-300">
+                                            <select name="peran_dosen[]"
+                                                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                                                <option disabled selected hidden>Pilih Peran</option>
+                                                @foreach ($roleSupervisorList as $role)
+                                                    <option value="{{ $role->id }}">{{ $role->description }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td class="w-1/8 px-4 py-2">
+                                            <button type="button"
+                                                class="removeDosen border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                                Hapus
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-4 text-left">
+                            <button id="addDosen"
+                                class="text-sm bg-green-600 text-white px-5 py-2 rounded-md hover:bg-green-700 transition flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                Tambah Dosen
+                            </button>
+                        </div>
+                    </div>
+
                 </form>
-            </div>
-            <!-- Data Mahasiswa -->
-            <div class="relative p-8 pt-14 mt-4 border border-gray-200 rounded-sm">
-                <div class="absolute inset-x-0 top-0 h-10 w-full bg-[#1e6aae] flex rounded-t-md items-center">
-                    <span class="text-white font-medium pl-4">Data Mahasiswa</span>
-                </div>
-                <div class="mt-4 overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 border border-gray-300">
-                        <thead class="text-xs text-gray-700 border-b border-gray-300">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 border-r border-gray-300">
-                                    No
-                                </th>
-                                <th scope="col" class="px-6 py-3 border-r border-gray-300">
-                                    Nama Mahasiswa
-                                </th>
-                                <th scope="col" class="px-6 py-3 border-r border-gray-300">
-                                    Peran
-                                </th>
-                                <th scope="col" class="px-6 py-3 border-r border-gray-300">
-                                    Tags
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Aksi
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="mahasiswaTableBody">
-                            <tr class="bg-white border-b border-gray-300">
-                                <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
-                                    1
-                                </td>
-                                <td class="px-6 py-2 border-r border-gray-300">
-                                    <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
-                                        <option value="">Pilih Mahasiswa</option>
-                                        @foreach ($mahasiswaList as $mhs)
-                                            <option value="{{ $mhs->nim }}">{{ $mhs->nim }} - {{ $mhs->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="px-6 py-2 border-r border-gray-300">
-                                    <select name="peran_mahasiswa[]"
-                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                                        <option value="peserta">Personal</option>
-                                        <option value="ketua">Ketua</option>
-                                        <option value="anggota">Anggota</option>
-                                    </select>
-                                </td>
-                                <td class="px-6 py-2 border-r border-gray-300">
-                                    <select name="tags_mahasiswa[]" class="tag-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                                        <option value="">Pilih Tag</option>
-                                        @foreach ($tags as $tag)
-                                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="w-1/8 px-4 py-2">
-                                    <button type="button"
-                                        class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                        Hapus
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-4 text-left">
-                    <button id="addMahasiswa"
-                        class="text-sm bg-green-600 text-white px-5 py-2 rounded-md hover:bg-green-700  transition flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Tambah Mahasiswa
-                    </button>
-                </div>
-            </div>
-
-            <!-- Data Dosen -->
-            <div class="relative p-8 pt-14 mt-4 border border-gray-200 rounded-sm">
-                <div class="absolute inset-x-0 top-0 h-10 w-full bg-[#1e6aae] flex rounded-t-md items-center">
-                    <span class="text-white font-medium pl-4">Data Dosen</span>
-                </div>
-                <div class="mt-4 overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 border border-gray-300">
-                        <thead class="text-xs text-gray-700 border-b border-gray-300">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 border-r border-gray-300">No</th>
-                                <th scope="col" class="px-6 py-3 border-r border-gray-300">Nama Dosen</th>
-                                <th scope="col" class="px-6 py-3 border-r border-gray-300">Peran</th>
-                                <th scope="col" class="px-6 py-3">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dosenTableBody">
-                            <tr class="bg-white border-b border-gray-300">
-                                <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">1</td>
-                                {{-- kalau nurut SIAKAD, ini nanti select nama mahasiswa, coba lihat yang tambah kompetisi di SIAKAD --}}
-                                <td class="px-6 py-2 border-r border-gray-300">
-                                    <select name="nidn_dosen[]" class="dosen-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
-                                        <option value="">Pilih Dosen</option>
-                                        @foreach ($dosenList as $dosen)
-                                            <option value="{{ $dosen->nidn }}">{{ $dosen->nidn }} - {{ $dosen->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                {{-- FIk iki aku bingung peran e opo wae --}}
-                                <td class="px-6 py-2 border-r border-gray-300">
-                                    <select name="peran_dosen[]"
-                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
-                                        <option disabled selected hidden>Pilih Peran</option>
-                                        @foreach ($roleSupervisorList as $role)
-                                            <option value="{{ $role->id }}">{{ $role->description }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="w-1/8 px-4 py-2">
-                                    <button type="button"
-                                        class="removeDosen border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                        Hapus
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-4 text-left">
-                    <button id="addDosen"
-                        class="text-sm bg-green-600 text-white px-5 py-2 rounded-md hover:bg-green-700 transition flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Tambah Dosen
-                    </button>
-                </div>
-            </div>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const addMahasiswaButton = document.getElementById('addMahasiswa');
-                    const mahasiswaTableBody = document.getElementById('mahasiswaTableBody');
-                    const addDosenButton = document.getElementById('addDosen');
-                    const dosenTableBody = document.getElementById('dosenTableBody');
-
-                    const tags = @json($tags);
-                    const mahasiswaList = @json($mahasiswaList);
-                    const dosenList = @json($dosenList);
-                    const roleSupervisorList = @json($roleSupervisorList);
-
-                    // Initialize Select2 for existing elements
-                    $('.mahasiswa-select').select2({
-                        placeholder: "Pilih Mahasiswa",
-                        allowClear: true,
-                        dropdownParent: $('#mahasiswaTableBody').closest('.relative') // Ensure dropdown is within the form
-                    });
-                    $('.dosen-select').select2({
-                        placeholder: "Pilih Dosen",
-                        allowClear: true,
-                        dropdownParent: $('#dosenTableBody').closest('.relative') // Ensure dropdown is within the form
-                    });
-                    $('.tag-select').select2({
-                        placeholder: "Pilih Tag",
-                        allowClear: true,
-                        dropdownParent: $('#mahasiswaTableBody').closest('.relative') // Ensure dropdown is within the form
-                    });
-
-
-                    addMahasiswaButton.addEventListener('click', function () {
-                        const newRow = document.createElement('tr');
-                        newRow.classList.add('bg-white', 'border-b', 'border-gray-300');
-
-                        const rowCount = mahasiswaTableBody.children.length + 1;
-
-                        newRow.innerHTML = `
-                            <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
-                                ${rowCount}
-                            </td>
-                            <td class="px-6 py-2 border-r border-gray-300">
-                                <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
-                                    <option value="">Pilih Mahasiswa</option>
-                                    ${mahasiswaList.map(mhs => `<option value="${mhs.nim}">${mhs.nim} - ${mhs.name}</option>`).join('')}
-                                </select>
-                            </td>
-                            <td class="px-6 py-2 border-r border-gray-300">
-                                <select name="peran_mahasiswa[]" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                                    <option value="PERSONAL">Personal</option>
-                                    <option value="LEADER">Ketua</option>
-                                    <option value="MEMBER">Anggota</option>
-                                </select>
-                            </td>
-                            <td class="px-6 py-2 border-r border-gray-300">
-                                <select name="tags_mahasiswa[]" class="tag-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
-                                    <option value="">Pilih Tag</option>
-                                    ${tags.map(tag => `<option value="${tag.id}">${tag.name}</option>`).join('')}
-                                </select>
-                            </td>
-                            <td class="w-1/8 px-4 py-2">
-                                <button type="button" class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                    Hapus
-                                </button>
-                            </td>
-                        `;
-
-                        mahasiswaTableBody.appendChild(newRow);
-
-                        // Initialize Select2 for the newly added row
-                        $(newRow).find('.mahasiswa-select').select2({
-                            placeholder: "Pilih Mahasiswa",
-                            allowClear: true,
-                            dropdownParent: $(newRow).find('.mahasiswa-select').closest('td')
-                        });
-                        $(newRow).find('.tag-select').select2({
-                            placeholder: "Pilih Tag",
-                            allowClear: true,
-                            dropdownParent: $(newRow).find('.tag-select').closest('td')
-                        });
-
-                    });
-
-                    mahasiswaTableBody.addEventListener('click', function (event) {
-                        const removeButton = event.target.closest('.removeMahasiswa');
-                        if (removeButton) {
-                            event.preventDefault(); // Prevent default button action
-                            if (mahasiswaTableBody.children.length > 1) {
-                                removeButton.closest('tr').remove();
-                                updateRowNumbers(mahasiswaTableBody);
-                            } else {
-                                alert('Minimal harus ada satu data Mahasiswa.');
-                            }
-                        }
-                    });
-
-
-                    addDosenButton.addEventListener('click', function () {
-                        const newRow = document.createElement('tr');
-                        newRow.classList.add('bg-white', 'border-b', 'border-gray-300');
-
-                        const rowCount = dosenTableBody.children.length + 1;
-
-                        newRow.innerHTML = `
-                            <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
-                                ${rowCount}
-                            </td>
-                            <td class="px-6 py-2 border-r border-gray-300">
-                                <select name="nidn_dosen[]" class="dosen-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
-                                    <option value="">Pilih Dosen</option>
-                                    ${dosenList.map(dosen => `<option value="${dosen.nidn}">${dosen.nidn} - ${dosen.name}</option>`).join('')}
-                                </select>
-                            </td>
-                            <td class="px-6 py-2 border-r border-gray-300">
-                                <select name="peran_dosen[]" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
-                                    <option disabled selected hidden>Pilih Peran</option>
-                                    ${roleSupervisorList.map(role => `<option value="${role.id}">${role.description}</option>`).join('')}
-                                </select>
-                            </td>
-                            <td class="w-1/8 px-4 py-2">
-                                <button type="button" class="removeDosen border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                    Hapus
-                                </button>
-                            </td>
-                        `;
-
-                        dosenTableBody.appendChild(newRow);
-
-                        // Initialize Select2 for the newly added row
-                        $(newRow).find('.dosen-select').select2({
-                            placeholder: "Pilih Dosen",
-                            allowClear: true,
-                            dropdownParent: $(newRow).find('.dosen-select').closest('td')
-                        });
-
-                    });
-
-                    dosenTableBody.addEventListener('click', function (event) {
-                        const removeButton = event.target.closest('.removeDosen');
-                        if (removeButton) {
-                            event.preventDefault(); // Prevent default button action
-                            if (dosenTableBody.children.length > 1) {
-                                removeButton.closest('tr').remove();
-                                updateRowNumbers(dosenTableBody);
-                            } else {
-                                alert('Minimal harus ada satu data Dosen.');
-                            }
-                        }
-                    });
-
-                    function updateRowNumbers(tableBody) {
-                        const rows = tableBody.querySelectorAll('tr');
-                        rows.forEach((row, index) => {
-                            row.querySelector('td:first-child').textContent = index + 1;
-                        });
-                    }
-                });
-            </script>
-
-
-            <!-- Tombol Submit -->
-            <div class="mt-8 text-right ">
-                <a href="">
-                    <button type="Cancel"
-                        class="w-32 mr-2 bg-gray-200 text-gray-700 py-2 px-4 rounded-sm hover:bg-gray-300 transition duration-200">
-                        Batal
-                    </button>
-                    <button type="submit"
-                        class="w-32 bg-[#1e6aae] text-white py-2 px-4 rounded-sm hover:bg-[#17497C]  transition duration-200">
-                        Submit
-                    </button>
             </div>
         </div>
     </main>
+
 @endsection
+
+@push('scripts')
+    <script>
+        // @formatter:off
+        const tagsData = @json($tags);
+        const mahasiswaListData = @json($mahasiswaList);
+        const dosenListData = @json($dosenList);
+        const roleSupervisorListData = @json($roleSupervisorList);
+        // @formatter:on
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const addMahasiswaButton = document.getElementById('addMahasiswa');
+            const mahasiswaTableBody = document.getElementById('mahasiswaTableBody');
+            const addDosenButton = document.getElementById('addDosen');
+            const dosenTableBody = document.getElementById('dosenTableBody');
+
+            // Initialize Select2 for existing elements
+            $('.mahasiswa-select').select2({
+                placeholder: "Pilih Mahasiswa",
+                allowClear: true,
+                dropdownParent: $('#mahasiswaTableBody').closest('.relative') // Ensure dropdown is within the form
+            });
+            $('.dosen-select').select2({
+                placeholder: "Pilih Dosen",
+                allowClear: true,
+                dropdownParent: $('#dosenTableBody').closest('.relative') // Ensure dropdown is within the form
+            });
+            $('.tag-select').select2({
+                placeholder: "Pilih Tag",
+                allowClear: true,
+                dropdownParent: $('#mahasiswaTableBody').closest('.relative') // Ensure dropdown is within the form
+            });
+
+
+            addMahasiswaButton.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent default form validation
+                const newRow = document.createElement('tr');
+                newRow.classList.add('bg-white', 'border-b', 'border-gray-300');
+
+                const rowCount = mahasiswaTableBody.children.length + 1;
+
+                newRow.innerHTML = `
+                    <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
+                        ${rowCount}
+                    </td>
+                    <td class="px-6 py-2 border-r border-gray-300">
+                        <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                            <option value="">Pilih Mahasiswa</option>
+                            ${mahasiswaListData.map(mhs => `<option value="${mhs.nim}">${mhs.nim} - ${mhs.name}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td class="px-6 py-2 border-r border-gray-300">
+                        <select name="peran_mahasiswa[]" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
+                            <option value="PERSONAL">Personal</option>
+                            <option value="LEADER">Ketua</option>
+                            <option value="MEMBER">Anggota</option>
+                        </select>
+                    </td>
+                    <td class="px-6 py-2 border-r border-gray-300">
+                        <select name="tags_mahasiswa[]" class="tag-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
+                            <option value="">Pilih Tag</option>
+                            ${tagsData.map(tag => `<option value="${tag.id}">${tag.name}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td class="w-1/8 px-4 py-2">
+                        <button type="button" class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Hapus
+                        </button>
+                    </td>
+                `;
+
+                mahasiswaTableBody.appendChild(newRow);
+
+                // Initialize Select2 for the newly added row
+                $(newRow).find('.mahasiswa-select').select2({
+                    placeholder: "Pilih Mahasiswa",
+                    allowClear: true,
+                    dropdownParent: $(newRow).find('.mahasiswa-select').closest('td')
+                });
+                $(newRow).find('.tag-select').select2({
+                    placeholder: "Pilih Tag",
+                    allowClear: true,
+                    dropdownParent: $(newRow).find('.tag-select').closest('td')
+                });
+
+            });
+
+            mahasiswaTableBody.addEventListener('click', function (event) {
+                const removeButton = event.target.closest('.removeMahasiswa');
+                if (removeButton) {
+                    event.preventDefault(); // Prevent default button action
+                    if (mahasiswaTableBody.children.length > 1) {
+                        removeButton.closest('tr').remove();
+                        updateRowNumbers(mahasiswaTableBody);
+                    } else {
+                        notyf.error('Minimal harus ada satu data Mahasiswa.');
+                    }
+                }
+            });
+
+
+            addDosenButton.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent default form validation
+                const newRow = document.createElement('tr');
+                newRow.classList.add('bg-white', 'border-b', 'border-gray-300');
+
+                const rowCount = dosenTableBody.children.length + 1;
+
+                newRow.innerHTML = `
+                    <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
+                        ${rowCount}
+                    </td>
+                    <td class="px-6 py-2 border-r border-gray-300">
+                        <select name="nidn_dosen[]" class="dosen-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                            <option value="">Pilih Dosen</option>
+                            ${dosenListData.map(dosen => `<option value="${dosen.nidn}">${dosen.nidn} - ${dosen.name}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td class="px-6 py-2 border-r border-gray-300">
+                        <select name="peran_dosen[]" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                            <option disabled selected hidden>Pilih Peran</option>
+                            ${roleSupervisorListData.map(role => `<option value="${role.id}">${role.description}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td class="w-1/8 px-4 py-2">
+                        <button type="button" class="removeDosen border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Hapus
+                        </button>
+                    </td>
+                `;
+
+                dosenTableBody.appendChild(newRow);
+
+                // Initialize Select2 for the newly added row
+                $(newRow).find('.dosen-select').select2({
+                    placeholder: "Pilih Dosen",
+                    allowClear: true,
+                    dropdownParent: $(newRow).find('.dosen-select').closest('td')
+                });
+
+            });
+
+            dosenTableBody.addEventListener('click', function (event) {
+                const removeButton = event.target.closest('.removeDosen');
+                if (removeButton) {
+                    event.preventDefault(); // Prevent default button action
+                    if (dosenTableBody.children.length > 1) {
+                        removeButton.closest('tr').remove();
+                        updateRowNumbers(dosenTableBody);
+                    } else {
+                        notyf.error('Minimal harus ada satu data Dosen.');
+                    }
+                }
+            });
+
+            function updateRowNumbers(tableBody) {
+                const rows = tableBody.querySelectorAll('tr');
+                rows.forEach((row, index) => {
+                    row.querySelector('td:first-child').textContent = index + 1;
+                });
+            }
+        });
+    </script>
+@endpush
 
