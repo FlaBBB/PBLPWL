@@ -14,6 +14,7 @@ use App\Models\SupervisorAchievement; // Import SupervisorAchievement model
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log; // Import Log facade
 use Illuminate\Support\Facades\Validator; // Import Validator facade
+use Illuminate\Support\Facades\Storage; // Import Storage facade
 use App\Enums\CompetitionLevelEnum;
 use App\Enums\AchievementStatusEnum;
 use Yajra\DataTables\DataTables;
@@ -307,7 +308,13 @@ class PrestasiController extends Controller
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
-                NotificationHelper::error($error);
+                NotificationHelper::error(
+                    $error,
+                    [
+                        "duration" => 99999999,
+                        "dismissible" => true
+                    ]
+                );
             }
             return redirect()->back()->withInput();
         }
@@ -392,13 +399,285 @@ class PrestasiController extends Controller
 
     public function detail($id)
     {
-        $achievement = Achievement::find($id);
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
+
+        if (!$mahasiswa) {
+            return response()->json(['message' => 'Mahasiswa data not found.'], 404);
+        }
+
+        $achievement = Achievement::query()
+            ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
+            ->where('achievement.id', $id)
+            ->where('mahasiswa_achievement.nim', $mahasiswa->nim)
+            ->select('achievement.*')
+            ->first();
 
         if (!$achievement) {
-            return response()->json(['message' => 'Achievement not found'], 404);
+            return response()->json(['message' => 'Achievement not found or you do not have access to this achievement.'], 403);
         }
 
         // Return achievement data as JSON
         return response()->json($achievement);
+    }
+
+    public function edit($id)
+    {
+        $activeMenu = 'daftar-prestasi';
+        $breadcrumbs = [
+            [
+                'label' => 'Daftar Prestasi',
+                'url' => route('mahasiswa.daftar-prestasi')
+            ],
+            [
+                'label' => 'Edit Prestasi',
+                'url' => route('mahasiswa.edit-prestasi', $id)
+            ],
+        ];
+        $headerTitle = 'Edit Prestasi';
+        $headerDesc = 'Perbarui data prestasi yang telah kamu raih selama masa studi. Pastikan kamu mengunggah bukti yang valid seperti sertifikat atau surat keterangan resmi.';
+
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
+
+        if (!$mahasiswa) {
+            NotificationHelper::error('Mahasiswa data not found.');
+            return redirect()->back();
+        }
+
+        $achievement = Achievement::with(['mahasiswa', 'supervisor'])
+            ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
+            ->where('achievement.id', $id)
+            ->where('mahasiswa_achievement.nim', $mahasiswa->nim)
+            ->select('achievement.*')
+            ->first();
+
+        if (!$achievement) {
+            NotificationHelper::error('Prestasi tidak ditemukan atau Anda tidak memiliki akses ke prestasi ini.');
+            return redirect()->route('mahasiswa.daftar-prestasi');
+        }
+
+        // Check if the achievement status allows editing
+        if ($achievement->status !== AchievementStatusEnum::WAITING && $achievement->status !== AchievementStatusEnum::REVISION) {
+            NotificationHelper::error('Prestasi dengan status "' . $achievement->status->value . '" tidak dapat diedit.');
+            return redirect()->route('mahasiswa.daftar-prestasi');
+        }
+
+        $tags = Tag::orderBy('name')->get();
+        $mahasiswaList = Mahasiswa::orderBy('name')->get(['nim', 'name']);
+        $dosenList = Dosen::orderBy('name')->get(['nidn', 'name']);
+        $roleSupervisorList = RoleSupervisor::orderBy('description')->get(['id', 'description']);
+
+        return view('mahasiswa.prestasi.edit-prestasi', [
+            'activeMenu' => $activeMenu,
+            'breadcrumbs' => $breadcrumbs,
+            'headerTitle' => $headerTitle,
+            'headerDesc' => $headerDesc,
+            'achievement' => $achievement,
+            'tags' => $tags,
+            'mahasiswaList' => $mahasiswaList,
+            'dosenList' => $dosenList,
+            'roleSupervisorList' => $roleSupervisorList,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
+
+        if (!$mahasiswa) {
+            NotificationHelper::error('Mahasiswa data not found.');
+            return redirect()->back();
+        }
+
+        $achievement = Achievement::find($id);
+
+        if (!$achievement) {
+            NotificationHelper::error('Prestasi tidak ditemukan.');
+            return redirect()->back();
+        }
+
+        // Check if the achievement status allows editing
+        if ($achievement->status !== AchievementStatusEnum::WAITING && $achievement->status !== AchievementStatusEnum::REVISION) {
+            NotificationHelper::error('Prestasi dengan status "' . $achievement->status->value . '" tidak dapat diedit.');
+            return redirect()->route('mahasiswa.daftar-prestasi');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'competition_name' => 'required|string|max:255',
+            'competition_name_english' => 'nullable|string|max:255',
+            'competition_location' => 'required|string|max:255',
+            'competition_location_english' => 'nullable|string|max:255',
+            'assignment_letter_number' => 'required|string|max:255',
+            'assignment_letter_date' => 'required|date',
+            'pt_partition_number' => 'required|integer',
+            'partition_number' => 'required|integer',
+            'place' => 'required|integer',
+            'level' => 'required|in:' . implode(',', array_column(CompetitionLevelEnum::cases(), 'value')),
+            'start_at' => 'required|date',
+            'end_at' => 'required|date|after_or_equal:start_at',
+            'competition_url' => 'nullable|url|max:255',
+            'note' => 'nullable|string',
+            'file_assignment_letter' => 'nullable|file|mimes:pdf|max:2048',
+            'file_certificate' => 'nullable|file|mimes:pdf|max:2048',
+            'file_poster' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'file_activity_photo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'nim_mahasiswa.*' => 'required|string|max:255',
+            'peran_mahasiswa.*' => 'required|in:LEADER,MEMBER,PERSONAL',
+            'tags_mahasiswa.*' => 'nullable|exists:tag,id',
+            'nidn_dosen.*' => 'required|string|max:255',
+            'peran_dosen.*' => 'required|exists:role_supervisor,id',
+        ], [
+            'competition_name.required' => 'Nama Lomba wajib diisi.',
+            'competition_name.string' => 'Nama Lomba harus berupa teks.',
+            'competition_name.max' => 'Nama Lomba tidak boleh lebih dari 255 karakter.',
+            'competition_name_english.string' => 'Nama Lomba (English) harus berupa teks.',
+            'competition_name_english.max' => 'Nama Lomba (English) tidak boleh lebih dari 255 karakter.',
+            'competition_location.required' => 'Lokasi Lomba wajib diisi.',
+            'competition_location.string' => 'Lokasi Lomba harus berupa teks.',
+            'competition_location.max' => 'Lokasi Lomba tidak boleh lebih dari 255 karakter.',
+            'competition_location_english.string' => 'Lokasi Lomba (English) harus berupa teks.',
+            'competition_location_english.max' => 'Lokasi Lomba (English) tidak boleh lebih dari 255 karakter.',
+            'assignment_letter_number.required' => 'Nomor Surat Tugas wajib diisi.',
+            'assignment_letter_number.string' => 'Nomor Surat Tugas harus berupa teks.',
+            'assignment_letter_number.max' => 'Nomor Surat Tugas tidak boleh lebih dari 255 karakter.',
+            'assignment_letter_date.required' => 'Tanggal Surat Tugas wajib diisi.',
+            'assignment_letter_date.date' => 'Tanggal Surat Tugas harus berupa tanggal yang valid.',
+            'pt_partition_number.required' => 'Total Partisi PT wajib diisi.',
+            'pt_partition_number.integer' => 'Total Partisi PT harus berupa angka.',
+            'partition_number.required' => 'Total Partisi wajib diisi.',
+            'partition_number.integer' => 'Total Partisi harus berupa angka.',
+            'place.required' => 'Ranking Lomba wajib dipilih.',
+            'place.integer' => 'Ranking Lomba harus berupa angka.',
+            'level.required' => 'Tingkat Lomba wajib dipilih.',
+            'level.in' => 'Tingkat Lomba tidak valid.',
+            'start_at.required' => 'Tanggal Mulai wajib diisi.',
+            'start_at.date' => 'Tanggal Mulai harus berupa tanggal yang valid.',
+            'end_at.required' => 'Tanggal Berakhir wajib diisi.',
+            'end_at.date' => 'Tanggal Berakhir harus berupa tanggal yang valid.',
+            'end_at.after_or_equal' => 'Tanggal Berakhir tidak boleh sebelum Tanggal Mulai.',
+            'competition_url.url' => 'URL Lomba harus berupa URL yang valid.',
+            'competition_url.max' => 'URL Lomba tidak boleh lebih dari 255 karakter.',
+            'note.string' => 'Deskripsi Singkat harus berupa teks.',
+            'file_assignment_letter.file' => 'File Surat Tugas harus berupa file.',
+            'file_assignment_letter.mimes' => 'File Surat Tugas harus berupa PDF.',
+            'file_assignment_letter.max' => 'Ukuran File Surat Tugas tidak boleh lebih dari 2MB.',
+            'file_certificate.file' => 'File Sertifikat harus berupa file.',
+            'file_certificate.mimes' => 'File Sertifikat harus berupa PDF.',
+            'file_certificate.max' => 'Ukuran File Sertifikat tidak boleh lebih dari 2MB.',
+            'file_poster.file' => 'File Poster harus berupa file.',
+            'file_poster.mimes' => 'File Poster harus berupa gambar (jpeg, png, jpg, gif).',
+            'file_poster.max' => 'Ukuran File Poster tidak boleh lebih dari 2MB.',
+            'file_activity_photo.file' => 'Foto Kegiatan harus berupa file.',
+            'file_activity_photo.mimes' => 'Foto Kegiatan harus berupa gambar (jpeg, png, jpg, gif).',
+            'file_activity_photo.max' => 'Ukuran Foto Kegiatan tidak boleh lebih dari 2MB.',
+            'nim_mahasiswa.*.required' => 'NIM Mahasiswa wajib diisi untuk setiap baris.',
+            'nim_mahasiswa.*.string' => 'NIM Mahasiswa harus berupa teks.',
+            'nim_mahasiswa.*.max' => 'NIM Mahasiswa tidak boleh lebih dari 255 karakter.',
+            'peran_mahasiswa.*.required' => 'Peran Mahasiswa wajib dipilih untuk setiap baris.',
+            'peran_mahasiswa.*.in' => 'Peran Mahasiswa tidak valid.',
+            'tags_mahasiswa.*.exists' => 'Tag Mahasiswa tidak valid.',
+            'nidn_dosen.*.required' => 'NIDN Dosen wajib diisi untuk setiap baris.',
+            'nidn_dosen.*.string' => 'NIDN Dosen harus berupa teks.',
+            'nidn_dosen.*.max' => 'NIDN Dosen tidak boleh lebih dari 255 karakter.',
+            'peran_dosen.*.required' => 'Peran Dosen wajib dipilih untuk setiap baris.',
+            'peran_dosen.*.exists' => 'Peran Dosen tidak valid.',
+        ]);
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error(
+                    $error,
+                    [
+                        "duration" => 99999999,
+                        "dismissible" => true
+                    ]
+                );
+            }
+            return redirect()->back()->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        // Handle file uploads
+        $filePaths = [];
+        foreach (['file_assignment_letter', 'file_certificate', 'file_poster', 'file_activity_photo'] as $fileField) {
+            if ($request->hasFile($fileField)) {
+                // Delete old file if exists
+                if ($achievement->{$fileField . '_file_path'}) {
+                    \Storage::disk('public')->delete($achievement->{$fileField . '_file_path'});
+                }
+                $fileName = time() . '_' . $request->file($fileField)->getClientOriginalName();
+                $filePath = $request->file($fileField)->storeAs('uploads/achievements', $fileName, 'public');
+                $filePaths[$fileField] = $filePath;
+            } else {
+                // Keep existing file path if no new file is uploaded
+                $filePaths[$fileField] = $achievement->{$fileField . '_file_path'};
+            }
+        }
+
+        // Update Achievement record
+        $achievement->update([
+            'competition_name' => $validatedData['competition_name'],
+            'competition_name_english' => $validatedData['competition_name_english'],
+            'competition_location' => $validatedData['competition_location'],
+            'competition_location_english' => $validatedData['competition_location_english'],
+            'competition_url' => $validatedData['competition_url'],
+            'start_at' => $validatedData['start_at'],
+            'end_at' => $validatedData['end_at'],
+            'pt_partition_number' => $validatedData['pt_partition_number'],
+            'partition_number' => $validatedData['partition_number'],
+            'assignment_letter_number' => $validatedData['assignment_letter_number'],
+            'assignment_letter_date' => $validatedData['assignment_letter_date'],
+            'file_assignment_letter_file_path' => $filePaths['file_assignment_letter'],
+            'file_certificate_file_path' => $filePaths['file_certificate'],
+            'file_activity_photo_file_path' => $filePaths['file_activity_photo'],
+            'file_poster_file_path' => $filePaths['file_poster'],
+            'level' => CompetitionLevelEnum::from($validatedData['level']),
+            'place' => $validatedData['place'],
+            'status' => AchievementStatusEnum::WAITING, // Reset status to waiting after edit
+            'note' => $validatedData['note'],
+            'verificator' => null, // Reset verificator
+            'verified_at' => null, // Reset verified_at
+        ]);
+
+        // Update MahasiswaAchievement records
+        $achievement->mahasiswaAchievements()->delete(); // Delete existing records
+        if (isset($validatedData['nim_mahasiswa'])) {
+            foreach ($validatedData['nim_mahasiswa'] as $key => $nim_mahasiswa) {
+                $mahasiswaRecord = Mahasiswa::where('nim', $nim_mahasiswa)->first();
+                if (!$mahasiswaRecord) {
+                    Log::warning("Mahasiswa with NIM '{$nim_mahasiswa}' not found when updating achievement.");
+                    continue;
+                }
+                MahasiswaAchievement::create([
+                    'nim' => $mahasiswaRecord->nim,
+                    'id_achievement' => $achievement->id,
+                    'role' => $validatedData['peran_mahasiswa'][$key],
+                    'id_tag' => $validatedData['tags_mahasiswa'][$key] ?? null,
+                ]);
+            }
+        }
+
+        // Update SupervisorAchievement records
+        $achievement->supervisorAchievement()->delete(); // Delete existing records
+        if (isset($validatedData['nidn_dosen'])) {
+            foreach ($validatedData['nidn_dosen'] as $key => $nidn_dosen) {
+                $dosenRecord = Dosen::where('nidn', $nidn_dosen)->first();
+                if ($dosenRecord) {
+                    SupervisorAchievement::create([
+                        'nidn' => $dosenRecord->nidn,
+                        'id_achievement' => $achievement->id,
+                        'role_supervisor_id' => $validatedData['peran_dosen'][$key],
+                    ]);
+                } else {
+                    Log::warning("Dosen with NIDN '{$nidn_dosen}' not found when updating achievement.");
+                }
+            }
+        }
+
+        NotificationHelper::success('Prestasi berhasil diperbarui dan status diatur ulang menjadi Menunggu.');
+        return redirect()->route('mahasiswa.daftar-prestasi');
     }
 }

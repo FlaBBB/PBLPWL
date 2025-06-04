@@ -280,7 +280,7 @@
                 <div id="waiting-detail-content">
                 </div>
                 <div class="mt-8 text-right flex justify-end gap-4">
-                    <button
+                    <a id="waiting-edit-button" href="#"
                         class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white px-4 py-3 rounded text-base font-medium flex items-center justify-center gap-1 h-12"
                         title="Edit">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -289,7 +289,7 @@
                                 d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                         </svg>
                         Edit
-                    </button>
+                    </a>
                     <button onclick="openModal('modal-hapus')"
                         class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-4 py-3 rounded text-base font-medium flex items-center justify-center gap-1 h-12"
                         title="Hapus">
@@ -625,10 +625,10 @@
                     </div>
                 </div>
                 <div class="mt-8 text-right">
-                    <button
+                    <a id="revised-edit-button" href="#"
                         class="px-4 py-2 rounded-lg bg-blue-200 text-blue-800 hover:bg-blue-300 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
                         Lakukan Revisi
-                    </button>
+                    </a>
                     <button type="button" onclick="closeModal('modal-revised')"
                         class="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400">
                         Tutup
@@ -864,6 +864,7 @@
                     if (achievement.status === 'WAITING') {
                         const modalWaiting = document.getElementById('modal-waiting');
                         modalWaiting.querySelector('#waiting-detail-content').textContent = `Detail untuk prestasi "${achievement.competition_name}" sedang menunggu verifikasi.`;
+                        modalWaiting.querySelector('#waiting-edit-button').href = `{{ route('mahasiswa.edit-prestasi', '') }}/${achievementId}`;
                         openModal('modal-waiting');
                     } else if (achievement.status === 'REJECTED') {
                         const modalRejected = document.getElementById('modal-rejected');

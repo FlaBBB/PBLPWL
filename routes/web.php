@@ -66,27 +66,29 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('mahasiswa.dashboard');
 
-            // Route Prestasi
-            Route::prefix('prestasi')->group(function () {
-                Route::get('/daftar-prestasi', [PrestasiController::class, 'daftar'])->name('mahasiswa.daftar-prestasi');
-                Route::get('/tambah-prestasi', [PrestasiController::class, 'tambah'])->name('mahasiswa.tambah-prestasi');
-                Route::post('/store', [PrestasiController::class, 'store'])->name('mahasiswa.store-prestasi');
-                Route::get('/detail/{id}', [PrestasiController::class, 'detail'])->name('mahasiswa.detail-prestasi');
-                Route::get('/data', [PrestasiController::class, 'getData'])->name('mahasiswa.prestasi.data');
-            });
-            // Route Lomba
-            Route::prefix('lomba')->group(function () {
-                Route::get('/daftar-lomba', [LombaController::class, 'daftar'])->name('mahasiswa.daftar-lomba');
-                Route::get('/tambah-lomba', [LombaController::class, 'tambah'])->name('mahasiswa.tambah-lomba');
-                Route::get('/detail-lomba', [LombaController::class, 'detail'])->name('mahasiswa.detail-lomba');
-                Route::get('/histori-tambah-lomba', [LombaController::class, 'histori'])->name('mahasiswa.histori-tambah-lomba');
-            });
-            // Route Laporan
-            Route::prefix('laporan')->group(function () {
-                Route::get('/', [LaporanController::class, 'index'])->name('laporan');
-            });
-            // Route Profile
-            Route::get('/profile', [MahasiswaProfileController::class, 'index'])->name('mahasiswa.edit-profile');
+        // Route Prestasi
+        Route::prefix('prestasi')->group(function () {
+            Route::get('/daftar-prestasi', [PrestasiController::class, 'daftar'])->name('mahasiswa.daftar-prestasi');
+            Route::get('/tambah-prestasi', [PrestasiController::class, 'tambah'])->name('mahasiswa.tambah-prestasi');
+            Route::post('/store', [PrestasiController::class, 'store'])->name('mahasiswa.store-prestasi');
+            Route::get('/detail/{id}', [PrestasiController::class, 'detail'])->name('mahasiswa.detail-prestasi');
+            Route::get('/{id}/edit', [PrestasiController::class, 'edit'])->name('mahasiswa.edit-prestasi');
+            Route::put('/{id}', [PrestasiController::class, 'update'])->name('mahasiswa.update-prestasi');
+            Route::get('/data', [PrestasiController::class, 'getData'])->name('mahasiswa.prestasi.data');
+        });
+        // Route Lomba
+        Route::prefix('lomba')->group(function () {
+            Route::get('/daftar-lomba', [LombaController::class, 'daftar'])->name('mahasiswa.daftar-lomba');
+            Route::get('/tambah-lomba', [LombaController::class, 'tambah'])->name('mahasiswa.tambah-lomba');
+            Route::get('/detail-lomba', [LombaController::class, 'detail'])->name('mahasiswa.detail-lomba');
+            Route::get('/histori-tambah-lomba', [LombaController::class, 'histori'])->name('mahasiswa.histori-tambah-lomba');
+        });
+        // Route Laporan
+        Route::prefix('laporan')->group(function () {
+            Route::get('/', [LaporanController::class, 'index'])->name('laporan');
+        });
+        // Route Profile
+        Route::get('/profile', [MahasiswaProfileController::class, 'index'])->name('mahasiswa.edit-profile');
 
             
        
