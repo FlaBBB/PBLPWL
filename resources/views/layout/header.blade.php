@@ -1,3 +1,6 @@
+@php
+use App\Enums\UserRoleEnum;
+@endphp
 <header class="flex-1 px-10 pt-5 sticky top-0 z-20 bg-white" style="margin-top:0;">
     <div class="flex justify-between items-center">
         <div>
@@ -22,7 +25,7 @@
                     @click="isOpen = !isOpen"
                     @keydown.escape.window="isOpen = false"
                     class="flex items-center gap-2 px-3 py-1 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-[#1e6aae] transition-colors duration-150">
-                    <img src="{{ asset('images/user-avatar.jpg') }}" alt="User" class="w-9 h-9 rounded-full object-cover">
+                    <img src="{{ Auth::user()->photo_profile ? asset(Auth::user()->photo_profile) : asset('images/user-avatar.jpg') }}" alt="User" class="w-9 h-9 rounded-full object-cover">
                     <!-- <span class="font-semibold text-gray-700 hidden sm:inline max-w-[150px] truncate">P</span> -->
                     <svg
                         class="w-4 h-4 text-gray-400 transition-transform duration-200 ease-in-out"
@@ -47,9 +50,19 @@
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="user-menu-button">
+                    @if(Auth::user()->role === UserRoleEnum::MAHASISWA)
+                    <a href="{{ route('mahasiswa.edit-profile') }}" class="block px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150" role="menuitem">
+                        Edit Profil
+                    </a>
+                    @elseif(Auth::user()->role === UserRoleEnum::ADMIN)
                     <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150" role="menuitem">
                         Edit Profil
                     </a>
+                    @elseif(Auth::user()->role === UserRoleEnum::DOSEN)
+                    <a href="{{ route('dosen.profil-dosen') }}" class="block px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150" role="menuitem">
+                        Edit Profil
+                    </a>
+                    @endif
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150" role="menuitem">

@@ -89,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
         });
         // Route Profile
         Route::get('/profile', [MahasiswaProfileController::class, 'index'])->name('mahasiswa.edit-profile');
+        Route::post('/profile', [MahasiswaProfileController::class, 'update'])->name('mahasiswa.update-profile');
 
             
        
