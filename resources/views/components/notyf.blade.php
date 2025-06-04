@@ -55,7 +55,7 @@
                     type: '{{ $notification['type'] }}',
                     message: '{{ $notification['message'] }}',
                     @if(!empty($notification['options']))
-                        ...{{ Illuminate\Support\Js::from($notification['options'])->toHtml() }}
+                        ...@json($notification['options'])
                     @endif
                 });
             @endforeach
