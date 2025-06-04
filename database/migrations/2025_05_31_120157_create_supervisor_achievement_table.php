@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('nidn')->references('nidn')->on('dosen');
             $table->unsignedBigInteger("role");
             $table->foreign("role")->references("id")->on("role_supervisor");
+
+            $table->primary(['id_achievement', "nidn"]);
         });
     }
 

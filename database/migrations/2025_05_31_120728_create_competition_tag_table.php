@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreign("id_competition")->references("id")->on("competition");
             $table->unsignedBigInteger("id_tag");
             $table->foreign("id_tag")->references("id")->on("tag");
+
+            $table->primary(['id_competition', 'id_tag']);
         });
     }
 

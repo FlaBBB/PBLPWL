@@ -42,9 +42,9 @@ return new class extends Migration
                 "REJECTED"
             ]);
             $table->text("note");
-            $table->string("verificator");
+            $table->string("verificator")->nullable();
             $table->foreign("verificator")->references("nip")->on("admin");
-            $table->timestamp("verified_at");
+            $table->timestamp("verified_at")->nullable();
         });
     }
 
