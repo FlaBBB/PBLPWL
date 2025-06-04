@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('achievement', function (Blueprint $table) {
             $table->id();
             $table->timestamp("upload_at");
-            $table->string("competition_type");
             $table->string("competition_name");
             $table->string("competition_name_english");
             $table->string("competition_location");

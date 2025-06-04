@@ -310,6 +310,11 @@
                         </div>
                     </div>
 
+                    <div class="flex justify-end mt-6">
+                        <button type="submit" class="bg-[#1e6aae] text-white px-6 py-2 rounded-md hover:bg-[#17568a] transition">
+                            Submit
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
