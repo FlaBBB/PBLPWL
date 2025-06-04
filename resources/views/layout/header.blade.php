@@ -4,9 +4,15 @@ use App\Enums\UserRoleEnum;
 <header class="flex-1 px-10 pt-5 sticky top-0 z-20 bg-white" style="margin-top:0;">
     <div class="flex justify-between items-center">
         <div>
-            <h1 class="text-2xl font-bold">
+            @if(Auth::user()->role === UserRoleEnum::MAHASISWA)
+            <a href="{{ route('mahasiswa.dashboard') }}" class="text-2xl font-bold">
+            @elseif(Auth::user()->role === UserRoleEnum::ADMIN)
+            <a href="{{ route('admin.dashboard') }}" class="text-2xl font-bold">
+            @elseif(Auth::user()->role === UserRoleEnum::DOSEN)
+            <a href="{{ route('dosen.dashboard') }}" class="text-2xl font-bold">
+            @endif
                 {{ $headerTitle ?? 'Welcome Back, ' . Auth::user()->name . ' 👋' }}
-            </h1>
+            </a>
             @if(!empty($headerDesc) || !isset($headerTitle))
             <p class="text-gray-400 mt-1">
                 {{ $headerDesc ?? 'The description will appeared if you are login' }}
