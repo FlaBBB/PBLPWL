@@ -24,6 +24,8 @@
 <body class="bg-gray-50 min-h-screen">
     @php
     use App\Enums\UserRoleEnum;
+    use Illuminate\Support\Str;
+    use Carbon\Carbon;
     @endphp
     <!-- Sidebar/Navbar -->
     <aside class="fixed top-0 left-0 h-screen w-64 bg-white z-20 overflow-y-auto hidden lg:block">
