@@ -1,6 +1,6 @@
 <script>
     const notyf = new Notyf({
-        duration: 3000,
+        duration: 8000,
         position: {
             x: 'right',
             y: 'top',
