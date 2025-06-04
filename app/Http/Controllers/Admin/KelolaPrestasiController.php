@@ -17,8 +17,8 @@ class KelolaPrestasiController extends Controller
             ],
         ];
 
-        $headerTitle = 'Verifikasi Prestasi';
-        $headerDesc = 'Verifikasi prestasi yang diajukan oleh mahasiswa.';
+        $headerTitle = 'Kelola Prestasi';
+        $headerDesc = 'Kelola dan verifikasi prestasi yang diajukan oleh mahasiswa.';
 
         return view('admin.verifikasi-prestasi', [
             'activeMenu' => $activeMenu,
@@ -38,34 +38,34 @@ class KelolaPrestasiController extends Controller
             ],
         ];
 
-        $headerTitle = 'Daftar Prestasi';
-        $headerDesc = 'Kelola daftar prestasi yang ada di dalam sistem.';
+        $headerTitle = 'Kelola Prestasi';
+        $headerDesc = 'Kelola dan verifikasi prestasi yang diajukan oleh mahasiswa.';
 
-        return view('admin.detail-prestasi', [
+        return view('admin.daftar-prestasi', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
         ]);
     }
-   public function detail($id)
-{
-    $activeMenu = 'detail-prestasi';
-    $breadcrumbs = [
-        [
-            'label' => 'Detail Prestasi',
-            'url' => route('admin.detail-prestasi', ['id' => $id])
-        ],
-    ];
-    $headerTitle = 'Detail Prestasi';
-    $headerDesc = 'Lihat detail prestasi yang telah diajukan oleh mahasiswa.';
-    // Logika untuk mengambil data berdasarkan $id
-    // return view('admin.detail-prestasi', [
-    //     'activeMenu' => $activeMenu,
-    //     'breadcrumbs' => $breadcrumbs,
-    //     'headerTitle' => $headerTitle,
-    //     'headerDesc' => $headerDesc,
-    //     'prestasi' => Prestasi::findOrFail($id), 
-    // ]);
-}
+    public function detail($id)
+    {
+        $activeMenu = 'detail-prestasi';
+        $breadcrumbs = [
+            [
+                'label' => 'Detail Prestasi',
+                'url' => route('admin.detail-prestasi', ['id' => $id])
+            ],
+        ];
+        $headerTitle = 'Detail Prestasi';
+        $headerDesc = 'Lihat detail prestasi yang telah diajukan oleh mahasiswa.';
+        // Logika untuk mengambil data berdasarkan $id
+        // return view('admin.detail-prestasi', [
+        //     'activeMenu' => $activeMenu,
+        //     'breadcrumbs' => $breadcrumbs,
+        //     'headerTitle' => $headerTitle,
+        //     'headerDesc' => $headerDesc,
+        //     'prestasi' => Prestasi::findOrFail($id), 
+        // ]);
+    }
 }

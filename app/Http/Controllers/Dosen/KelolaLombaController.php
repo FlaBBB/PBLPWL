@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Competition; // Assuming you have a Competition model
 
 class KelolaLombaController extends Controller
 {
