@@ -59,7 +59,7 @@ class Achievement extends Model
 
     public function supervisor(): BelongsToMany
     {
-        return $this->belongsToMany(Dosen::class, 'supervisor_achivement', 'id_achievement', 'nidn');
+        return $this->belongsToMany(Dosen::class, 'supervisor_achievement', 'id_achievement', 'nidn');
     }
 
     public function verificator(): BelongsTo
