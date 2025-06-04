@@ -1,6 +1,6 @@
 <script>
     const notyf = new Notyf({
-        duration: 8000,
+        duration: 5000,
         position: {
             x: 'right',
             y: 'top',
@@ -51,12 +51,15 @@
             @endphp
 
             @foreach($notifications as $notification)
-                notyf.open({
+                const currentNotification = notyf.open({
                     type: '{{ $notification['type'] }}',
                     message: '{{ $notification['message'] }}',
                     @if(!empty($notification['options']))
                         ...@json($notification['options'])
                     @endif
+                });
+                currentNotification.on('click', ({ target, event }) => {
+                    notyf.dismiss(currentNotification);
                 });
             @endforeach
         @endif
