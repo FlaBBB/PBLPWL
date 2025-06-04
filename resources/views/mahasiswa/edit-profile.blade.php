@@ -4,7 +4,7 @@
     <main class="flex-1 p-10">
         <div class="w-200 mx-auto p-6 border border-gray-200 rounded-lg">
             <h2 class="text-xl font-semibold border-b-2 border-gray-100 pb-2">Edit Profil saya</h2>
-
+<!-- 
             @if (session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                     <strong class="font-bold">Success!</strong>
@@ -21,7 +21,7 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
+            @endif -->
 
             <form action="{{ route('mahasiswa.update-profile') }}" method="POST" enctype="multipart/form-data">
                 @csrf
