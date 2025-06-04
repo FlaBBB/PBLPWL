@@ -106,7 +106,7 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('kelola-prestasi')->group(function () {
                 Route::get('/verifikasi', [KelolaPrestasiController::class, 'verifikasi'])->name('admin.verifikasi-prestasi');
                 Route::get('/daftar', [KelolaPrestasiController::class, 'daftar'])->name('admin.daftar-prestasi');
-                Route::get('/{id}/detail', [KelolaPrestasiController::class, 'detail'])->name('admin.detail-prestasi');
+                // Route::get('/{id}/detail', [KelolaPrestasiController::class, 'detail'])->name('admin.detail-prestasi');
             });
             // Lomba
             Route::prefix('kelola-lomba')->group(function () {
