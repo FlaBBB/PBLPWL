@@ -293,7 +293,7 @@
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-3 justify-end">
                         <button type="button" onclick="closeModal('modal-hapus')"
-                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Batal
                         </button>
                         <button type="button" onclick=""
