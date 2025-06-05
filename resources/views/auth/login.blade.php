@@ -14,12 +14,13 @@
 
 
 
-<body class="bg-gray-50 min-h-screen flex items-center justify-between">
-    <div class="w-screen flex flex-col md:flex-row justify-between">
+<body class="bg-gray-50 min-h-screen  flex flex-col">
+    <div class="w-screen flex flex-col md:flex-row flex-grow">
         <!-- Left Side -->
-        <div class="w-full md:w-1/2 flex flex-col items-start pl-10 ">
-            <img src="{{ asset('images/Logo-Blue.svg') }}" alt="SIPRESTA Logo" class="h-10 items-start mt-10">
-            <div class="w-full max-w-md mx-auto mt-10 p-8 ">
+        <div class="w-full md:w-1/2 flex flex-col items-center justify-center p-4 md:p-10">
+            <img src="{{ asset('images/Logo-Blue.svg') }}" alt="SIPRESTA Logo"
+                class="h-10 mb-10 self-start md:self-auto">
+            <div class="w-full max-w-md">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
                     <p class="text-gray-500 mb-8">Enter your username and password to access your account</p>
@@ -76,11 +77,56 @@
             </div> --}}
         </div>
         <!-- Right Side -->
-        <div class="hidden md:flex h-screen max-w-[640px] relative">
-            <div class="relative flex flex-col items-right justify-end w-full right-0">
-                <img src="{{ asset('images/login-image.svg') }}" alt="Login Illustration" class="w-screen rounded-l-lg">
+        <div
+            class="hidden md:flex md:w-1/2 relative justify-center items-center overflow-hidden bg-gradient-to-br from-[#0C2C48] to-[#1E6AAE]">
+            <div
+                class="absolute top-0 left-0 w-64 h-64 bg-sky-400/10 rounded-full -translate-x-1/3 -translate-y-1/3 blur-2xl z-[2]">
+            </div>
+            <div
+                class="absolute bottom-0 right-0 w-72 h-72 bg-blue-500/10 rounded-tl-full translate-x-1/4 translate-y-1/4 blur-2xl z-[2]">
+            </div>
+            <div class="absolute inset-x-1/4 top-10 h-32 bg-white/5 rounded-full blur-xl z-[2]"></div>
+            <div
+                class="absolute top-1/4 right-1/4 w-48 h-48 bg-cyan-400/8 rounded-full translate-x-1/2 -translate-y-1/2 blur-xl z-[2]">
+            </div>
+            <div
+                class="absolute bottom-1/3 left-1/4 w-56 h-56 bg-indigo-400/12 rounded-full -translate-x-1/2 translate-y-1/3 blur-2xl z-[2]">
+            </div>
+            <div class="absolute inset-y-1/2 right-10 w-24 h-40 bg-white/8 rounded-full blur-lg z-[2]"></div>
+
+
+            <div class="relative z-20 flex flex-col items-center text-left max-w-xl">
+                <div id="text-content" class="transition-all duration-700 group">
+                    <div
+                        class="relative z-30 transition-transform duration-700 group-hover:-translate-y-6 group">
+                        <h6 class="text-sm font-bold text-white leading-relax">SIPRESTA</h6>
+
+                        <h1 class="text-5xl font-bold text-white leading-tight">
+                            Prestasi Tercatat,
+                        </h1>
+
+                        <!-- Wrap dua h1, satu untuk normal, satu untuk hover -->
+                        <div class="relative h-[3.5rem]"> <!-- tinggi disamakan dengan h1 -->
+                            <h1
+                                class="text-5xl font-base text-white leading-tight absolute inset-0 transition-opacity duration-500 group-hover:opacity-0">
+                                Peluang Mendekat
+                            </h1>
+                            <h1
+                                class="text-5xl font-bold text-white leading-tight absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                                Mimpi Didapat!
+                            </h1>
+                        </div>
+                    </div>
+
+                    <div id="img-content"
+                        class="-mt-16 opacity-0 invisible max-h-0 group-hover:opacity-100 group-hover:visible group-hover:max-h-120 transition-all duration-700 ease-in-out">
+                        <img src="{{ asset('images/login.svg') }}" alt="Mahasiswa Berprestasi"
+                            class="w-full max-w-2xl object-contain transition-transform duration-700 hover:scale-105 hover:rotate-3">
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 
 
@@ -88,17 +134,17 @@
 </body>
 
 </html>
-    <!-- Notyf JS -->
-    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<!-- Notyf JS -->
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-    <script>
-        const notyf = new Notyf();
+<script>
+    const notyf = new Notyf();
 
-        // Cek apakah login gagal dari server-side (contoh pakai session Laravel)
-        @if (session('error') || $errors->has('error') || $errors->has('email'))
-            notyf.error("Login gagal! Periksa kembali username dan password.");
-        @endif
-    </script>
+    // Cek apakah login gagal dari server-side (contoh pakai session Laravel)
+    @if (session('error') || $errors->has('error') || $errors->has('email'))
+        notyf.error("Login gagal! Periksa kembali username dan password.");
+    @endif
+</script>
 
 <script>
     function togglePassword() {

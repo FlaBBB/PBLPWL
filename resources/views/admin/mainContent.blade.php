@@ -1,177 +1,181 @@
 @extends('layout.template')
 
 @section('content')
-<!-- Main Content -->
-<main class="flex-1 px-10 pb-10">
-    <!-- Stats -->
-    <div class="grid grid-cols-3 gap-6 mb-8">
-        <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
-            <div class="flex justify-between w-full">
-                <span class="text-2xl font-bold">24</span>
-                <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M5 3v18l7-5 7 5V3a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+    <!-- Main Content -->
+    <main class="flex-1 px-10 pb-10">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-3 gap-6 mb-8">
+            <!-- Total Prestasi Card -->
+            <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+                <div class="flex justify-between w-full">
+                    <span class="text-2xl font-bold">24</span>
+                    <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path d="M5 3v18l7-5 7 5V3a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" stroke-width="2" 
+                              stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <span class="text-gray-500 text-sm">Total prestasi</span>
             </div>
-            <span class="text-gray-500 text-sm">Total prestasi</span>
-            <span class="text-green-500 text-xs mt-2">↑ 10.2 <span class="text-gray-400">+1.01% this month</span></span>
-        </div>
-        <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
-                        <div class="flex justify-between w-full">
-                <span class="text-2xl font-bold">2</span>
-                <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="12" cy="12" r="3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+            
+            <!-- Prestasi Menunggu Verifikasi Card -->
+            <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+                <div class="flex justify-between w-full">
+                    <span class="text-2xl font-bold">2</span>
+                    <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke-width="2" 
+                              stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="12" cy="12" r="3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <span class="text-gray-500 text-sm">Prestasi menunggu verifikasi</span>
+                <div class="w-full justify-end text-right text-sm text-gray-700 hover:text-[#1e6aae] mt-2">
+                    <a href=""
+                       class="inline-flex items-center gap-1 px-3 py-1 rounded-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-sm">
+                        Selengkapnya
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
             </div>
-            <span class="text-gray-500 text-sm">Prestasi menunggu verifikasi</span>
-            <span class="text-green-500 text-xs mt-2">↑ 3.1 <span class="text-gray-400">+0.49% this week</span></span>
-        </div>
-        <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
-                        <div class="flex justify-between w-full">
-                <span class="text-2xl font-bold">12</span>
-                <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <circle cx="12" cy="8" r="6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M8.21 13.89L7 21l5-3 5 3-1.21-7.11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <span class="text-gray-500 text-sm">Lomba aktif saat ini</span>
-            <span class="text-green-500 text-xs mt-2">↑ 7.2 <span class="text-gray-400">+1.51% this week</span></span>
-        </div>
-    </div>
-    <!-- Recommendations & Chart -->
-    <div class="grid grid-cols-3 gap-8 mb-8">
-        <div class="col-span-2 bg-white rounded-xl shadow p-6">
-            <h2 class="font-bold mb-4">Rekomendasi Lomba Untuk Anda ⚡</h2>
-            <table class="w-full text-left text-sm">
-                <thead>
-                    <tr class="border-b border-gray-200 text-gray-400">
-                        <th class="py-2 font-semibold">No</th>
-                        <th class="py-2 font-semibold">Nama Lomba</th>
-                        <th class="py-2 font-semibold">Penyelenggara</th>
-                        <th class="py-2 font-semibold">Batas Pendaftaran</th>
-                        <th class="py-2 font-semibold">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-gray-200 hover:bg-gray-50">
-                        <td class="py-3 px-2">1</td>
-                        <td class="py-3 px-2">GEMASTIK</td>
-                        <td class="py-3 px-2">Puspresnas</td>
-                        <td class="py-3 px-2">25 Agustus 2021</td>
-                        <td class="py-3 px-2">
-                            <a href="{{ route('admin.lomba.detail', 1) }}" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-200 hover:bg-gray-50">
-                        <td class="py-3 px-2">2</td>
-                        <td class="py-3 px-2">Hackathon Merdeka</td>
-                        <td class="py-3 px-2">Institut Merdeka</td>
-                        <td class="py-3 px-2">11 Januari 2022</td>
-                        <td class="py-3 px-2">
-                            <a href="{{ route('admin.lomba.detail', 2) }}" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-200 hover:bg-gray-50">
-                        <td class="py-3 px-2">3</td>
-                        <td class="py-3 px-2">IoT Competition</td>
-                        <td class="py-3 px-2">Kementerian Pendidikan</td>
-                        <td class="py-3 px-2">21 Desember 2021</td>
-                        <td class="py-3 px-2">
-                            <a href="{{ route('admin.lomba.detail', 3) }}" class="inline-flex items-center px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-xs">Lihat detail</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-            <h2 class="font-bold mb-4">Prestasimu</h2>
-            <!-- Placeholder for chart -->
-            <div class="w-36 h-36 mb-4">
-                <canvas id="prestasiChart" width="144" height="144"></canvas>
-            </div>
-            <div class="flex flex-col gap-1 text-xs text-gray-500">
-                <span><span class="inline-block w-3 h-3 bg-blue-500 rounded-full mr-2"></span>IT (7)</span>
-                <span><span class="inline-block w-3 h-3 bg-pink-500 rounded-full mr-2"></span>Olahraga (3)</span>
-                <span><span class="inline-block w-3 h-3 bg-yellow-400 rounded-full mr-2"></span>Essay (2)</span>
-                <span><span class="inline-block w-3 h-3 bg-orange-400 rounded-full mr-2"></span>Lorem (2)</span>
+            
+            <!-- Lomba Aktif Card -->
+            <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
+                <div class="flex justify-between w-full">
+                    <span class="text-2xl font-bold">12</span>
+                    <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M8.21 13.89L7 21l5-3 5 3-1.21-7.11" stroke-width="2" 
+                              stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <span class="text-gray-500 text-sm">Lomba aktif saat ini</span>
             </div>
         </div>
-    </div>
-    <!-- Latest Achievements Table -->
-    <div class="bg-white rounded-xl shadow p-6">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="font-bold">Prestasi Terbaru</h2>
-            <div>
-                <button class="border px-3 py-1 rounded text-sm text-gray-500">Semester <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg></button>
-            </div>
-        </div>
-        <table class="w-full text-left text-sm">
-            <thead>
-                <tr class="text-gray-400">
-                    <th class="py-2">No</th>
-                    <th class="py-2">ID</th>
-                    <th class="py-2">Date</th>
-                    <th class="py-2">Customer Name</th>
-                    <th class="py-2">Location</th>
-                    <th class="py-2">Amount</th>
-                    <th class="py-2">Status Order</th>
-                    <th class="py-2">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="border-t border-gray-200">
-                    <td class="py-2">1</td>
-                    <td>#12564</td>
-                    <td>Dec 1, 2021</td>
-                    <td>Frank Murlo</td>
-                    <td>312 S Wilmette Ave</td>
-                    <td>$847.69</td>
-                    <td><span class="inline-block px-2 py-1 bg-green-100 text-green-600 rounded text-xs">New Order</span></td>
-                    <td>
-                        <button class="px-2 py-1 rounded hover:bg-gray-100">
-                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="1.5" />
-                                <circle cx="19.5" cy="12" r="1.5" />
-                                <circle cx="4.5" cy="12" r="1.5" />
-                            </svg>
-                        </button>
-                    </td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
-        </table>
-    </div>
-</main>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('prestasiChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['IT', 'Olahraga', 'Essay', 'Lorem'],
-                datasets: [{
-                    data: [7, 3, 2, 2],
-                    backgroundColor: [
-                        '#3B82F6', // blue-500
-                        '#EC4899', // pink-500
-                        '#FACC15', // yellow-400
-                        '#FB923C' // orange-400
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                cutout: '70%',
-                plugins: {
-                    legend: {
-                        display: false
+        <!-- Charts Section -->
+        <div class="bg-white rounded-xl shadow p-6">
+            <h2 class="text-base font-semibold text-gray-500 mb-4">Statistik Prestasi Mahasiswa</h2>
+            <div class="grid grid-cols-3 gap-6 mb-8">
+                <!-- Prestasi per Tahun Chart -->
+                <div class="bg-white rounded-xl shadow p-6">
+                    <h3 class="font-bold mb-4">Prestasi per Tahun</h3>
+                    <div class="h-48">
+                        <canvas id="yearChart"></canvas>
+                    </div>
+                </div>
+                <!-- Prestasi per Program Studi Chart -->
+                <div class="bg-white rounded-xl shadow p-6">
+                    <h3 class="font-bold mb-4">Prestasi per Prodi</h3>
+                    <div class="h-48">
+                        <canvas id="prodiChart"></canvas>
+                    </div>
+                </div>
+                <!-- Tingkat Lomba Chart -->
+                <div class="bg-white rounded-xl shadow p-6">
+                    <h3 class="font-bold mb-4">Tingkat Lomba</h3>
+                    <div class="h-48">
+                        <canvas id="levelChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Selengkapnya Button -->
+            <div class="mt-4 text-right px-2 text-sm text-gray-700 hover:text-[#1e6aae]">
+                <a href=""
+                    class="inline-flex items-center gap-1 px-3 py-1 rounded-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-sm ">
+                    <!-- beri link ke menu daftar prestasi mahasiswa saat ini -->
+                    Selengkapnya
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. Prestasi per Tahun (Bar Chart)
+            new Chart(document.getElementById('yearChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['2020', '2021', '2022', '2023', '2024'],
+                    datasets: [{
+                        label: 'Prestasi',
+                        data: [25, 42, 67, 89, 95],
+                        backgroundColor: '#3B82F6',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // 2. Prestasi per Program Studi (Pie Chart)
+            new Chart(document.getElementById('prodiChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Teknik Informatika', 'Sistem Informasi', 'Teknik Komputer'],
+                    datasets: [{
+                        data: [120, 80, 45],
+                        backgroundColor: ['#3B82F6', '#10B981', '#F59E0B'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 10,
+                                font: { size: 10 }
+                            }
+                        }
                     }
                 }
-            }
+            });
+
+            // 3. Tingkat Lomba (Pie Chart)
+            new Chart(document.getElementById('levelChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Internasional', 'Nasional', 'Regional'],
+                    datasets: [{
+                        data: [67, 123, 55],
+                        backgroundColor: ['#EF4444', '#F59E0B', '#10B981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 10,
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endsection
