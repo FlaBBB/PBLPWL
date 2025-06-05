@@ -7,7 +7,7 @@
     <div class="grid grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
             <div class="flex justify-between w-full">
-                <span class="text-2xl font-bold">24</span>
+                <span class="text-2xl font-bold">{{ $totalMahasiswaBimbingan }}</span>
                 <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path d="M5 3v18l7-5 7 5V3a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
@@ -17,7 +17,7 @@
         </div>
         <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
             <div class="flex justify-between w-full">
-                <span class="text-2xl font-bold">2</span>
+                <span class="text-2xl font-bold">{{ $prestasiMenungguVerifikasi }}</span>
                 <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     <circle cx="12" cy="12" r="3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -28,7 +28,7 @@
         </div>
         <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
             <div class="flex justify-between w-full">
-                <span class="text-2xl font-bold">12</span>
+                <span class="text-2xl font-bold">{{ $lombaAktif }}</span>
                 <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <circle cx="12" cy="8" r="6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     <path d="M8.21 13.89L7 21l5-3 5 3-1.21-7.11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -65,9 +65,9 @@
         new Chart(document.getElementById('kategoriChart').getContext('2d'), {
             type: 'bar',
             data: {
-                labels: ['Cyber Security', 'IoT', 'UI/UX', 'Infografis', 'Olahraga', 'Essay', 'Lainnya'],
+                labels: {!! $kategoriLabels !!},
                 datasets: [{
-                    data: [7, 10, 8, 12, 4, 3, 4],
+                    data: {!! $kategoriData !!},
                     backgroundColor: '#2563eb', // blue-600
                     borderRadius: 8,
                     barPercentage: 1,
@@ -111,9 +111,9 @@
         new Chart(document.getElementById('tahunChart').getContext('2d'), {
             type: 'line',
             data: {
-                labels: ['2020', '2021', '2022', '2023', '2024'],
+                labels: {!! $tahunLabels !!},
                 datasets: [{
-                    data: [8, 11, 10, 13, 12],
+                    data: {!! $tahunData !!},
                     borderColor: '#2563eb',
                     backgroundColor: 'rgba(37,99,235,0.1)',
                     tension: 0.4,

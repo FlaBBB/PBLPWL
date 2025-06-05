@@ -154,11 +154,3 @@ Route::middleware(['auth'])->group(function () {
         });
         });
 });
-
-// Route for Admin
-
-// Route::prefix('dosen')->group(function () {
-//     Route::get('/dashboard', [DosenDashboardController::class, 'index'])->name('dosen.dashboard');
-//     Route::get('/manajemen-mahasiswa', [ManajemenMahasiswaController::class, 'index'])->name('dosen.manajemen-mahasiswa');
-    
-//});
