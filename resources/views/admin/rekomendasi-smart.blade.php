@@ -76,76 +76,59 @@
                 </div>
 
                 <div class="self-start">
-                    <h3 class="font-semibold mb-4">Daftar Lomba Relevan</h3>
-                    <div class="h-full space-y-3">
-                        @for($i = 0; $i < 4; $i++)
-                            <a href="" class="block h-full">
-                                <div
-                                    class="h-full flex flex-col border border-gray-200 rounded-lg transform hover:-translate-y-1 transition duration-300 hover:shadow-lg hover:border-blue-700">
-                                    <div class="p-4 flex-1 flex flex-row items-center gap-4">
-                                        {{-- Poster event --}}
-                                        <div class="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-md overflow-hidden">
-                                            <img src="{{ asset('images/poster.jpeg') }}" alt="Banner Event"
-                                                class="w-full h-full object-cover object-top">
-                                        </div>
-                                        <div class="flex flex-col justify-center flex-1">
-                                            <h2 class="text-sm font-medium text-gray-800">Hackathon Merdeka Jawa</h2>
-                                            <div class="grid grid-cols-2 gap-1 mt-1">
-                                                <div class="flex items-center text-xs text-gray-600 mt-1 gap-1">
-                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                    <span>21 Agustus – 22 Agustus 2020</span>
-                                                </div>
+                    <div class="self-start">
+                        <h3 class="font-semibold mb-4">Rekomendasi Dosen</h3>
+                        <div class="h-full space-y-3">
+                            @for($i = 0; $i < 4; $i++)
+                                <a href="" class="block h-full">
+                                    <div
+                                        class="h-full flex flex-col border border-gray-200 rounded-lg transform hover:-translate-y-1 transition duration-300 hover:shadow-lg hover:border-blue-700">
+                                        <div class="p-4 flex-1 flex flex-row items-center gap-4">
+                                            {{-- Foto dosen --}}
+                                            <div class="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-lg overflow-hidden">
+                                                <img src="{{ asset('images/dosen-avatar.jpg') }}" alt="Foto Dosen"
+                                                    class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="flex flex-col justify-center flex-1">
+                                                <h2 class="text-base font-semibold text-gray-800">Dr. Budiono Siregar, M.Kom
+                                                </h2>
 
-                                                <div class="flex items-center text-xs text-gray-600 mt-1 gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                        stroke-width="1.5" stroke="currentColor" class="size-4">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                                    </svg>
+                                                {{-- Detail Dosen (Menyamping) --}}
+                                                <div class="flex flex-row flex-wrap items-center gap-x-4 gap-y-1 mt-1.5">
 
-                                                    <span>TIM - 4 orang</span>
-                                                </div>
-                                                <div class="flex items-center text-xs text-gray-600 mt-1 gap-1">
-                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M17.657 16.657L13.414 12.414a4 4 0 10-1.414 1.414l4.243 4.243a1 1 0 001.414-1.414z" />
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M15 11a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                    </svg>
-                                                    <span>Institut Teknologi Guatemala</span>
-                                                </div>
-                                                <div class="flex items-center text-xs text-gray-600 mt-1 gap-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                        stroke-width="1.5" stroke="currentColor" class="size-4">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
-                                                    </svg>
+                                                    {{-- Bidang Keahlian --}}
+                                                    <div class="flex items-center text-sm text-gray-700 gap-1.5">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                            stroke-width="1.5" stroke="currentColor"
+                                                            class="size-4 flex-shrink-0 text-[#1e6aae]">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.611L5 14.5" />
+                                                        </svg>
+                                                        <span class="text-xs text-gray-600">Keahlian:</span>
+                                                        <span class="font-medium">Web Development, AI</span>
+                                                    </div>
 
-                                                    <span>Nasional</span>
+                                                    {{-- Pemisah visual jika diinginkan --}}
+                                                    <span class="text-gray-300 hidden sm:inline">|</span>
+
+                                                    {{-- Jumlah Bimbingan --}}
+                                                    <div class="flex items-center text-sm text-gray-700 gap-1.5">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                            stroke-width="1.5" stroke="currentColor"
+                                                            class="size-4 flex-shrink-0 text-[#1e6aae]">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.228V2.721m-2.48 5.228a6.726 6.726 0 0 1-2.748 1.35m0 0V14.25" />
+                                                        </svg>
+                                                        {{-- <span class="text-xs text-gray-600">Pengalaman:</span> --}}
+                                                        <span class="font-medium">15x Membimbing Lomba</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                        @endfor
-                    </div>
-                    <div class="mt-4 text-right px-2 text-sm text-gray-700 hover:text-[#1e6aae]">
-                        <a href=""
-                            class="inline-flex items-center gap-1 px-3 py-1 rounded-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-sm ">
-                            <!-- beri link ke menu daftar prestasi mahasiswa saat ini -->
-                            Selengkapnya
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
-                            </svg>
-                        </a>
+                                </a>
+                            @endfor
+                        </div>
                     </div>
                 </div>
             </div>

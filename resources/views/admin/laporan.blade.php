@@ -4,7 +4,7 @@
     <main class="flex-1 px-10 pb-10">
         <!-- Header -->
         <div class="mb-8">
-            <h2 class="text-2xl font-bold text-gray-800">Rekap Prestasi Mahasiswa</h2>
+            <h2 class="text-2xl font-bold text-gray-800">Analitik Prestasi Mahasiswa</h2>
             <p class="text-gray-500 text-sm mt-1">Dashboard analitik untuk memantau dan mengevaluasi pencapaian prestasi mahasiswa dalam berbagai kompetisi dan lomba.</p>
         </div>
 
