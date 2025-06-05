@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\CompetitionTag;
-use Database\Factories\CompetitionTagFactory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Competition;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class CompetitionTagSeeder extends Seeder
@@ -14,6 +13,18 @@ class CompetitionTagSeeder extends Seeder
      */
     public function run(): void
     {
-        CompetitionTagFactory::new()->count(10)->create();
+        $competitions = Competition::all();
+        $tags = Tag::all();
+
+        foreach ($competitions as $competition) {
+            $attachedTags = [];
+            $numberOfTags = rand(1, min(5, $tags->count()));
+
+            for ($i = 0; $i < $numberOfTags; $i++) {
+                $tag = $tags->except($attachedTags)->random();
+                $competition->tags()->attach($tag->id);
+                $attachedTags[] = $tag->id;
+            }
+        }
     }
 }
