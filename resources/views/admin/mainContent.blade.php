@@ -8,7 +8,7 @@
             <!-- Total Prestasi Card -->
             <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
                 <div class="flex justify-between w-full">
-                    <span class="text-2xl font-bold">24</span>
+                    <span class="text-2xl font-bold">{{ $totalAchievements }}</span>
                     <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor"
                          viewBox="0 0 24 24">
                         <path d="M5 3v18l7-5 7 5V3a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" stroke-width="2" 
@@ -21,7 +21,7 @@
             <!-- Prestasi Menunggu Verifikasi Card -->
             <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
                 <div class="flex justify-between w-full">
-                    <span class="text-2xl font-bold">2</span>
+                    <span class="text-2xl font-bold">{{ $pendingAchievements }}</span>
                     <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor"
                          viewBox="0 0 24 24">
                         <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke-width="2" 
@@ -46,7 +46,7 @@
             <!-- Lomba Aktif Card -->
             <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
                 <div class="flex justify-between w-full">
-                    <span class="text-2xl font-bold">12</span>
+                    <span class="text-2xl font-bold">{{ $activeCompetitions }}</span>
                     <svg class="w-9 h-9 text-blue-500 bg-white rounded-xl shadow-sm p-2" fill="none" stroke="currentColor"
                          viewBox="0 0 24 24">
                         <circle cx="12" cy="8" r="6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -107,10 +107,10 @@
             new Chart(document.getElementById('yearChart'), {
                 type: 'bar',
                 data: {
-                    labels: ['2020', '2021', '2022', '2023', '2024'],
+                    labels: JSON.parse('@json($yearLabels)'),
                     datasets: [{
                         label: 'Prestasi',
-                        data: [25, 42, 67, 89, 95],
+                        data: JSON.parse('@json($yearData)'),
                         backgroundColor: '#3B82F6',
                         borderRadius: 4
                     }]
@@ -127,9 +127,9 @@
             new Chart(document.getElementById('prodiChart'), {
                 type: 'pie',
                 data: {
-                    labels: ['Teknik Informatika', 'Sistem Informasi', 'Teknik Komputer'],
+                    labels: JSON.parse('@json($prodiLabels)'),
                     datasets: [{
-                        data: [120, 80, 45],
+                        data: JSON.parse('@json($prodiData)'),
                         backgroundColor: ['#3B82F6', '#10B981', '#F59E0B'],
                         borderWidth: 0
                     }]
@@ -154,9 +154,9 @@
             new Chart(document.getElementById('levelChart'), {
                 type: 'pie',
                 data: {
-                    labels: ['Internasional', 'Nasional', 'Regional'],
+                    labels: JSON.parse('@json($levelLabels)'),
                     datasets: [{
-                        data: [67, 123, 55],
+                        data: JSON.parse('@json($levelData)'),
                         backgroundColor: ['#EF4444', '#F59E0B', '#10B981'],
                         borderWidth: 0
                     }]
