@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('mahasiswa_preferences', function (Blueprint $table) {
             $table->string("nim");
-            $table->foreign("nim")->references("nim")->on("mahasiswa");
+            $table->foreign("nim")->references("nim")->on("mahasiswa")->onDelete('cascade');
             $table->unsignedBigInteger("id_tag");
             $table->foreign("id_tag")->references("id")->on("tag");
 

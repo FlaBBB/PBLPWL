@@ -7,23 +7,28 @@
             <div class="flex flex-wrap gap-4 pb-4 items-center">
                 <div class="flex flex-wrap gap-4 py-4 items-center w-full">
                     <!-- Search Input -->
-                    <div class="relative">
-                        <input type="text" placeholder="Cari disini"
-                            class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
-                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" fill="none"
-                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103 10.5a7.5 7.5 0 0013.15 6.15z" />
-                        </svg>
-                    </div>
+                    <form action="{{ route('admin.kelola-mahasiswa') }}" method="GET" class="flex items-center gap-4">
+                        <div class="relative">
+                            <input type="text" name="search" placeholder="Cari disini" value="{{ $search }}"
+                                class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" fill="none"
+                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103 10.5a7.5 7.5 0 0013.15 6.15z" />
+                            </svg>
+                        </div>
+                        <input type="hidden" name="program_studi" value="{{ $programStudi }}">
+                        <input type="hidden" name="tingkat" value="{{ $tingkat }}">
+                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">Cari</button>
+                    </form>
                     <p class="text-sm text-gray-700 ml-4">Filter berdasarkan:</p>
                     <!-- Dropdown: Kategori -->
                     <div class="relative w-54">
-                        <select
+                        <select name="program_studi" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Program Studi</option>
-                            <option>Teknik Informatika</option>
-                            <option>Sistem Informasi Bisnis</option>
+                            <option value="" disabled selected hidden>Program Studi</option>
+                            <option value="Teknik Informatika" {{ $programStudi == 'Teknik Informatika' ? 'selected' : '' }}>Teknik Informatika</option>
+                            <option value="Sistem Informasi Bisnis" {{ $programStudi == 'Sistem Informasi Bisnis' ? 'selected' : '' }}>Sistem Informasi Bisnis</option>
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -32,13 +37,13 @@
                     </div>
                     <!-- Dropdown: Tingkat Lomba -->
                     <div class="relative w-40">
-                        <select
+                        <select name="tingkat" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Tingkat</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
+                            <option value="" disabled selected hidden>Tingkat</option>
+                            <option value="1" {{ $tingkat == '1' ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ $tingkat == '2' ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ $tingkat == '3' ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ $tingkat == '4' ? 'selected' : '' }}>4</option>
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -62,13 +67,12 @@
                         <span class="ml-1 text-sm text-gray-700">baris</span>
                     </div>
                     <div class="ml-auto">
-                        <button type="button" onclick="openModal('modal-tambah')"
+                        <a href="{{ route('admin.kelola-mahasiswa.create') }}"
                             class="text-sm bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 transition flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                             </svg>
                             Tambah Mahasiswa
-                        </button>
                         </a>
                     </div>
                 </div>
@@ -81,6 +85,18 @@
                         // Set new perPage value and reset page to 1
                         currentUrl.searchParams.set('perPage', value);
                         currentUrl.searchParams.set('page', 1);
+
+                        // Preserve existing search and filter parameters
+                        const searchParams = new URLSearchParams(window.location.search);
+                        if (searchParams.has('search')) {
+                            currentUrl.searchParams.set('search', searchParams.get('search'));
+                        }
+                        if (searchParams.has('program_studi')) {
+                            currentUrl.searchParams.set('program_studi', searchParams.get('program_studi'));
+                        }
+                        if (searchParams.has('tingkat')) {
+                            currentUrl.searchParams.set('tingkat', searchParams.get('tingkat'));
+                        }
 
                         console.log('Redirecting to:', currentUrl.toString());
 
@@ -97,30 +113,33 @@
                             <th class="w-[25%] px-2 py-2 text-left">Nama Mahasiswa</th>
                             <th class="w-[20%] px-2 py-2 text-left">Program Studi</th>
                             <th class="w-[10%] px-2 py-2 text-center">Tingkat</th>
-                            <th class="w-[10%] px-2 py-2 text-center">Kelas</th>
                             <th class="w-[15%] px-2 py-2 text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- Contoh data paginasi, ganti dengan data dari controller --}}
-                        @php
-                            $perPage = request('perPage', 10);
-                            $page = request('page', 1);
-                            $total = 10; // total data, ganti sesuai kebutuhan
-                            $start = ($page - 1) * $perPage + 1;
-                            $end = min($start + $perPage - 1, $total);
-                        @endphp
-                        @for($i = $start; $i <= $end; $i++)
+                        @forelse ($mahasiswa as $mhs)
                             <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                <td class="px-4 py-2">{{$i}}</td>
-                                <td class="px-2 py-2">2341720122</td>
-                                <td class="px-2 py-2">Muhammad Alif Febriansyah</td>
-                                <td class="px-2 py-2">Sistem Informasi Bisnis</td>
-                                <td class="px-2 py-2 text-center">4</td>
-                                <td class="px-2 py-2 text-center">4 - F</td>
+                                <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                                <td class="px-2 py-2">{{ $mhs->nim }}</td>
+                                <td class="px-2 py-2">{{ $mhs->name }}</td>
+                                <td class="px-2 py-2">{{ $mhs->prodi ?? '-' }}</td>
+                                <td class="px-2 py-2 text-center">{{ $mhs->grade ?? '-' }}</td>
                                 <td class="px-2 py-2 flex justify-center gap-2">
                                     <div class="flex space-x-2">
-                                        <button type="button" onclick="openModal('modal-detail')"
+                                        <button type="button"
+                                            data-nim="{{ $mhs->nim }}"
+                                            data-name="{{ $mhs->name }}"
+                                            data-prodi="{{ $mhs->prodi ?? '-' }}"
+                                            data-grade="{{ $mhs->grade ?? '-' }}"
+                                            data-ipk="{{ $mhs->mark->ipk ?? '-' }}"
+                                            data-email="{{ $mhs->user->email ?? '-' }}"
+                                            data-phone="{{ $mhs->phone_number ?? '-' }}"
+                                            data-address="{{ $mhs->address ?? '-' }}"
+                                            data-district="{{ $mhs->district ?? '-' }}"
+                                            data-subdistrict="{{ $mhs->subdistrict ?? '-' }}"
+                                            data-city="{{ $mhs->city ?? '-' }}"
+                                            data-preferences="{{ $mhs->preferences->isNotEmpty() ? $mhs->preferences->pluck('name')->implode(', ') : '-' }}"
+                                            onclick="openDetailModalFromButton(this)"
                                             class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white  px-2 py-2 rounded text-xs flex items-center gap-1"
                                             title="Lihat Detail">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -131,7 +150,7 @@
                                                     d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                             </svg>
                                         </button>
-                                        <button type="button" onclick="openModal('modal-edit')"
+                                        <a href="{{ route('admin.kelola-mahasiswa.edit', $mhs->nim) }}"
                                             class="border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
                                             title="Edit">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -139,8 +158,8 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                             </svg>
-                                        </button>
-                                        <button type="button" onclick="openModal('modal-hapus')"
+                                        </a>
+                                        <button type="button" onclick="openDeleteModal('{{ $mhs->nim }}', '{{ $mhs->name }}', '{{ $mhs->nim }}', '{{ $mhs->prodi ?? '-' }}')"
                                             class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
                                             title="Hapus">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -152,32 +171,17 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endfor
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-4 py-2 text-center text-gray-500">Tidak ada data mahasiswa.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
             {{-- Navigasi halaman --}}
-            @php
-                $lastPage = ceil($total / $perPage);
-            @endphp
-
             <div class="flex justify-end mt-6">
-                <nav class="inline-flex -space-x-px">
-                    <a href="?perPage={{ $perPage }}&page={{ max(1, $page - 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-l {{ $page == 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &laquo;
-                    </a>
-                    @for ($p = 1; $p <= $lastPage; $p++)
-                        <a href="?perPage={{ $perPage }}&page={{ $p }}"
-                            class="px-3 py-1 border-t text-gray-600 border-b border-gray-300 {{ $p == $page ? 'bg-[#1e6aae] text-white' : 'hover:bg-gray-200' }}">
-                            {{ $p }}
-                        </a>
-                    @endfor
-                    <a href="?perPage={{ $perPage }}&page={{ min($lastPage, $page + 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-r {{ $page == $lastPage ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &raquo;
-                    </a>
-                </nav>
+                {{ $mahasiswa->appends(['search' => $search])->links('pagination::tailwind') }}
             </div>
         </div>
 
@@ -203,47 +207,51 @@
                     <table class="w-full text-gray-800 text-left text-sm">
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">NIM</td>
-                            <td class="border border-gray-200 px-3 py-2">2341760001</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-nim"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Nama Lengkap</td>
-                            <td class="border border-gray-200 px-3 py-2">Luthfia Tri Afifah</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-nama_lengkap"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Program Studi</td>
-                            <td class="border border-gray-200 px-3 py-2">Sistem Informasi Bisnis</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-program_studi"></td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tingkat</td>
-                            <td class="border border-gray-200 px-3 py-2">4</td>
+                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Semester</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-semester"></td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kelas</td>
-                            <td class="border border-gray-200 px-3 py-2">4 - F</td>
+                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">IPK</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-ipk"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Email</td>
-                            <td class="border border-gray-200 px-3 py-2">luthfia@student.polinema.ac.id</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-email"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">No. Telepon</td>
-                            <td class="border border-gray-200 px-3 py-2">081234567890</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-no_telepon"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Alamat</td>
-                            <td class="border border-gray-200 px-3 py-2">Jl. Soekarno Hatta No. 9</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-alamat"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kecamatan</td>
-                            <td class="border border-gray-200 px-3 py-2">Lowokwaru</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-kecamatan"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kelurahan</td>
-                            <td class="border border-gray-200 px-3 py-2">Jatimulyo</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-kelurahan"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kota</td>
-                            <td class="border border-gray-200 px-3 py-2">Malang</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-kota"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Preferensi</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-preferensi"></td>
                         </tr>
                     </table>
                 </div>
@@ -286,9 +294,9 @@
                             Apakah Anda yakin ingin menghapus data mahasiswa berikut?
                         </p>
                         <div class="bg-gray-50 p-3 space-y-2 rounded-lg text-left">
-                            <div class="text-sm"><strong>Nama:</strong> Luthfia Tri Afifah</div>
-                            <div class="text-sm"><strong>NIM:</strong> 2341760001</div>
-                            <div class="text-sm"><strong>Program Studi:</strong> Sistem Informasi Bisnis</div>
+                            <div class="text-sm"><strong>Nama:</strong> <span id="delete-mahasiswa-nama"></span></div>
+                            <div class="text-sm"><strong>NIM:</strong> <span id="delete-mahasiswa-nim"></span></div>
+                            <div class="text-sm"><strong>Program Studi:</strong> <span id="delete-mahasiswa-prodi"></span></div>
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-3 justify-end">
@@ -296,269 +304,21 @@
                             class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Batal
                         </button>
-                        <button type="button" onclick=""
-                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                            Hapus
-                        </button>
+                        <form id="deleteForm" method="POST" class="w-full sm:w-auto">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Hapus
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        {{-- MODAL EDIT MAHASISWA --}}
-        <div id="modal-edit"
-            class="fixed inset-0 z-50 flex items-start justify-center bg-gray-900/70 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out py-8 item-center overflow-y-auto"
-            data-state="closed">
-            <div
-                class="modal-dialog bg-white rounded-md shadow-2xl max-w-3xl w-full p-6 sm:p-8 transform -translate-y-full scale-95 transition-all duration-500 ease-out">
-                <button type="button" onclick="closeModal('modal-edit')"
-                    class="absolute top-3 right-3 p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
-                </button>
-                <h3 class="text-xl font-semibold mb-6 text-gray-800">Edit Data Mahasiswa</h3>
-
-                <form>
-                    <div class="space-y-4">
-                        <table class="w-full text-gray-800 text-left text-sm">
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">NIM</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="nim" name="nim" value="2341760001"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Nama Lengkap</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="nama" name="nama" value="Luthfia Tri Afifah"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Program Studi</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <select id="prodi" name="prodi"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                        <option value="SIB" selected>Sistem Informasi Bisnis</option>
-                                        <option value="TI">Teknik Informatika</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tingkat</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <select id="tingkat" name="tingkat"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4" selected>4</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kelas</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="kelas" name="kelas" value="4 - F"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">IPK</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="ipk" name="ipk" value="3,7"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Email</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="email" id="email" name="email" value="luthfia@student.polinema.ac.id"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">No. Telepon</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="telepon" name="telepon" value="081234567890"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Alamat</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="alamat" name="alamat" value="Jl. Soekarno Hatta No. 9"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kecamatan</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="kecamatan" name="kecamatan" value="Lowokwaru"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kelurahan</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="kelurahan" name="kelurahan" value="Jatimulyo"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kota</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="kota" name="kota" value="Malang"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </form>
-
-                <div class="mt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('modal-edit')"
-                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                        Batal
-                    </button>
-                    <button type="button"
-                        class="px-4 py-2 text-sm font-medium text-white bg-[#1e6aae] border border-transparent rounded-md hover:bg-[#17497C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1e6aae]">
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        {{-- MODAL TAMBAH MAHASISWA --}}
-        <div id="modal-tambah"
-            class="fixed inset-0 z-50 flex items-start justify-center bg-gray-900/70 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out py-8 item-center overflow-y-auto"
-            data-state="closed">
-            <div
-            class="modal-dialog bg-white rounded-md shadow-2xl max-w-3xl w-full p-6 sm:p-8 transform -translate-y-full scale-95 transition-all duration-500 ease-out">
-            <button type="button" onclick="closeModal('modal-tambah')"
-                class="absolute top-3 right-3 p-1 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                </path>
-                </svg>
-            </button>
-            <h3 class="text-xl font-semibold mb-6 text-gray-800">Tambah Data Mahasiswa</h3>
-
-            <form>
-                <div class="space-y-4">
-                <table class="w-full text-gray-800 text-left text-sm">
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">NIM</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="nim" name="nim" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Nama Lengkap</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="nama" name="nama" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Program Studi</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <select id="prodi" name="prodi"
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                        <option value="SIB">Sistem Informasi Bisnis</option>
-                        <option value="TI">Teknik Informatika</option>
-                        </select>
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tingkat</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <select id="tingkat" name="tingkat"
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        </select>
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kelas</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="kelas" name="kelas" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">IPK</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="ipk" name="ipk" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Email</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="email" id="email" name="email" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">No. Telepon</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="telepon" name="telepon" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Alamat</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="alamat" name="alamat" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kecamatan</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="kecamatan" name="kecamatan" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kelurahan</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="kelurahan" name="kelurahan" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kota</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="kota" name="kota" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                </table>
-                </div>
-            </form>
-
-            <div class="mt-4 flex justify-end gap-3">
-                <button type="button" onclick="closeModal('modal-tambah')"
-                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                Batal
-                </button>
-                <button type="button"
-                class="px-4 py-2 text-sm font-medium text-white bg-[#1e6aae] border border-transparent rounded-md hover:bg-[#17497C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1e6aae]">
-                Simpan
-                </button>
-            </div>
-            </div>
-        </div>
+        {{-- Remove MODAL EDIT MAHASISWA and MODAL TAMBAH MAHASISWA as they are now separate pages --}}
+        <div id="modal-edit" style="display: none;"></div>
+        <div id="modal-tambah" style="display: none;"></div>
 
     </main>
     <script>
@@ -680,7 +440,7 @@
 
         // Close modal when clicking outside
         document.addEventListener('click', function (event) {
-            const modals = ['modal-detail', 'modal-edit', 'modal-hapus'];
+            const modals = ['modal-detail', 'modal-hapus']; // Only these modals remain
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (modal && modal.dataset.state === 'opened') {
@@ -691,13 +451,41 @@
             });
         });
 
-        // Prevent form submission in modals
-        document.querySelectorAll('#modal-edit form').forEach(form => {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                // Handle form submission via AJAX here
-                console.log('Form submitted via AJAX');
-            });
-        });
+        function openDetailModalFromButton(button) {
+            const nim = button.dataset.nim;
+            const name = button.dataset.name;
+            const prodi = button.dataset.prodi;
+            const grade = button.dataset.grade;
+            const ipk = button.dataset.ipk;
+            const email = button.dataset.email;
+            const phone_number = button.dataset.phone;
+            const address = button.dataset.address;
+            const district = button.dataset.district;
+            const subdistrict = button.dataset.subdistrict;
+            const city = button.dataset.city;
+            const preferences = button.dataset.preferences;
+
+            document.getElementById('detail-nim').innerText = nim;
+            document.getElementById('detail-nama_lengkap').innerText = name;
+            document.getElementById('detail-program_studi').innerText = prodi;
+            document.getElementById('detail-semester').innerText = grade;
+            document.getElementById('detail-ipk').innerText = ipk;
+            document.getElementById('detail-email').innerText = email;
+            document.getElementById('detail-no_telepon').innerText = phone_number;
+            document.getElementById('detail-alamat').innerText = address
+            document.getElementById('detail-kecamatan').innerText = district;
+            document.getElementById('detail-kelurahan').innerText = subdistrict;
+            document.getElementById('detail-kota').innerText = city;
+            document.getElementById('detail-preferensi').innerText = preferences === '-' ? 'Tidak ada preferensi' : preferences;
+            openModal('modal-detail');
+        }
+
+        function openDeleteModal(id, nama_lengkap, nim, program_studi) {
+            document.getElementById('delete-mahasiswa-nama').innerText = nama_lengkap;
+            document.getElementById('delete-mahasiswa-nim').innerText = nim;
+            document.getElementById('delete-mahasiswa-prodi').innerText = program_studi;
+            document.getElementById('deleteForm').action = `{{ url('admin/kelola-pengguna/mahasiswa') }}/${id}`;
+            openModal('modal-hapus');
+        }
     </script>
 @endsection

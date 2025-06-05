@@ -5,7 +5,7 @@ use App\Http\Controllers\Mahasiswa\LombaController;
 use App\Http\Controllers\Mahasiswa\LaporanController;
 use App\Http\Controllers\Mahasiswa\PrestasiController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\KelolaPenggunaController;
+use App\Http\Controllers\Admin\KelolaUserController;
 use App\Http\Controllers\Admin\KelolaPrestasiController;
 use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
@@ -102,9 +102,26 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
             // Pengguna
             Route::prefix('kelola-pengguna')->group(function () {
-                Route::get('/mahasiswa', [KelolaPenggunaController::class, 'index'])->name('admin.kelola-mahasiswa');
-                Route::get('/dosen', [KelolaPenggunaController::class, 'dosen'])->name('admin.kelola-dosen');
-                Route::get('/admin', [KelolaPenggunaController::class, 'admin'])->name('admin.kelola-admin');
+                Route::get('/mahasiswa', [KelolaUserController::class, 'index'])->name('admin.kelola-mahasiswa');
+                Route::get('/mahasiswa/create', [KelolaUserController::class, 'createMahasiswa'])->name('admin.kelola-mahasiswa.create');
+                Route::post('/mahasiswa', [KelolaUserController::class, 'storeMahasiswa'])->name('admin.kelola-mahasiswa.store');
+                Route::get('/mahasiswa/{nim}/edit', [KelolaUserController::class, 'editMahasiswa'])->name('admin.kelola-mahasiswa.edit');
+                Route::put('/mahasiswa/{nim}', [KelolaUserController::class, 'updateMahasiswa'])->name('admin.kelola-mahasiswa.update');
+                Route::delete('/mahasiswa/{nim}', [KelolaUserController::class, 'destroyMahasiswa'])->name('admin.kelola-mahasiswa.destroy');
+
+                Route::get('/dosen', [KelolaUserController::class, 'dosen'])->name('admin.kelola-dosen');
+                Route::get('/dosen/create', [KelolaUserController::class, 'createDosen'])->name('admin.kelola-dosen.create');
+                Route::post('/dosen', [KelolaUserController::class, 'storeDosen'])->name('admin.kelola-dosen.store');
+                Route::get('/dosen/{id}/edit', [KelolaUserController::class, 'editDosen'])->name('admin.kelola-dosen.edit');
+                Route::put('/dosen/{id}', [KelolaUserController::class, 'updateDosen'])->name('admin.kelola-dosen.update');
+                Route::delete('/dosen/{id}', [KelolaUserController::class, 'destroyDosen'])->name('admin.kelola-dosen.destroy');
+
+                Route::get('/admin', [KelolaUserController::class, 'admin'])->name('admin.kelola-admin');
+                Route::get('/admin/create', [KelolaUserController::class, 'createAdmin'])->name('admin.kelola-admin.create');
+                Route::post('/admin', [KelolaUserController::class, 'storeAdmin'])->name('admin.kelola-admin.store');
+                Route::get('/admin/{id}/edit', [KelolaUserController::class, 'editAdmin'])->name('admin.kelola-admin.edit');
+                Route::put('/admin/{id}', [KelolaUserController::class, 'updateAdmin'])->name('admin.kelola-admin.update');
+                Route::delete('/admin/{id}', [KelolaUserController::class, 'destroyAdmin'])->name('admin.kelola-admin.destroy');
             });
             // Prestasi
             Route::prefix('kelola-prestasi')->group(function () {

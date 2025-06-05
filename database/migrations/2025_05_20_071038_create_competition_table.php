@@ -37,8 +37,8 @@ return new class extends Migration
                 "REJECTED"
             ]);
             $table->text("rejection_note");
-            $table->string("verificator");
-            $table->foreign("verificator")->references("nip")->on("admin");
+            $table->string("verificator")->nullable();
+            $table->foreign("verificator")->references("nip")->on("admin")->onDelete('cascade');
             $table->date("verified_at");
         });
     }

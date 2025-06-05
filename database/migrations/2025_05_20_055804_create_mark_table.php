@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('mark', function (Blueprint $table) {
             $table->string("nim");
-            $table->foreign("nim")->references("nim")->on("mahasiswa");
+            $table->foreign("nim")->references("nim")->on("mahasiswa")->onDelete('cascade');
             $table->double("ipk");
             $table->timestamp("updated_at");
             $table->string("updated_by");

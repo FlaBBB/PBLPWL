@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mahasiswa_achievement', function (Blueprint $table) {
             $table->foreignId("id_achievement")->constrained("achievement");
             $table->string("nim");
-            $table->foreign("nim")->references("nim")->on("mahasiswa");
+            $table->foreign("nim")->references("nim")->on("mahasiswa")->onDelete('cascade');
             $table->enum("role", [
                 "LEADER",
                 "MEMBER",
