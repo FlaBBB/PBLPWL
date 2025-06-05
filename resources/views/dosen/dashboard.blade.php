@@ -13,7 +13,6 @@
                 </svg>
             </div>
             <span class="text-gray-500 text-sm">Total Mahasiswa Bimbingan</span>
-            <span class="text-green-500 text-xs mt-2">↑ 10.2 <span class="text-gray-400">+1.01% this month</span></span>
         </div>
         <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
             <div class="flex justify-between w-full">
@@ -24,7 +23,6 @@
                 </svg>
             </div>
             <span class="text-gray-500 text-sm">Prestasi menunggu verifikasi</span>
-            <span class="text-green-500 text-xs mt-2">↑ 3.1 <span class="text-gray-400">+0.49% this week</span></span>
         </div>
         <div class="bg-white rounded-xl shadow p-6 flex flex-col items-start">
             <div class="flex justify-between w-full">
@@ -35,7 +33,6 @@
                 </svg>
             </div>
             <span class="text-gray-500 text-sm">Lomba aktif saat ini</span>
-            <span class="text-green-500 text-xs mt-2">↑ 7.2 <span class="text-gray-400">+1.51% this week</span></span>
         </div>
     </div>
 
