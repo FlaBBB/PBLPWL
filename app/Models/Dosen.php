@@ -28,4 +28,9 @@ class Dosen extends Model
     {
         return $this->belongsTo(User::class, 'id_user', 'id');
     }
+
+    public function preferences()
+    {
+        return $this->belongsToMany(Tag::class, 'dosen_preferences', 'nidn', 'id_tag');
+    }
 }

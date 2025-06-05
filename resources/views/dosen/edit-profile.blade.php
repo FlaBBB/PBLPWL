@@ -5,7 +5,7 @@
         <div class="w-200 mx-auto p-6 border border-gray-200 rounded-lg">
             <h2 class="text-xl font-semibold border-b-2 border-gray-100 pb-2">Edit Profil saya</h2>
 
-            <form action="{{ route('mahasiswa.update-profile') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('dosen.update-profile') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('POST') {{-- Use POST for form submission, but Laravel will interpret it as PUT --}}
 
@@ -27,7 +27,7 @@
                                 onchange="displayFileName(this)">
                             <span id="file-name" class="text-sm text-gray-500"></span>
                             @if ($user->photo_profile)
-                                <form action="{{ route('mahasiswa.delete-profile-picture') }}" method="POST" class="inline">
+                                <form action="{{ route('dosen.delete-profile-picture') }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
@@ -48,64 +48,17 @@
                             <label for="name" class="block text-sm font-medium text-gray-500">Nama</label>
                             <input type="text" id="name" name="name"
                                 class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ $mahasiswa->name }}" readonly disabled>
+                                value="{{ $dosen->name }}" readonly disabled>
                         </div>
                         <div class="flex flex-col space-y-1">
-                            <label for="phone_number" class="block text-sm font-medium text-gray-500">Nomor Telepon</label>
-                            <input type="text" id="phone_number" name="phone_number"
+                            <label for="nidn" class="block text-sm font-medium text-gray-500">NIDN</label>
+                            <input type="text" id="nidn" name="nidn"
                                 class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ $mahasiswa->phone_number }}" readonly disabled>
-                        </div>
-                        <div class="flex flex-col space-y-1">
-                            <label for="city" class="block text-sm font-medium text-gray-500">Kota</label>
-                            <input type="text" id="city" name="city"
-                                class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ $mahasiswa->city }}" readonly disabled>
-                        </div>
-                        <div class="flex flex-col space-y-1">
-                            <label for="district" class="block text-sm font-medium text-gray-500">Kecamatan</label>
-                            <input type="text" id="district" name="district"
-                                class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ $mahasiswa->district }}" readonly disabled>
-                        </div>
-                        <div class="flex flex-col space-y-1">
-                            <label for="subdistrict" class="block text-sm font-medium text-gray-500">Kelurahan</label>
-                            <input type="text" id="subdistrict" name="subdistrict"
-                                class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{  $mahasiswa->subdistrict }}" readonly disabled>
-                        </div>
-                        <div class="flex flex-col space-y-1">
-                            <label for="address" class="block text-sm font-medium text-gray-500">Alamat</label>
-                            <input type="text" id="address" name="address"
-                                class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ $mahasiswa->address }}" readonly disabled>
+                                value="{{ $dosen->nidn }}" readonly disabled>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col space-y-2 space-x-6 py-6">
-                    <h3 class="text-sm font-medium text-gray-400 border-b-2 border-gray-200 mb-4">Academic Information</h3>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="flex flex-col space-y-1">
-                            <label for="nim" class="block text-sm font-medium text-gray-500">NIM</label>
-                            <input type="text" id="nim" name="nim"
-                                class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ $mahasiswa->nim }}" readonly disabled>
-                        </div>
-                        <div class="flex flex-col space-y-1">
-                            <label for="prodi" class="block text-sm font-medium text-gray-500">Program Studi</label>
-                            <input type="text" id="prodi" name="prodi"
-                                class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ $mahasiswa->prodi }}" readonly disabled>
-                        </div>
-                        <div class="flex flex-col space-y-1">
-                            <label for="grade" class="block text-sm font-medium text-gray-500">Angkatan</label>
-                            <input type="number" id="grade" name="grade"
-                                class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value="{{ $mahasiswa->grade }}" readonly disabled>
-                        </div>
-                    </div>
-                </div>
                 <div class="flex flex-col space-y-1">
                     <label for="email" class="block text-sm font-medium text-gray-500">Email</label>
                     <input type="email" id="email" name="email"
@@ -122,8 +75,8 @@
                                 <button type="button" onclick="toggleDropdown()"
                                     class="text-sm text-left border border-gray-300 rounded-lg px-2 py-2 bg-white hover:bg-gray-50 flex items-center justify-between w-full">
                                     <span id="selected-tags-display">
-                                        @if ($mahasiswa->preferences->isNotEmpty())
-                                            {{ $mahasiswa->preferences->pluck('name')->join(', ') }}
+                                        @if ($dosen->preferences->isNotEmpty())
+                                            {{ $dosen->preferences->pluck('name')->join(', ') }}
                                         @else
                                             Pilih minat dan keahlian
                                         @endif
@@ -141,7 +94,7 @@
                                             <label class="flex items-center space-x-2 text-sm">
                                                 <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
                                                     class="form-checkbox rounded text-blue-600"
-                                                    {{ $mahasiswa->preferences->contains($tag->id) ? 'checked' : '' }}>
+                                                    {{ $dosen->preferences->contains($tag->id) ? 'checked' : '' }}>
                                                 <span>{{ $tag->name }}</span>
                                             </label>
                                         @endforeach

@@ -90,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
         // Route Profile
         Route::get('/profile', [MahasiswaProfileController::class, 'index'])->name('mahasiswa.edit-profile');
         Route::post('/profile', [MahasiswaProfileController::class, 'update'])->name('mahasiswa.update-profile');
+        Route::delete('/profile/delete-picture', [MahasiswaProfileController::class, 'deleteProfilePicture'])->name('mahasiswa.delete-profile-picture');
 
             
        
@@ -140,7 +141,9 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('dosen')->group(function () {
 
             Route::get('/dashboard', [DosenDashboardController::class, 'index'])->name('dosen.dashboard');
-            Route::get('/profile', [DosenProfileController::class, 'index'])->name('dosen.profil-dosen');
+            Route::get('/profile', [DosenProfileController::class, 'index'])->name('dosen.edit-profile');
+            Route::post('/profile', [DosenProfileController::class, 'update'])->name('dosen.update-profile');
+            Route::delete('/profile/delete-picture', [DosenProfileController::class, 'deleteProfilePicture'])->name('dosen.delete-profile-picture');
             Route::get('/verifikasi-prestasi', [VerifikasiPrestasiController::class, 'index'])->name('dosen.verifikasi-prestasi');
             Route::get('/mahasiswa-bimbingan', [MahasiswaBimbinganController::class, 'index'])->name('dosen.mahasiswa-bimbingan');
 

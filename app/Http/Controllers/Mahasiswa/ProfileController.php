@@ -86,4 +86,20 @@ class ProfileController extends Controller
 
         return redirect()->route('mahasiswa.edit-profile');
     }
+
+    public function deleteProfilePicture()
+    {
+        $user = Auth::user();
+
+        if ($user->photo_profile && $user->photo_profile !== 'user-avatar.jpg') {
+            Storage::disk('public')->delete('profile_pictures/' . $user->photo_profile);
+            $user->photo_profile = null; // Or set to default image path if desired
+            $user->save();
+            NotificationHelper::success("Foto profil berhasil dihapus!");
+        } else {
+            NotificationHelper::error("Tidak ada foto profil untuk dihapus atau foto profil adalah default.");
+        }
+
+        return redirect()->route('mahasiswa.edit-profile');
+    }
 }
