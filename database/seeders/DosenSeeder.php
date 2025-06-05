@@ -14,6 +14,6 @@ class DosenSeeder extends Seeder
      */
     public function run(): void
     {
-        DosenFactory::new()->count(5)->create();
+        DosenFactory::new()->count(20)->create();
     }
 }

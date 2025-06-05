@@ -35,7 +35,7 @@ class CompetitionFactory extends Factory
             'registration_link' => fake()->url(),
             'registration_fee' => fake()->numberBetween(0, 12) * 25_000,
             'max_participation_amount' => fake()->numberBetween(1, 10),
-            'creator' => User::factory(),
+            'creator' => User::pluck('id')->random(),
             'status' => $status = fake()->randomElement(CompetitionStatusEnum::cases()),
             'rejection_note' => $status == CompetitionStatusEnum::REJECTED ? fake()->paragraph() : '',
             'verificator' => Admin::pluck('nip')->random(),
