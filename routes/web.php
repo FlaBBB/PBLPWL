@@ -146,6 +146,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/profile/delete-picture', [DosenProfileController::class, 'deleteProfilePicture'])->name('dosen.delete-profile-picture');
             Route::get('/verifikasi-prestasi', [VerifikasiPrestasiController::class, 'index'])->name('dosen.verifikasi-prestasi');
             Route::get('/mahasiswa-bimbingan', [MahasiswaBimbinganController::class, 'index'])->name('dosen.mahasiswa-bimbingan');
+            Route::get('/mahasiswa-bimbingan/{id}/details', [MahasiswaBimbinganController::class, 'getAchievementDetails'])->name('dosen.mahasiswa-bimbingan.details');
 
             Route::get('/histori-tambah-lomba', [DosenLombaController::class, 'histori'])->name('dosen.histori-tambah-lomba');
             
