@@ -17,8 +17,6 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             DosenSeeder::class,
             MahasiswaSeeder::class,
-            AchievementSeeder::class,
-            MahasiswaAchievementSeeder::class,
             RoleSupervisorSeeder::class,
             SupervisorAchievementSeeder::class,
             NotificationSeeder::class,
