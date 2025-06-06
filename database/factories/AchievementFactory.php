@@ -25,7 +25,7 @@ class AchievementFactory extends Factory
     public function definition(): array
     {
         return [
-            'upload_at' => fake()->dateTimeThisYear(),
+            'upload_at' => fake()->dateTimeBetween('-5 years', 'now'),
             'competition_name' => fake()->sentence(),
             'competition_name_english' => fake()->sentence(),
             'competition_location' => fake()->city(),

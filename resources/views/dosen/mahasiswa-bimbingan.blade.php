@@ -28,7 +28,6 @@
                     <thead>
                         <tr class="border-b border-gray-200 text-gray-400">
                             <th class="px-6 py-3 font-semibold">No.</th>
-                            <th class="px-6 py-3 font-semibold">Nama Mahasiswa</th>
                             <th class="px-6 py-3 font-semibold">Lomba</th>
                             <th class="px-6 py-3 font-semibold">Tanggal Lomba</th>
                             <th class="px-6 py-3 font-semibold">Aksi</th>
@@ -36,22 +35,15 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 text-gray-800">
                         {{-- Contoh data paginasi, ganti dengan data dari controller --}}
-                        @php
-                            $perPage = request('perPage', 10);
-                            $page = request('page', 1);
-                            $total = 20; // total data, ganti sesuai kebutuhan
-                            $start = ($page - 1) * $perPage + 1;
-                            $end = min($start + $perPage - 1, $total);
-                        @endphp
-                        @for ($i = $start; $i <= $end; $i++)
+                        @forelse ($achievements as $index => $achievement)
                             <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                <td class="px-6 py-2 ">{{ $i }}</td>
-                                <td class="px-6 py-2 ">Muhammad Budi Sentosa Rahmat</td>
-                                <td class="px-6 py-2 ">Inovatif Creation IT 2021</td>
-                                <td class="px-6 py-2 ">12 Oktober 2021</td>
+                                <td class="px-6 py-2 ">{{ $achievements->firstItem() + $index }}</td>
+                                <td class="px-6 py-2 ">{{ $achievement->competition_name }}</td>
+                                <td class="px-6 py-2 ">{{ \Carbon\Carbon::parse($achievement->start_at)->format('d F Y') }}</td>
                                 <td class="px-6 py-2">
                                     <div class="flex space-x-3">
-                                        <button onclick="openModal('modal-detail')"
+                                        <button onclick="openDetailModal(this)"
+                                            data-achievement-id="{{ $achievement->id }}"
                                             class="bg-transparent border border-[#1e6aae] text-[#1e6aae]  hover:bg-[#1e6aae] hover:text-white px-2 py-1 rounded text-xs font-medium flex items-center gap-1 gap-2"
                                             title="Lihat Detail"> Lihat Detail
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -65,33 +57,18 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endfor
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada mahasiswa bimbingan.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
 
             {{-- Navigasi halaman --}}
-            @php
-                $lastPage = ceil($total / $perPage);
-            @endphp
-
             <div class="flex justify-end mt-6">
-                <nav class="inline-flex -space-x-px">
-                    <a href="?perPage={{ $perPage }}&page={{ max(1, $page - 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-l {{ $page == 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &laquo;
-                    </a>
-                    @for ($p = 1; $p <= $lastPage; $p++)
-                        <a href="?perPage={{ $perPage }}&page={{ $p }}"
-                            class="px-3 py-1 border-t text-gray-600 border-b border-gray-300 {{ $p == $page ? 'bg-[#1e6aae] text-white' : 'hover:bg-gray-200' }}">
-                            {{ $p }}
-                        </a>
-                    @endfor
-                    <a href="?perPage={{ $perPage }}&page={{ min($lastPage, $page + 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-r {{ $page == $lastPage ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &raquo;
-                    </a>
-                </nav>
+                {{ $achievements->links('pagination::tailwind') }}
             </div>
         </div>
 
@@ -113,36 +90,48 @@
                 <div class="overflow-x-auto">
                     <table class="w-full max-w-auto text-gray-800 text-left text-sm">
                         <tr>
-                            <td class="border border-gray-200 px-3 py-2 font-medium">Nama Mahasiswa</td>
-                            <td class="border border-gray-200 px-3 py-2 text-gray-600">Fikri Muhammad</td>
-                        </tr>
-                        <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium whitespace-nowrap">Nama Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2 text-gray-600">Lomba Cipta Puisi 2021</td>
+                            <td class="border border-gray-200 px-3 py-2 text-gray-600" id="detail-nama-lomba"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium whitespace-nowrap">Bidang Lomba
                             </td>
-                            <td class="border border-gray-200 px-3 py-2 text-gray-600">Cyber Security</td>
+                            <td class="border border-gray-200 px-3 py-2 text-gray-600" id="detail-bidang-lomba"></td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-200 px-3 py-2 font-medium whitespace-nowrap">Role Mahasiswa
+                            <td class="border border-gray-200 px-3 py-2 font-medium whitespace-nowrap">Role Pembimbing
                             </td>
-                            <td class="border border-gray-200 px-3 py-2 text-gray-600">Leader</td>
+                            <td class="border border-gray-200 px-3 py-2 text-gray-600" id="detail-role-pembimbing"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium whitespace-nowrap">Tanggal Mulai
                             </td>
-                            <td class="border border-gray-200 px-3 py-2 text-gray-600">2024-06-01</td>
+                            <td class="border border-gray-200 px-3 py-2 text-gray-600" id="detail-tanggal-mulai"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-200 px-3 py-2 font-medium whitespace-nowrap">Tanggal
                                 Berakhir</td>
-                            <td class="border border-gray-200 px-3 py-2 text-gray-600">2024-06-03</td>
+                            <td class="border border-gray-200 px-3 py-2 text-gray-600" id="detail-tanggal-berakhir"></td>
                         </tr>
                     </table>
                 </div>
+
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold mb-4 text-gray-800">Daftar Mahasiswa Terlibat</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full max-w-auto text-gray-800 text-left text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="border border-gray-200 px-3 py-2 font-medium">Nama Mahasiswa</th>
+                                    <th class="border border-gray-200 px-3 py-2 font-medium">Tag Mahasiswa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detail-mahasiswa-list">
+                                <!-- Mahasiswa list will be populated here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
 
                 <div class="mt-8 text-right">
                     <button type="button" onclick="closeModal('modal-detail')"
@@ -158,52 +147,87 @@
         const DIALOG_TRANSITION_DURATION = 500; // Corresponds to duration-500 in Tailwind for the dialog
         const OVERLAY_TRANSITION_DURATION = 300; // Corresponds to duration-300 in Tailwind for the overlay
 
-        function openModal(modalId) {
+        function openModal(modalId) { // Keep the original openModal for general use if needed
             const modal = document.getElementById(modalId);
-            // Exit if modal doesn't exist or is already open/opening
             if (!modal || modal.dataset.state === 'opened' || modal.dataset.state === 'opening') {
                 return;
             }
             const modalDialog = modal.querySelector('.modal-dialog');
 
             modal.dataset.state = 'opening';
-            // Make overlay visible and interactive
             modal.classList.remove('opacity-0', 'pointer-events-none');
-            // Force browser to recognize the initial state before adding transition classes
             void modal.offsetWidth;
             modal.classList.add('opacity-100', 'pointer-events-auto');
-
 
             if (modalDialog) {
                 modalDialog.classList.remove('-translate-y-full', 'scale-95');
                 modalDialog.classList.add('translate-y-0', 'scale-100');
             }
 
-            // Determine which element and duration to monitor for transition end
-            const targetElement = modalDialog || modal; // Fallback to modal overlay if dialog isn't there
+            const targetElement = modalDialog || modal;
             const duration = modalDialog ? DIALOG_TRANSITION_DURATION : OVERLAY_TRANSITION_DURATION;
 
             let openTransitionEnded = false;
             const onOpenTransitionEnd = (event) => {
-                // Ensure the event is from the target element and not a child
                 if (event.target === targetElement && modal.dataset.state === 'opening' && !openTransitionEnded) {
                     openTransitionEnded = true;
                     modal.dataset.state = 'opened';
                     targetElement.removeEventListener('transitionend', onOpenTransitionEnd);
                 }
             };
-            // Make sure to add the event listener only once if openModal can be called multiple times rapidly
-            targetElement.removeEventListener('transitionend', onOpenTransitionEnd); // Remove previous just in case
+            targetElement.removeEventListener('transitionend', onOpenTransitionEnd);
             targetElement.addEventListener('transitionend', onOpenTransitionEnd);
 
-            // Fallback timeout in case transitionend doesn't fire (e.g., element becomes display:none unexpectedly)
             setTimeout(() => {
                 if (modal.dataset.state === 'opening' && !openTransitionEnded) {
                     openTransitionEnded = true;
                     modal.dataset.state = 'opened';
-                    targetElement.removeEventListener('transitionend', onOpenTransitionEnd); // Clean up listener
+                    targetElement.removeEventListener('transitionend', onOpenTransitionEnd);
                 }
-            }, duration + 70); // A little buffer, slightly increased
+            }, duration + 70);
+        }
+
+        async function openDetailModal(buttonElement) {
+            const achievementId = buttonElement.dataset.achievementId;
+            try {
+                const response = await fetch(`/dosen/mahasiswa-bimbingan/${achievementId}/details`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                document.getElementById('detail-nama-lomba').innerText = data.nama_lomba;
+                document.getElementById('detail-bidang-lomba').innerText = data.bidang_lomba;
+                document.getElementById('detail-role-pembimbing').innerText = data.supervisor_role;
+                document.getElementById('detail-tanggal-mulai').innerText = data.tanggal_mulai;
+                document.getElementById('detail-tanggal-berakhir').innerText = data.tanggal_berakhir;
+
+                const mahasiswaListBody = document.getElementById('detail-mahasiswa-list');
+                mahasiswaListBody.innerHTML = ''; // Clear previous list
+
+                if (data.mahasiswa_list && data.mahasiswa_list.length > 0) {
+                    data.mahasiswa_list.forEach(mahasiswa => {
+                        const row = `
+                            <tr>
+                                <td class="border border-gray-200 px-3 py-2 text-gray-600">${mahasiswa.name}</td>
+                                <td class="border border-gray-200 px-3 py-2 text-gray-600">${mahasiswa.mahasiswa_tag}</td>
+                            </tr>
+                        `;
+                        mahasiswaListBody.insertAdjacentHTML('beforeend', row);
+                    });
+                } else {
+                    mahasiswaListBody.innerHTML = `
+                        <tr>
+                            <td colspan="2" class="px-6 py-4 text-center text-gray-500">Tidak ada mahasiswa terlibat.</td>
+                        </tr>
+                    `;
+                }
+
+                openModal('modal-detail');
+            } catch (error) {
+                console.error('Error fetching achievement details:', error);
+                alert('Gagal memuat detail bimbingan. Silakan coba lagi.');
+            }
         }
 
         function closeModal(modalId) {

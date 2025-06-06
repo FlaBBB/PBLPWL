@@ -43,7 +43,7 @@ return new class extends Migration
             ]);
             $table->text("note");
             $table->string("verificator")->nullable();
-            $table->foreign("verificator")->references("nip")->on("admin");
+            $table->foreign("verificator")->references("nip")->on("admin")->onDelete('cascade');
             $table->timestamp("verified_at")->nullable();
         });
     }
