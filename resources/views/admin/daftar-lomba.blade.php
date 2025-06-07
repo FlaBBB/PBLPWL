@@ -9,18 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
         <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg">
             <div class="flex flex-row items-center justify-between mb-4">
                 <h2 class="text-xl font-semibold">Daftar Lomba ADMIN</h2>
-                <!-- Button: Tambah Lomba -->
-                <div class="ml-auto">
-                    <a href="{{route('admin.tambah-lomba')}}">
-                        <button
-                            class="text-sm bg-[#1e6aae] text-white px-5 py-2 rounded-md hover:bg-[#17497C] transition flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                            </svg>
-                            Tambah Lomba
-                        </button>
-                    </a>
-                </div>
             </div>
             <div class="flex flex-wrap gap-4 pb-4 items-center">
                 <div class="flex flex-wrap gap-4 py-4 items-center w-full">

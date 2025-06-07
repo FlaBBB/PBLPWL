@@ -132,7 +132,7 @@ Route::middleware(['auth'])->group(function () {
             // Lomba
             Route::prefix('kelola-lomba')->group(function () {
                 Route::get('/daftar', [KelolaLombaController::class, 'daftar'])->name('admin.daftar-lomba');
-                Route::get('/tambah', [KelolaLombaController::class, 'tambah'])->name('admin.tambah-lomba');
+                Route::get('/verifikasi', [KelolaLombaController::class, 'verifikasi'])->name('admin.verifikasi-lomba');
                 Route::get('/{id}/detail', [KelolaLombaController::class, 'detail'])->name('admin.lomba.detail');
             });
             // Akademik

@@ -53,6 +53,26 @@ class KelolaLombaController extends Controller
             'headerDesc' => $headerDesc,
         ]);
     }
+    public function verifikasi()
+    {
+        $activeMenu = 'verifikasi-lomba';
+        $breadcrumbs = [
+            [
+                'label' => 'verifikasi Lomba',
+                'url' => route('admin.verifikasi-lomba')
+            ],
+        ];
+
+        $headerTitle = 'Kelola Lomba';
+        $headerDesc = 'Kelola lomba yang ada di dalam sistem.';
+
+        return view('admin.verifikasi-lomba', [
+            'activeMenu' => $activeMenu,
+            'breadcrumbs' => $breadcrumbs,
+            'headerTitle' => $headerTitle,
+            'headerDesc' => $headerDesc,
+        ]);
+    }
 
     public function detail($id)
     {
