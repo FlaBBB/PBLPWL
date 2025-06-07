@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Validator; // Import Validator facade
 use Illuminate\Support\Facades\Storage; // Import Storage facade
 use App\Enums\CompetitionLevelEnum;
 use App\Enums\AchievementStatusEnum;
-use Yajra\DataTables\DataTables;
+use Yajra\DataTables\Facades\DataTables;
 use App\Helpers\NotificationHelper; // Import NotificationHelper
 
 class PrestasiController extends Controller

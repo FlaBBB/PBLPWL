@@ -8,7 +8,7 @@
         openDropdown = 'kelola-mahasiswa-group';
     } else if (['verifikasi-prestasi', 'daftar-prestasi'].includes('{{ $activeMenu }}')) {
         openDropdown = 'kelola-prestasi-group';
-    } else if (['tambah-lomba', 'daftar-lomba'].includes('{{ $activeMenu }}')) {
+    } else if (['tambah-lomba', 'daftar-lomba', 'verifikasi-lomba'].includes('{{ $activeMenu }}')) {
         openDropdown = 'kelola-lomba-group';
     } else if (['program-studi', 'periode'].includes('{{ $activeMenu }}')) {
         openDropdown = 'kelola-akademik-group';
@@ -113,9 +113,9 @@
                         </a>
                         <div x-show="openDropdown === 'kelola-lomba-group'" x-transition
                             class="ml-10 my-3 flex flex-col gap-3">
-                            <a href="{{ route('admin.tambah-lomba') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'tambah-lomba' ? 'text-[#1E6AAE] font-medium text-sm  hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
-                                Tambah Lomba Baru
+                            <a href="{{ route('admin.verifikasi-lomba') }}"
+                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'verifikasi-lomba' ? 'text-[#1E6AAE] font-medium text-sm  hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                Verifikasi Lomba
                             </a>
                             <a href="{{ route('admin.daftar-lomba') }}"
                                 class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'daftar-lomba' ? 'text-[#1E6AAE] font-medium text-sm hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">

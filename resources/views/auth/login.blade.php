@@ -98,7 +98,7 @@
             <div class="relative z-20 flex flex-col items-center text-left max-w-xl">
                 <div id="text-content" class="transition-all duration-700 group">
                     <div
-                        class="relative z-30 transition-transform duration-700 group-hover:-translate-y-6 group">
+                        class="relative z-30 transition-transform duration-700 group-hover:-translate-y-4 group hover:scale-105">
                         <h6 class="text-sm font-bold text-white leading-relax">SIPRESTA</h6>
 
                         <h1 class="text-5xl font-bold text-white leading-tight">
@@ -109,10 +109,10 @@
                         <div class="relative h-[3.5rem]"> <!-- tinggi disamakan dengan h1 -->
                             <h1
                                 class="text-5xl font-base text-white leading-tight absolute inset-0 transition-opacity duration-500 group-hover:opacity-0">
-                                Peluang Mendekat
+                                Peluang Mendekat.
                             </h1>
                             <h1
-                                class="text-5xl font-bold text-white leading-tight absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                                class="text-5xl font-bold bg-gradient-to-r from-yellow-200 to-yellow-300 via-yellow-100 bg-clip-text text-transparent leading-tight absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                                 Mimpi Didapat!
                             </h1>
                         </div>
@@ -121,7 +121,7 @@
                     <div id="img-content"
                         class="-mt-16 opacity-0 invisible max-h-0 group-hover:opacity-100 group-hover:visible group-hover:max-h-120 transition-all duration-700 ease-in-out">
                         <img src="{{ asset('images/login.svg') }}" alt="Mahasiswa Berprestasi"
-                            class="w-full max-w-2xl object-contain transition-transform duration-700 hover:scale-105 hover:rotate-3">
+                            class="w-full max-w-xl object-contain transition-transform duration-700 hover:scale-110 hover:rotate-3">
                     </div>
                 </div>
             </div>
