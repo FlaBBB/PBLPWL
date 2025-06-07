@@ -18,7 +18,7 @@
                 </a>
             </div>
         </div>
-        <form method="GET" action="{{ route('mahasiswa.daftar-lomba') }}"
+        <form method="GET" action="{{ route('dosen.daftar-lomba') }}"
             class="flex flex-row gap-4 py-4 items-center w-full">
             <!-- Search Input -->
             <div class="relative">
