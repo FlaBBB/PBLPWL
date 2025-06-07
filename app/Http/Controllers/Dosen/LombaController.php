@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Competition; // Assuming you have a Competition model
+use App\Models\Tag; 
+use App\Models\Competition;
 
 class LombaController extends Controller
 {
-    public function daftar()
+    public function daftar(Request $request)
     {
         
         $activeMenu = 'daftar-lomba';
@@ -21,8 +22,40 @@ class LombaController extends Controller
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
 
-        $competition = Competition::with('tags')->paginate(request('perPage', 9)); // Fetch the competition by ID
+        $kategoriList = Tag::pluck('name'); // Fetch all categories (tags) for the competition
+        $tingkatList = Competition::select('level')->distinct()->get()->pluck('level'); // Fetch all distinct levels for the competition
+        $partisipasi = Competition::select('max_participation_amount')->distinct()->get()->pluck('max_participation_amount'); // Fetch all distinct max participation amounts for the competition
 
+        $query = Competition::with('tags');
+
+        // Filter search
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter kategori (by tag)
+        if ($request->filled('kategori')) {
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('name', $request->kategori);
+            });
+        }
+
+        // Filter tingkat
+        if ($request->filled('tingkat')) {
+            $query->where('level', $request->tingkat);
+        }
+
+        // Filter partisipan
+        if ($request->filled('partisipan')) {
+            if ($request->partisipan === 'Tim') {
+                $query->where('max_participation_amount', '>', 1);
+            } elseif ($request->partisipan === 'Individu') {
+                $query->where('max_participation_amount', '=', 1);
+            }
+        }
+
+        // Paginate hasil
+        $competition = $query->paginate(9)->appends($request->query());
 
         return view('dosen.daftar-lomba', [
             'activeMenu' => $activeMenu,
@@ -30,6 +63,9 @@ class LombaController extends Controller
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
             'competition' => $competition,
+            'kategoriList' => $kategoriList,
+            'tingkatList' => $tingkatList,
+            'partisipasi' => $partisipasi,
         ]);
     }
 

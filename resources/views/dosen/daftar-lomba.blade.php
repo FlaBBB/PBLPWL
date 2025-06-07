@@ -1,10 +1,10 @@
 @extends('layout.template')
 
 @section('content')
-    <main class="flex-1 px-6">
-        <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
-         <div class="flex flex-row items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold mb-4">Daftar Lomba ADMIN</h2>
+<main class="flex-1 px-6">
+    <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
+        <div class="flex flex-row items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold mb-4">Daftar Lomba Dosen</h2>
             <!-- Button: Tambah Lomba -->
             <div class="ml-auto">
                 <a href="{{route('dosen.tambah-lomba')}}">
@@ -18,10 +18,11 @@
                 </a>
             </div>
         </div>
-        <div class="flex flex-row gap-4 py-4 items-center">
+        <form method="GET" action="{{ route('mahasiswa.daftar-lomba') }}"
+            class="flex flex-row gap-4 py-4 items-center w-full">
             <!-- Search Input -->
             <div class="relative">
-                <input type="text" placeholder="Cari disini"
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari disini"
                     class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
                 <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" fill="none"
                     stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -31,13 +32,13 @@
             </div>
 
             <!-- Dropdown: Kategori -->
-            <div class="relative">
-                <select
-                    class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="relative w-2/5">
+                <select name="kategori" class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option disabled selected hidden>Pilih Kategori</option>
-                    <option>Cyber Security</option>
-                    <option>IoT</option>
-                    <option>Software Development</option>
+                    <option value="" {{ request('kategori') == '' ? 'selected' : '' }}>Semua Kategori</option>
+                    @foreach($kategoriList as $kategori)
+                    <option value="{{ $kategori }}" {{ request('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
+                    @endforeach
                 </select>
                 <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                     fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -46,36 +47,35 @@
             </div>
 
             <!-- Dropdown: Tingkat Lomba -->
-            <div class="relative">
-                <select
-                    class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="relative w-1/4">
+                <select name="tingkat" class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option disabled selected hidden>Pilih Tingkat</option>
-                    <option>Internasional</option>
-                    <option>Nasional</option>
-                    <option>Provinsi</option>
-                    <option>Kota/Kabupaten</option>
-                    <option>Internal</option>
+                    <option value="" {{ request('tingkat') == '' ? 'selected' : '' }}>Semua Tingkat</option>
+                    @foreach($tingkatList as $tingkat)
+                    <option value="{{ $tingkat }}" {{ request('tingkat') == $tingkat ? 'selected' : '' }}>{{ $tingkat }}</option>
+                    @endforeach
                 </select>
                 <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                     fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
             </div>
+
             <!-- Dropdown: Partisipan -->
-            <div class="relative">
-                <select
-                    class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="relative w-1/4">
+                <select name="partisipan" class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option disabled selected hidden>Pilih Tipe Peserta</option>
-                    <option>Tim</option>
-                    <option>Individu</option>
+                    <option value="" {{ request('partisipan') == '' ? 'selected' : '' }}>Semua Tipe Peserta</option>
+                    <option value="Individu" {{ request('partisipan') == 'Individu' ? 'selected' : '' }}>Individu</option>
+                    <option value="Tim" {{ request('partisipan') == "Tim" ? 'selected' : '' }}>Tim</option>
                 </select>
                 <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                     fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
             </div>
-            
-        </div>
+            <button type="submit" class="bg-[#1e6aae] text-white px-4 py-2 rounded-md text-sm hover:bg-[#17497C]">Filter</button>
+        </form>
 
         <div class="mt-4 grid grid-cols-[repeat(auto-fit,_minmax(260px,_1fr))] gap-4">
             @foreach($competition as $i)
@@ -116,11 +116,10 @@
 
             {{-- Navigasi halaman otomatis --}}
         </div>
-        
+
         <div class="mt-4 grid grid-cols items-end gap-4">
             {{ $competition->appends(request()->except('page'))->links('vendor.pagination.tailwind') }}
         </div>
     </div>
 </main>
-@endsection   
-    
+@endsection
