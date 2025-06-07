@@ -112,9 +112,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/dosen', [KelolaUserController::class, 'dosen'])->name('admin.kelola-dosen');
                 Route::get('/dosen/create', [KelolaUserController::class, 'createDosen'])->name('admin.kelola-dosen.create');
                 Route::post('/dosen', [KelolaUserController::class, 'storeDosen'])->name('admin.kelola-dosen.store');
-                Route::get('/dosen/{id}/edit', [KelolaUserController::class, 'editDosen'])->name('admin.kelola-dosen.edit');
-                Route::put('/dosen/{id}', [KelolaUserController::class, 'updateDosen'])->name('admin.kelola-dosen.update');
-                Route::delete('/dosen/{id}', [KelolaUserController::class, 'destroyDosen'])->name('admin.kelola-dosen.destroy');
+                Route::get('/dosen/{nidn}/edit', [KelolaUserController::class, 'editDosen'])->name('admin.kelola-dosen.edit');
+                Route::put('/dosen/{nidn}', [KelolaUserController::class, 'updateDosen'])->name('admin.kelola-dosen.update');
+                Route::delete('/dosen/{nidn}', [KelolaUserController::class, 'destroyDosen'])->name('admin.kelola-dosen.destroy');
 
                 Route::get('/admin', [KelolaUserController::class, 'admin'])->name('admin.kelola-admin');
                 Route::get('/admin/create', [KelolaUserController::class, 'createAdmin'])->name('admin.kelola-admin.create');

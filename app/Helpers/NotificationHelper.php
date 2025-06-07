@@ -22,8 +22,11 @@ class NotificationHelper
         self::add('success', $message, $options);
     }
 
-    public static function error(string $message, array $options = []): void
+    public static function error(string $message, array $options = [], array $fields = []): void
     {
+        if (!empty($fields)) {
+            $options['fields'] = $fields;
+        }
         self::add('error', $message, $options);
     }
 

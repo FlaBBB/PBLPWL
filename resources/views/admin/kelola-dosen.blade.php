@@ -7,29 +7,6 @@
             <div class="flex flex-wrap gap-4 pb-4 items-center">
                 <div class="flex flex-wrap gap-4 py-4 items-center w-full">
                     <!-- Search Input -->
-                    <div class="relative">
-                        <input type="text" placeholder="Cari disini"
-                            class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
-                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" fill="none"
-                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103 10.5a7.5 7.5 0 0013.15 6.15z" />
-                        </svg>
-                    </div>
-                    <p class="text-sm text-gray-700 ml-4">Filter berdasarkan:</p>
-                    <!-- Dropdown: Program Studi -->
-                    <div class="relative w-54">
-                        <select
-                            class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Program Studi</option>
-                            <option>Teknik Informatika</option>
-                            <option>Sistem Informasi Bisnis</option>
-                        </select>
-                        <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
                 </div>
 
                 {{-- Opsi jumlah baris per halaman --}}
@@ -61,18 +38,19 @@
                     function changePerPage(value) {
                         // Get current URL
                         const currentUrl = new URL(window.location.href);
-
+ 
                         // Set new perPage value and reset page to 1
                         currentUrl.searchParams.set('perPage', value);
                         currentUrl.searchParams.set('page', 1);
-
+ 
+ 
                         console.log('Redirecting to:', currentUrl.toString());
-
+ 
                         // Navigate to new URL
                         window.location.href = currentUrl.toString();
                     }
                 </script>
-
+ 
                 <table class="w-full text-left text-sm bg-white rounded-lg border border-gray-200 rounded-sm">
                     <thead class="text-gray-500">
                         <tr class="border-b border-gray-200">
@@ -85,24 +63,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- Contoh data paginasi, ganti dengan data dari controller --}}
-                        @php
-                            $perPage = request('perPage', 10);
-                            $page = request('page', 1);
-                            $total = 10; // total data, ganti sesuai kebutuhan
-                            $start = ($page - 1) * $perPage + 1;
-                            $end = min($start + $perPage - 1, $total);
-                        @endphp
-                        @for($i = $start; $i <= $end; $i++)
+                        @forelse ($dosen as $dsn)
                             <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                <td class="px-4 py-2">{{$i}}</td>
-                                <td class="px-2 py-2">0012345678</td>
-                                <td class="px-2 py-2">Dr. Ahmad Suryanto, M.Kom</td>
-                                <td class="px-2 py-2">ahmad.suryanto@polinema.ac.id</td>
-                                <td class="px-2 py-2">Machine Learning, Data Mining</td>
+                                <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                                <td class="px-2 py-2">{{ $dsn->nidn }}</td>
+                                <td class="px-2 py-2">{{ $dsn->name }}</td>
+                                <td class="px-2 py-2">{{ $dsn->user->email ?? '-' }}</td>
+                                <td class="px-2 py-2">{{ $dsn->preferences->isNotEmpty() ? $dsn->preferences->pluck('name')->implode(', ') : '-' }}</td>
                                 <td class="px-2 py-2 flex justify-center gap-2">
                                     <div class="flex space-x-2">
-                                        <button type="button" onclick="openModal('modal-detail')"
+                                        <button type="button"
+                                            data-nidn="{{ $dsn->nidn }}"
+                                            data-name="{{ $dsn->name }}"
+                                            data-email="{{ $dsn->user->email ?? '-' }}"
+                                            data-preferences="{{ $dsn->preferences->isNotEmpty() ? $dsn->preferences->pluck('name')->implode(', ') : '-' }}"
+                                            onclick="openDetailModalFromButton(this)"
                                             class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white  px-2 py-2 rounded text-xs flex items-center gap-1"
                                             title="Lihat Detail">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -113,7 +88,12 @@
                                                     d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                             </svg>
                                         </button>
-                                        <button type="button" onclick="openModal('modal-edit')"
+                                        <button type="button" onclick="openEditModalFromButton(this)"
+                                            data-nidn="{{ $dsn->nidn }}"
+                                            data-nip="{{ $dsn->nidn }}"
+                                            data-name="{{ $dsn->name }}"
+                                            data-email="{{ $dsn->user->email ?? '-' }}"
+                                            data-preferences="{{ $dsn->preferences->isNotEmpty() ? $dsn->preferences->pluck('id')->toJson() : '[]' }}"
                                             class="border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
                                             title="Edit">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -122,7 +102,7 @@
                                                     d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                             </svg>
                                         </button>
-                                        <button type="button" onclick="openModal('modal-hapus')"
+                                        <button type="button" onclick="openDeleteModal('{{ $dsn->nidn }}', '{{ $dsn->name }}', '{{ $dsn->user->email ?? '-' }}')"
                                             class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
                                             title="Hapus">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -134,32 +114,17 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endfor
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-4 py-2 text-center text-gray-500">Tidak ada data dosen.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
             {{-- Navigasi halaman --}}
-            @php
-                $lastPage = ceil($total / $perPage);
-            @endphp
-
             <div class="flex justify-end mt-6">
-                <nav class="inline-flex -space-x-px">
-                    <a href="?perPage={{ $perPage }}&page={{ max(1, $page - 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-l {{ $page == 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &laquo;
-                    </a>
-                    @for ($p = 1; $p <= $lastPage; $p++)
-                        <a href="?perPage={{ $perPage }}&page={{ $p }}"
-                            class="px-3 py-1 border-t text-gray-600 border-b border-gray-300 {{ $p == $page ? 'bg-[#1e6aae] text-white' : 'hover:bg-gray-200' }}">
-                            {{ $p }}
-                        </a>
-                    @endfor
-                    <a href="?perPage={{ $perPage }}&page={{ min($lastPage, $page + 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-r {{ $page == $lastPage ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &raquo;
-                    </a>
-                </nav>
+                {{ $dosen->links('pagination::tailwind') }}
             </div>
         </div>
 
@@ -185,39 +150,19 @@
                     <table class="w-full text-gray-800 text-left text-sm">
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">NIDN</td>
-                            <td class="border border-gray-200 px-3 py-2">0012345678</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-nidn"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Nama Lengkap</td>
-                            <td class="border border-gray-200 px-3 py-2">Dr. Ahmad Suryanto, M.Kom</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-nama_lengkap"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Email</td>
-                            <td class="border border-gray-200 px-3 py-2">ahmad.suryanto@polinema.ac.id</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">No. Telepon</td>
-                            <td class="border border-gray-200 px-3 py-2">081234567890</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Alamat</td>
-                            <td class="border border-gray-200 px-3 py-2">Jl. Prof. Dr. Sumantri Brojonegoro No. 10</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kecamatan</td>
-                            <td class="border border-gray-200 px-3 py-2">Lowokwaru</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kelurahan</td>
-                            <td class="border border-gray-200 px-3 py-2">Jatimulyo</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kota</td>
-                            <td class="border border-gray-200 px-3 py-2">Malang</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-email"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Minat & Keahlian</td>
-                            <td class="border border-gray-200 px-3 py-2">Machine Learning, Data Mining, Artificial Intelligence, Database Management</td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-preferences"></td>
                         </tr>
                     </table>
                 </div>
@@ -259,9 +204,9 @@
                             Apakah Anda yakin ingin menghapus data dosen berikut?
                         </p>
                         <div class="bg-gray-50 p-3 space-y-2 rounded-lg text-left">
-                            <div class="text-sm"><strong>Nama:</strong> Dr. Ahmad Suryanto, M.Kom</div>
-                            <div class="text-sm"><strong>NIDN:</strong> 0012345678</div>
-                            <div class="text-sm"><strong>Email:</strong> ahmad.suryanto@polinema.ac.id</div>
+                            <div class="text-sm"><strong>Nama:</strong> <span id="delete-dosen-nama"></span></div>
+                            <div class="text-sm"><strong>NIDN:</strong> <span id="delete-dosen-nidn"></span></div>
+                            <div class="text-sm"><strong>Email:</strong> <span id="delete-dosen-email"></span></div>
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-3 justify-end">
@@ -269,15 +214,19 @@
                             class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Batal
                         </button>
-                        <button type="button" onclick=""
-                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                            Hapus
-                        </button>
+                        <form id="deleteForm" method="POST" class="w-full sm:w-auto">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Hapus
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-
+ 
         {{-- MODAL EDIT DOSEN --}}
         <div id="modal-edit"
             class="fixed inset-0 z-50 flex items-start justify-center bg-gray-900/70 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out py-8 item-center overflow-y-auto"
@@ -293,87 +242,91 @@
                     </svg>
                 </button>
                 <h3 class="text-xl font-semibold mb-6 text-gray-800">Edit Data Dosen</h3>
-
-                <form>
+ 
+                <form id="editForm" method="POST">
+                    @csrf
+                    @method('PUT')
                     <div class="space-y-4">
                         <table class="w-full text-gray-800 text-left text-sm">
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">NIDN</td>
                                 <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="nidn" name="nidn" value="0012345678"
+                                    <input type="text" id="edit-nidn" name="nidn" value="{{ old('nidn') }}"
                                         class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Nama Lengkap</td>
                                 <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="nama" name="nama" value="Dr. Ahmad Suryanto, M.Kom"
+                                    <input type="text" id="edit-nama" name="name" value="{{ old('name') }}"
                                         class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Email</td>
                                 <td class="border border-gray-200 px-3 py-2">
-                                    <input type="email" id="email" name="email" value="ahmad.suryanto@polinema.ac.id"
+                                    <input type="email" id="edit-email" name="email" value="{{ old('email') }}"
                                         class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">No. Telepon</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Password</td>
                                 <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="telepon" name="telepon" value="081234567890"
+                                    <input type="password" id="edit-password" name="password"
                                         class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Alamat</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Konfirmasi Password</td>
                                 <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="alamat" name="alamat" value="Jl. Prof. Dr. Sumantri Brojonegoro No. 10"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kecamatan</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="kecamatan" name="kecamatan" value="Lowokwaru"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kelurahan</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="kelurahan" name="kelurahan" value="Jatimulyo"
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kota</td>
-                                <td class="border border-gray-200 px-3 py-2">
-                                    <input type="text" id="kota" name="kota" value="Malang"
+                                    <input type="password" id="edit-password_confirmation" name="password_confirmation"
                                         class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Minat & Keahlian</td>
                                 <td class="border border-gray-200 px-3 py-2">
-                                    <input id="keahlian" name="keahlian" rows="3" value="Machine Learning, Data Mining, Artificial Intelligence, Database Management" readonly disabled
-                                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm bg-gray-100 cursor-not-allowed">
+                       <div class="relative flex-1">
+                           <button type="button" id="edit-preferences-button" onclick="toggleDropdown('edit-dropdown')"
+                               class="text-sm text-left border border-gray-300 rounded-lg px-2 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-between w-full">
+                               <span id="edit-selected-tags-display">
+                                   Pilih minat dan keahlian
+                               </span>
+                               <svg class="w-4 h-4 ml-2 text-gray-400" fill="none" stroke="currentColor"
+                                   stroke-width="2" viewBox="0 0 24 24">
+                                   <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                               </svg>
+                           </button>
+
+                           <div id="edit-dropdown"
+                               class="absolute z-10 bg-white border border-gray-300 mt-1 rounded-lg shadow-lg w-full hidden">
+                               <div class="max-h-48 overflow-y-auto p-2 space-y-2">
+                                   @foreach ($preferences as $preference)
+                                       <label class="flex items-center space-x-2 text-sm">
+                                           <input type="checkbox" name="preferences[]" value="{{ $preference->id }}"
+                                               class="form-checkbox rounded text-blue-600 edit-preference-checkbox"
+                                               {{ in_array($preference->id, old('preferences', [])) ? 'checked' : '' }}>
+                                           <span>{{ $preference->name }}</span>
+                                       </label>
+                                   @endforeach
+                               </div>
+                           </div>
+                       </div>
                                 </td>
                             </tr>
                         </table>
                     </div>
+                    <div class="mt-4 flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('modal-edit')"
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 text-sm font-medium text-white bg-[#1e6aae] border border-transparent rounded-md hover:bg-[#17497C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1e6aae]">
+                            Simpan Perubahan
+                        </button>
+                    </div>
                 </form>
-
-                <div class="mt-4 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('modal-edit')"
-                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                        Batal
-                    </button>
-                    <button type="button"
-                        class="px-4 py-2 text-sm font-medium text-white bg-[#1e6aae] border border-transparent rounded-md hover:bg-[#17497C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1e6aae]">
-                        Simpan Perubahan
-                    </button>
-                </div>
             </div>
         </div>
         
@@ -392,85 +345,93 @@
                 </svg>
             </button>
             <h3 class="text-xl font-semibold mb-6 text-gray-800">Tambah Data Dosen</h3>
-
-            <form>
+ 
+            <form id="addForm" method="POST" action="{{ route('admin.kelola-dosen.store') }}">
+                @csrf
                 <div class="space-y-4">
                 <table class="w-full text-gray-800 text-left text-sm">
                     <tr>
                     <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">NIDN</td>
                     <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="nidn" name="nidn" value=""
+                        <input type="text" id="add-nidn" name="nidn" value="{{ old('nidn') }}"
                         class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
                     </td>
                     </tr>
                     <tr>
                     <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Nama Lengkap</td>
                     <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="nama" name="nama" value=""
+                        <input type="text" id="add-nama" name="name" value="{{ old('name') }}"
                         class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
                     </td>
                     </tr>
                     <tr>
                     <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Email</td>
                     <td class="border border-gray-200 px-3 py-2">
-                        <input type="email" id="email" name="email" value=""
+                        <input type="email" id="add-email" name="email" value="{{ old('email') }}"
                         class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
                     </td>
                     </tr>
                     <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">No. Telepon</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="telepon" name="telepon" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
+                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Password</td>
+                        <td class="border border-gray-200 px-3 py-2">
+                            <input type="password" id="add-password" name="password" value="{{ old('password') }}"
+                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                        </td>
                     </tr>
                     <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Alamat</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="alamat" name="alamat" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
+                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Konfirmasi Password</td>
+                        <td class="border border-gray-200 px-3 py-2">
+                            <input type="password" id="add-password_confirmation" name="password_confirmation" value="{{ old('password_confirmation') }}"
+                            class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
+                        </td>
                     </tr>
                     <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kecamatan</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="kecamatan" name="kecamatan" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kelurahan</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="kelurahan" name="kelurahan" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kota</td>
-                    <td class="border border-gray-200 px-3 py-2">
-                        <input type="text" id="kota" name="kota" value=""
-                        class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#1e6aae] focus:border-transparent text-sm">
-                    </td>
-                    </tr>
-                    <tr>
+                        <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Minat & Keahlian</td>
+                        <td class="border border-gray-200 px-3 py-2">
+                        <div class="relative flex-1">
+                            <button type="button" id="add-preferences-button" onclick="toggleDropdown('add-dropdown')"
+                                class="text-sm text-left border border-gray-300 rounded-lg px-2 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-between w-full">
+                                <span id="add-selected-tags-display">
+                                    Pilih minat dan keahlian
+                                </span>
+                                <svg class="w-4 h-4 ml-2 text-gray-400" fill="none" stroke="currentColor"
+                                    stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+ 
+                            <div id="add-dropdown"
+                                class="absolute z-10 bg-white border border-gray-300 mt-1 rounded-lg shadow-lg w-full hidden">
+                                <div class="max-h-48 overflow-y-auto p-2 space-y-2">
+                                    @foreach ($preferences as $preference)
+                                        <label class="flex items-center space-x-2 text-sm">
+                                            <input type="checkbox" name="preferences[]" value="{{ $preference->id }}"
+                                                class="form-checkbox rounded text-blue-600 add-preference-checkbox"
+                                                {{ in_array($preference->id, old('preferences', [])) ? 'checked' : '' }}>
+                                            <span>{{ $preference->name }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        </td>
                     </tr>
                 </table>
                 </div>
+                <div class="mt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeModal('modal-tambah')"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    Batal
+                    </button>
+                    <button type="submit"
+                    class="px-4 py-2 text-sm font-medium text-white bg-[#1e6aae] border border-transparent rounded-md hover:bg-[#17497C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1e6aae]">
+                    Simpan
+                    </button>
+                </div>
             </form>
-
-            <div class="mt-4 flex justify-end gap-3">
-                <button type="button" onclick="closeModal('modal-tambah')"
-                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                Batal
-                </button>
-                <button type="button"
-                class="px-4 py-2 text-sm font-medium text-white bg-[#1e6aae] border border-transparent rounded-md hover:bg-[#17497C] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1e6aae]">
-                Simpan
-                </button>
-            </div>
             </div>
         </div>
-
+ 
     </main>
     <script>
         // Prevent default behavior dan event bubbling
@@ -479,30 +440,31 @@
                 event.preventDefault();
                 event.stopPropagation();
             }
-
+ 
             try {
                 const modal = document.getElementById(modalId);
-                if (!modal || modal.dataset.state === 'opened' || modal.dataset.state === 'opening') {
-                    return;
-                }
-
+                // Temporarily remove state check for debugging
+                // if (!modal || modal.dataset.state === 'opened' || modal.dataset.state === 'opening') {
+                //     return;
+                // }
+ 
                 const modalDialog = modal.querySelector('.modal-dialog');
                 modal.dataset.state = 'opening';
-
+ 
                 modal.classList.remove('opacity-0', 'pointer-events-none');
                 // Force browser to recognize the initial state before adding transition classes
                 void modal.offsetWidth;
                 modal.classList.add('opacity-100', 'pointer-events-auto');
-
+ 
                 if (modalDialog) {
                     modalDialog.classList.remove('-translate-y-full', 'scale-95');
                     modalDialog.classList.add('translate-y-0', 'scale-100');
                 }
-
+ 
                 // Determine which element and duration to monitor for transition end
                 const targetElement = modalDialog || modal; // Fallback to modal overlay if dialog isn't there
                 const duration = modalDialog ? 500 : 300;
-
+ 
                 let openTransitionEnded = false;
                 const onOpenTransitionEnd = (event) => {
                     // Ensure the event is from the target element and not a child
@@ -512,10 +474,10 @@
                         targetElement.removeEventListener('transitionend', onOpenTransitionEnd);
                     }
                 };
-
+ 
                 targetElement.removeEventListener('transitionend', onOpenTransitionEnd); // Remove previous just in case
                 targetElement.addEventListener('transitionend', onOpenTransitionEnd);
-
+ 
                 // Fallback timeout in case transitionend doesn't fire (e.g., element becomes display:none unexpectedly)
                 setTimeout(() => {
                     if (modal.dataset.state === 'opening' && !openTransitionEnded) {
@@ -524,43 +486,43 @@
                         targetElement.removeEventListener('transitionend', onOpenTransitionEnd);
                     }
                 }, duration + 70); // A little buffer, slightly increased
-
+ 
             } catch (error) {
                 console.error('Error opening modal:', error);
             }
         }
-
+ 
         function closeModal(modalId, event) {
             if (event) {
                 event.preventDefault();
                 event.stopPropagation();
             }
-
+ 
             try {
                 const modal = document.getElementById(modalId);
                 if (!modal || modal.dataset.state === 'closed' || modal.dataset.state === 'closing') {
                     return;
                 }
-
+ 
                 const modalDialog = modal.querySelector('.modal-dialog');
                 modal.dataset.state = 'closing';
-
+ 
                 // Start fading out overlay
                 modal.classList.remove('opacity-100');
                 modal.classList.add('opacity-0');
                 // Remove 'pointer-events-auto' immediately so it can't be re-triggered during closing,
                 // 'pointer-events-none' will be added after transition.
                 modal.classList.remove('pointer-events-auto');
-
-
+ 
+ 
                 if (modalDialog) {
                     modalDialog.classList.remove('translate-y-0', 'scale-100');
                     modalDialog.classList.add('-translate-y-full', 'scale-95');
                 }
-
+ 
                 const targetElement = modalDialog || modal;
                 const duration = modalDialog ? 500 : 300;
-
+ 
                 let closeTransitionEnded = false;
                 const onCloseTransitionEnd = (event) => {
                     if (event.target === targetElement && modal.dataset.state === 'closing' && !closeTransitionEnded) {
@@ -570,10 +532,10 @@
                         targetElement.removeEventListener('transitionend', onCloseTransitionEnd);
                     }
                 };
-
+ 
                 targetElement.removeEventListener('transitionend', onCloseTransitionEnd); // Remove previous just in case
                 targetElement.addEventListener('transitionend', onCloseTransitionEnd);
-
+ 
                 // Fallback timeout
                 setTimeout(() => {
                     if (modal.dataset.state === 'closing' && !closeTransitionEnded) {
@@ -583,12 +545,12 @@
                         targetElement.removeEventListener('transitionend', onCloseTransitionEnd);
                     }
                 }, duration + 70); // A little buffer
-
+ 
             } catch (error) {
                 console.error('Error closing modal:', error);
             }
         }
-
+ 
         // Close modal when clicking outside
         document.addEventListener('click', function (event) {
             const modals = ['modal-detail', 'modal-edit', 'modal-hapus', 'modal-tambah'];
@@ -601,14 +563,232 @@
                 }
             });
         });
-
+ 
         // Prevent form submission in modals
         document.querySelectorAll('#modal-edit form, #modal-tambah form').forEach(form => {
             form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                // Handle form submission via AJAX here
-                console.log('Form submitted via AJAX');
+                // The default form submission will now occur.
+                // If AJAX submission is desired in the future, it should be implemented here.
             });
         });
+ 
+        function openDetailModalFromButton(button) {
+            document.getElementById('detail-nidn').innerText = button.dataset.nidn;
+            document.getElementById('detail-nama_lengkap').innerText = button.dataset.name;
+            document.getElementById('detail-email').innerText = button.dataset.email;
+            document.getElementById('detail-preferences').innerText = button.dataset.preferences === '-' ? 'Tidak ada minat & keahlian' : button.dataset.preferences;
+            openModal('modal-detail');
+        }
+ 
+        function openEditModalFromButton(button) {
+            document.getElementById('edit-nidn').value = "{{ old('nidn') }}" || button.dataset.nidn;
+            document.getElementById('edit-nama').value = "{{ old('name') }}" || button.dataset.name;
+            document.getElementById('edit-email').value = "{{ old('email') }}" || button.dataset.email;
+ 
+ 
+            document.getElementById('editForm').action = `{{ url('admin/kelola-pengguna/dosen') }}/${button.dataset.nidn}`;
+            openModal('modal-edit');
+        }
+ 
+        function openDeleteModal(nidn, nama_lengkap, email) {
+            document.getElementById('delete-dosen-nama').innerText = nama_lengkap;
+            document.getElementById('delete-dosen-nidn').innerText = nidn; // Display NIDN for confirmation
+            document.getElementById('delete-dosen-email').innerText = email;
+            document.getElementById('deleteForm').action = `{{ url('admin/kelola-pengguna/dosen') }}/${nidn}`;
+            openModal('modal-hapus');
+        }
+        function toggleDropdown(dropdownId) {
+            document.getElementById(dropdownId).classList.toggle("hidden");
+        }
+ 
+        document.addEventListener('DOMContentLoaded', function() {
+            // For Edit Modal
+            const editCheckboxes = document.querySelectorAll('#modal-edit .edit-preference-checkbox');
+            const editSelectedTagsDisplay = document.getElementById('edit-selected-tags-display');
+ 
+            function updateEditSelectedTagsDisplay() {
+                const selectedTags = Array.from(editCheckboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.nextElementSibling.textContent);
+ 
+                if (selectedTags.length > 0) {
+                    editSelectedTagsDisplay.textContent = selectedTags.join(', ');
+                } else {
+                    editSelectedTagsDisplay.textContent = 'Pilih minat dan keahlian';
+                }
+            }
+ 
+            editCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateEditSelectedTagsDisplay);
+            });
+ 
+            // For Add Modal
+            const addCheckboxes = document.querySelectorAll('#modal-tambah .add-preference-checkbox');
+            const addSelectedTagsDisplay = document.getElementById('add-selected-tags-display');
+ 
+            function updateAddSelectedTagsDisplay() {
+                const selectedTags = Array.from(addCheckboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.nextElementSibling.textContent);
+ 
+                if (selectedTags.length > 0) {
+                    addSelectedTagsDisplay.textContent = selectedTags.join(', ');
+                } else {
+                    addSelectedTagsDisplay.textContent = 'Pilih minat dan keahlian';
+                }
+            }
+ 
+            addCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateAddSelectedTagsDisplay);
+            });
+ 
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(event) {
+                const editDropdown = document.getElementById("edit-dropdown");
+                const addDropdown = document.getElementById("add-dropdown");
+ 
+                if (editDropdown && !event.target.closest('#edit-preferences-button') && !event.target.closest('#edit-dropdown')) {
+                    if (!editDropdown.classList.contains('hidden')) {
+                        editDropdown.classList.add('hidden');
+                    }
+                }
+                if (addDropdown && !event.target.closest('#add-preferences-button') && !event.target.closest('#add-dropdown')) {
+                    if (!addDropdown.classList.contains('hidden')) {
+                        addDropdown.classList.add('hidden');
+                    }
+                }
+            }
+        });
+ 
+        // Update openEditModalFromButton to handle the new preference display
+        const originalOpenEditModalFromButton = openEditModalFromButton;
+        openEditModalFromButton = function(button) {
+            originalOpenEditModalFromButton(button);
+ 
+            const preferencesSelect = document.getElementById('edit-preferences'); // This is now the hidden select
+            const selectedPreferences = JSON.parse(button.dataset.preferences);
+            const editCheckboxes = document.querySelectorAll('#modal-edit .edit-preference-checkbox');
+            const editSelectedTagsDisplay = document.getElementById('edit-selected-tags-display');
+ 
+            // Uncheck all first
+            editCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+ 
+            // Check selected ones
+            Array.from(editCheckboxes).forEach(checkbox => {
+                if (selectedPreferences.includes(parseInt(checkbox.value))) {
+                    checkbox.checked = true;
+                }
+            });
+ 
+            // Update display text
+            const selectedTags = Array.from(editCheckboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.nextElementSibling.textContent);
+ 
+            if (selectedTags.length > 0) {
+                editSelectedTagsDisplay.textContent = selectedTags.join(', ');
+            } else {
+                editSelectedTagsDisplay.textContent = 'Pilih minat dan keahlian';
+            }
+        };
+ 
+        // Update openModal for add modal to reset preferences display
+        const originalOpenModal = openModal;
+        openModal = function(modalId, event) {
+            originalOpenModal(modalId, event);
+            if (modalId === 'modal-tambah') {
+                const addCheckboxes = document.querySelectorAll('#modal-tambah .add-preference-checkbox');
+                const addSelectedTagsDisplay = document.getElementById('add-selected-tags-display');
+ 
+                addCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                addSelectedTagsDisplay.textContent = 'Pilih minat dan keahlian';
+            }
+        };
     </script>
-@endsection
+ 
+     @if ($errors->any() && (old('nidn') || old('name') || old('email')))
+         <script>
+             document.addEventListener('DOMContentLoaded', function() {
+                 console.log('Attempting to open modal-tambah due to validation errors.');
+                 openModal('modal-tambah');
+             });
+         </script>
+     @endif
+ 
+     @if ($errors->any() && old('edit_id'))
+         <script>
+             document.addEventListener('DOMContentLoaded', function() {
+                 console.log('Attempting to open modal-edit due to validation errors.');
+                 const editId = "{{ old('edit_id') }}";
+                 const editButton = document.querySelector(`button[data-nidn="${editId}"]`);
+                 if (editButton) {
+                     openEditModalFromButton(editButton);
+                 } else {
+                     console.log('Edit button not found for NIDN:', editId);
+                 }
+             });
+         </script>
+     @endif
+ 
+     <div id="notyf-notifications" data-notifications="{{ json_encode(Session::get('notyf.notifications')) }}"></div>
+ 
+     <script>
+         document.addEventListener('DOMContentLoaded', function() {
+             const notificationsElement = document.getElementById('notyf-notifications');
+             const notifications = JSON.parse(notificationsElement.dataset.notifications);
+             const errorClass = 'border-red-500';
+             const defaultClass = 'border-gray-300';
+ 
+             function applyErrorStyles(fields) {
+                 fields.forEach(fieldName => {
+                     const inputElement = document.getElementById(`add-${fieldName}`) || document.getElementById(`edit-${fieldName}`);
+                     if (inputElement) {
+                         inputElement.classList.add(errorClass);
+                         inputElement.classList.remove(defaultClass);
+                         inputElement.addEventListener('input', clearErrorStyles);
+                     }
+                 });
+             }
+ 
+             function clearErrorStyles(event) {
+                 const inputElement = event.target;
+                 inputElement.classList.remove(errorClass);
+                 inputElement.classList.add(defaultClass);
+                 inputElement.removeEventListener('input', clearErrorStyles);
+             }
+ 
+             function clearAllErrorStyles() {
+                 document.querySelectorAll(`.${errorClass}`).forEach(el => {
+                     el.classList.remove(errorClass);
+                     el.classList.add(defaultClass);
+                     el.removeEventListener('input', clearErrorStyles);
+                 });
+             }
+ 
+             if (notifications) {
+                 notifications.forEach(notification => {
+                     if (notification.type === 'error' && notification.options && notification.options.fields) {
+                         applyErrorStyles(notification.options.fields);
+                     }
+                 });
+             }
+ 
+             // Clear error styles when modals are closed
+             const modals = ['modal-tambah', 'modal-edit'];
+             modals.forEach(modalId => {
+                 const modal = document.getElementById(modalId);
+                 if (modal) {
+                     modal.addEventListener('transitionend', function() {
+                         if (modal.dataset.state === 'closed') {
+                             clearAllErrorStyles();
+                         }
+                     });
+                 }
+             });
+         });
+     </script>
+ @endsection

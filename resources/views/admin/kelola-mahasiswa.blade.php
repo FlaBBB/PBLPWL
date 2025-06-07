@@ -150,7 +150,7 @@
                                                     d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                             </svg>
                                         </button>
-                                        <a href="{{ route('admin.kelola-mahasiswa.edit', $mhs->nim) }}"
+                                        <a href="{{ route('admin.kelola-mahasiswa.edit', ['nim' => $mhs->nim]) }}"
                                             class="border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
                                             title="Edit">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -159,7 +159,7 @@
                                                     d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                             </svg>
                                         </a>
-                                        <button type="button" onclick="openDeleteModal('{{ $mhs->nim }}', '{{ $mhs->name }}', '{{ $mhs->nim }}', '{{ $mhs->prodi ?? '-' }}')"
+                                        <button type="button" onclick="openDeleteModal('{{ $mhs->nim }}', '{{ $mhs->name }}', '{{ $mhs->prodi ?? '-' }}')"
                                             class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
                                             title="Hapus">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -304,7 +304,7 @@
                             class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Batal
                         </button>
-                        <form id="deleteForm" method="POST" class="w-full sm:w-auto">
+                        <form id="deleteForm" method="POST" action="{{ route('admin.kelola-mahasiswa.destroy', ['nim' => '__ID__']) }}" class="w-full sm:w-auto">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
@@ -480,11 +480,12 @@
             openModal('modal-detail');
         }
 
-        function openDeleteModal(id, nama_lengkap, nim, program_studi) {
+        function openDeleteModal(id, nama_lengkap, program_studi) {
             document.getElementById('delete-mahasiswa-nama').innerText = nama_lengkap;
-            document.getElementById('delete-mahasiswa-nim').innerText = nim;
+            document.getElementById('delete-mahasiswa-nim').innerText = id;
             document.getElementById('delete-mahasiswa-prodi').innerText = program_studi;
-            document.getElementById('deleteForm').action = `{{ url('admin/kelola-pengguna/mahasiswa') }}/${id}`;
+            const form = document.getElementById('deleteForm');
+            form.action = form.action.replace('__ID__', id);
             openModal('modal-hapus');
         }
     </script>

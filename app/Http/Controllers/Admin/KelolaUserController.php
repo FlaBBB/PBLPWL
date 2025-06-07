@@ -12,6 +12,7 @@ use App\Models\Tag; // Import Tag model
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Helpers\NotificationHelper;
 
 class KelolaUserController extends Controller
 {
@@ -60,32 +61,32 @@ class KelolaUserController extends Controller
 
     public function dosen(Request $request)
     {
-        $activeMenu = 'kelola-dosen';
-        $breadcrumbs = [
-            [
-                'label' => 'Kelola Dosen',
-                'url' => route('admin.kelola-dosen')
-            ],
-        ];
-        $headerTitle = 'Kelola Dosen';
-        $headerDesc = 'Kelola dosen yang ada di dalam sistem.';
-
         $search = $request->input('search');
-        $dosen = Dosen::query()
-            ->when($search, function ($query, $search) {
-                $query->where('nama_lengkap', 'like', '%' . $search . '%')
-                    ->orWhere('nip', 'like', '%' . $search . '%');
-            })
-            ->paginate(10);
+        $programStudi = $request->input('program_studi');
+        $perPage = $request->input('perPage', 10);
 
-        return view('admin.kelola-dosen', [
-            'activeMenu' => $activeMenu,
-            'breadcrumbs' => $breadcrumbs,
-            'headerTitle' => $headerTitle,
-            'headerDesc' => $headerDesc,
-            'dosen' => $dosen,
-            'search' => $search,
-        ]);
+        $query = Dosen::with('user', 'preferences');
+
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                  ->with("user")
+                  ->orWhere('nidn', 'like', '%' . $search . '%')
+                  ->orWhereHas('user', function ($q) use ($search) {
+                      $q->where('email', 'like', '%' . $search . '%');
+                  });
+        }
+
+        if ($programStudi) {
+            // Assuming 'program_studi' is a column in the Dosen table
+            $query->where('program_studi', $programStudi);
+        }
+
+        $dosen = $query->paginate($perPage);
+        $preferences = Tag::all(); // Fetch all preferences for the form
+
+        // dd($dosen);
+
+        return view('admin.kelola-dosen', compact('dosen', 'search', 'programStudi', 'preferences'));
     }
 
     public function admin(Request $request)
@@ -102,12 +103,19 @@ class KelolaUserController extends Controller
         $headerDesc = 'Kelola admin yang ada di dalam sistem.';
 
         $search = $request->input('search');
-        $admin = Admin::query()
-            ->when($search, function ($query, $search) {
-                $query->where('nama_lengkap', 'like', '%' . $search . '%')
-                    ->orWhere('nip', 'like', '%' . $search . '%');
-            })
-            ->paginate(10);
+        $perPage = $request->input('perPage', 10);
+
+        $query = Admin::with('user');
+
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('nip', 'like', '%' . $search . '%')
+                  ->orWhereHas('user', function ($q) use ($search) {
+                      $q->where('email', 'like', '%' . $search . '%');
+                  });
+        }
+
+        $admin = $query->paginate($perPage);
 
         return view('admin.kelola-admin', [
             'activeMenu' => $activeMenu,
@@ -116,6 +124,7 @@ class KelolaUserController extends Controller
             'headerDesc' => $headerDesc,
             'admin' => $admin,
             'search' => $search,
+            'perPage' => $perPage,
         ]);
     }
 
@@ -154,7 +163,10 @@ class KelolaUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error);
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user = User::create([
@@ -169,7 +181,8 @@ class KelolaUserController extends Controller
             'nama_lengkap' => $request->nama_lengkap,
         ]);
 
-        return redirect()->route('admin.kelola-mahasiswa')->with('success', 'Mahasiswa berhasil ditambahkan.');
+        NotificationHelper::success('Mahasiswa berhasil ditambahkan.');
+        return redirect()->route('admin.kelola-mahasiswa');
     }
 
     public function editMahasiswa($nim)
@@ -235,7 +248,10 @@ class KelolaUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error);
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user->update([
@@ -258,7 +274,8 @@ class KelolaUserController extends Controller
         // Sync preferences
         $mahasiswa->preferences()->sync($request->input('preferences', []));
 
-        return redirect()->route('admin.kelola-mahasiswa')->with('success', 'Mahasiswa berhasil diperbarui.');
+        NotificationHelper::success('Mahasiswa berhasil diperbarui.');
+        return redirect()->route('admin.kelola-mahasiswa');
     }
 
 
@@ -268,8 +285,9 @@ class KelolaUserController extends Controller
         $user = $mahasiswa->user;
 
         $mahasiswa->delete();
-        
-        return redirect()->route('admin.kelola-mahasiswa')->with('success', 'Mahasiswa berhasil dihapus.');
+
+        NotificationHelper::success('Mahasiswa berhasil dihapus.');
+        return redirect()->route('admin.kelola-mahasiswa');
     }
 
     public function createDosen()
@@ -300,14 +318,19 @@ class KelolaUserController extends Controller
     public function storeDosen(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nip' => 'required|string|max:255|unique:dosen,nip',
-            'nama_lengkap' => 'required|string|max:255',
+            'nidn' => 'required|string|max:255|unique:dosen,nidn',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:user,email',
             'password' => 'required|string|min:8|confirmed',
+            'preferences' => 'nullable|array',
+            'preferences.*' => 'exists:tag,id',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            foreach ($validator->errors()->keys() as $field) {
+                NotificationHelper::error($validator->errors()->first($field), [], [$field]);
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user = User::create([
@@ -316,16 +339,19 @@ class KelolaUserController extends Controller
             'role' => 'dosen',
         ]);
 
-        Dosen::create([
+        $dosen = Dosen::create([
             'user_id' => $user->id,
-            'nip' => $request->nip,
-            'nama_lengkap' => $request->nama_lengkap,
+            'nidn' => $request->nidn,
+            'name' => $request->name,
         ]);
 
-        return redirect()->route('admin.kelola-dosen')->with('success', 'Dosen berhasil ditambahkan.');
+        $dosen->preferences()->sync($request->input('preferences', []));
+
+        NotificationHelper::success('Dosen berhasil ditambahkan.');
+        return redirect()->route('admin.kelola-dosen');
     }
 
-    public function editDosen($id)
+    public function editDosen($nidn)
     {
         $activeMenu = 'kelola-dosen';
         $breadcrumbs = [
@@ -335,14 +361,14 @@ class KelolaUserController extends Controller
             ],
             [
                 'label' => 'Edit Dosen',
-                'url' => route('admin.kelola-dosen.edit', $id)
+                'url' => route('admin.kelola-dosen.edit', $nidn)
             ],
         ];
 
         $headerTitle = 'Edit Dosen';
         $headerDesc = 'Edit data dosen yang ada di dalam sistem.';
 
-        $dosen = Dosen::findOrFail($id);
+        $dosen = Dosen::findOrFail($nidn);
 
         return view('admin.edit-dosen', [
             'activeMenu' => $activeMenu,
@@ -353,19 +379,19 @@ class KelolaUserController extends Controller
         ]);
     }
 
-    public function updateDosen(Request $request, $id)
+    public function updateDosen(Request $request, $nidn)
     {
-        $dosen = Dosen::findOrFail($id);
+        $dosen = Dosen::findOrFail($nidn);
         $user = $dosen->user;
 
         $validator = Validator::make($request->all(), [
-            'nip' => [
+            'nidn' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('dosen')->ignore($dosen->id),
+                Rule::unique('dosen')->ignore($dosen->nidn, 'nidn'),
             ],
-            'nama_lengkap' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => [
                 'required',
                 'string',
@@ -374,10 +400,15 @@ class KelolaUserController extends Controller
                 Rule::unique('user')->ignore($user->id),
             ],
             'password' => 'nullable|string|min:8|confirmed',
+            'preferences' => 'nullable|array',
+            'preferences.*' => 'exists:tag,id',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            foreach ($validator->errors()->keys() as $field) {
+                NotificationHelper::error($validator->errors()->first($field), [], [$field]);
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user->update([
@@ -386,21 +417,26 @@ class KelolaUserController extends Controller
         ]);
 
         $dosen->update([
-            'nip' => $request->nip,
-            'nama_lengkap' => $request->nama_lengkap,
+            'nidn' => $request->nidn,
+            'name' => $request->name,
         ]);
 
-        return redirect()->route('admin.kelola-dosen')->with('success', 'Dosen berhasil diperbarui.');
+        $dosen->preferences()->sync($request->input('preferences', []));
+
+        NotificationHelper::success('Dosen berhasil diperbarui.');
+        return redirect()->route('admin.kelola-dosen');
     }
 
-    public function destroyDosen($id)
+    public function destroyDosen($nidn)
     {
-        $dosen = Dosen::findOrFail($id);
+        $dosen = Dosen::findOrFail($nidn);
         $user = $dosen->user;
 
         $dosen->delete();
-        
-        return redirect()->route('admin.kelola-dosen')->with('success', 'Dosen berhasil dihapus.');
+        $user->delete();
+
+        NotificationHelper::success('Dosen berhasil dihapus.');
+        return redirect()->route('admin.kelola-dosen');
     }
 
     public function createAdmin()
@@ -432,13 +468,16 @@ class KelolaUserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nip' => 'required|string|max:255|unique:admin,nip',
-            'nama_lengkap' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:user,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            foreach ($validator->errors()->keys() as $field) {
+                NotificationHelper::error($validator->errors()->first($field), [], [$field]);
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user = User::create([
@@ -450,13 +489,14 @@ class KelolaUserController extends Controller
         Admin::create([
             'user_id' => $user->id,
             'nip' => $request->nip,
-            'nama_lengkap' => $request->nama_lengkap,
+            'name' => $request->name,
         ]);
 
-        return redirect()->route('admin.kelola-admin')->with('success', 'Admin berhasil ditambahkan.');
+        NotificationHelper::success('Admin berhasil ditambahkan.');
+        return redirect()->route('admin.kelola-admin');
     }
 
-    public function editAdmin($id)
+    public function editAdmin($nip)
     {
         $activeMenu = 'kelola-admin';
         $breadcrumbs = [
@@ -466,14 +506,14 @@ class KelolaUserController extends Controller
             ],
             [
                 'label' => 'Edit Admin',
-                'url' => route('admin.kelola-admin.edit', $id)
+                'url' => route('admin.kelola-admin.edit', $nip)
             ],
         ];
 
         $headerTitle = 'Edit Admin';
         $headerDesc = 'Edit data admin yang ada di dalam sistem.';
 
-        $admin = Admin::findOrFail($id);
+        $admin = Admin::findOrFail($nip);
 
         return view('admin.edit-admin', [
             'activeMenu' => $activeMenu,
@@ -484,9 +524,9 @@ class KelolaUserController extends Controller
         ]);
     }
 
-    public function updateAdmin(Request $request, $id)
+    public function updateAdmin(Request $request, $nip)
     {
-        $admin = Admin::findOrFail($id);
+        $admin = Admin::findOrFail($nip);
         $user = $admin->user;
 
         $validator = Validator::make($request->all(), [
@@ -494,9 +534,9 @@ class KelolaUserController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('admin')->ignore($admin->id),
+                Rule::unique('admin')->ignore($admin->nip, 'nip'),
             ],
-            'nama_lengkap' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => [
                 'required',
                 'string',
@@ -508,7 +548,10 @@ class KelolaUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            foreach ($validator->errors()->keys() as $field) {
+                NotificationHelper::error($validator->errors()->first($field), [], [$field]);
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user->update([
@@ -518,19 +561,22 @@ class KelolaUserController extends Controller
 
         $admin->update([
             'nip' => $request->nip,
-            'nama_lengkap' => $request->nama_lengkap,
+            'name' => $request->name,
         ]);
 
-        return redirect()->route('admin.kelola-admin')->with('success', 'Admin berhasil diperbarui.');
+        NotificationHelper::success('Admin berhasil diperbarui.');
+        return redirect()->route('admin.kelola-admin');
     }
 
-    public function destroyAdmin($id)
+    public function destroyAdmin($nip)
     {
-        $admin = Admin::findOrFail($id);
+        $admin = Admin::findOrFail($nip);
         $user = $admin->user;
 
         $admin->delete();
-        
-        return redirect()->route('admin.kelola-admin')->with('success', 'Admin berhasil dihapus.');
+        $user->delete();
+
+        NotificationHelper::success('Admin berhasil dihapus.');
+        return redirect()->route('admin.kelola-admin');
     }
 }

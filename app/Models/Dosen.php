@@ -18,10 +18,13 @@ class Dosen extends Model
 
     protected $fillable = [
         "nidn",
-        "id_user",
-        "firstname",
-        "lastname",
-        "name"
+        "user_id", // Changed from id_user to user_id for consistency with Laravel conventions
+        "name",
+        "phone_number",
+        "address",
+        "district",
+        "subdistrict",
+        "city",
     ];
 
     public function user(): BelongsTo
