@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\Mahasiswa;
+
 use App\Http\Controllers\Controller;
+use App\Models\Competition;
 
 use Illuminate\Http\Request;
 
 class LombaController extends Controller
 {
-   public function daftar()
+    public function daftar()
     {
-        
+
         $activeMenu = 'daftar-lomba';
         $breadcrumbs = [
             [
@@ -17,6 +19,9 @@ class LombaController extends Controller
                 'url' => route('mahasiswa.daftar-lomba')
             ],
         ];
+
+        $competition = Competition::with('tags')->paginate(request('perPage', 9)); // Fetch the competition by ID
+
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
 
@@ -25,6 +30,7 @@ class LombaController extends Controller
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
+            'competition' => $competition,
         ]);
     }
 
@@ -47,7 +53,7 @@ class LombaController extends Controller
             'headerDesc' => $headerDesc,
         ]);
     }
-    public function detail()
+    public function detail($id)
     {
         $activeMenu = 'daftar-lomba';
         $breadcrumbs = [
@@ -57,9 +63,12 @@ class LombaController extends Controller
             ],
             [
                 'label' => 'Detail Lomba',
-                'url' => route('mahasiswa.detail-lomba')
+                'url' => route('mahasiswa.detail-lomba', $id)
             ],
         ];
+
+        $competition = Competition::with('tags')->findOrFail($id); // Fetch the competition by ID
+
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
         return view('mahasiswa.lomba.detail-lomba', [
@@ -67,6 +76,7 @@ class LombaController extends Controller
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
+            'competition' => $competition,
         ]);
     }
     public function histori()
