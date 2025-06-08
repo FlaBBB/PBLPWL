@@ -106,13 +106,13 @@
                         </h1>
 
                         <!-- Wrap dua h1, satu untuk normal, satu untuk hover -->
-                        <div class="relative h-[3.5rem]"> <!-- tinggi disamakan dengan h1 -->
+                        <div class="relative h-[4rem] overflow-hidden"> <!-- tinggi disamakan dengan h1 -->
                             <h1
-                                class="text-5xl font-base text-white leading-tight absolute inset-0 transition-opacity duration-500 group-hover:opacity-0">
+                                class="text-5xl font-base text-white leading-tight absolute inset-0 transition-all duration-700 transform group-hover:-translate-y-full group-hover:opacity-0 group-hover:scale-110">
                                 Peluang Mendekat.
                             </h1>
                             <h1
-                                class="text-5xl font-bold bg-gradient-to-r from-yellow-200 to-yellow-300 via-yellow-100 bg-clip-text text-transparent leading-tight absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                                class="text-5xl font-bold bg-gradient-to-r from-yellow-200 to-yellow-300 via-yellow-100 bg-clip-text text-transparent leading-tight absolute inset-0 transform translate-y-full opacity-0 transition-all duration-700 group-hover:translate-y-0 group-hover:opacity-100">
                                 Mimpi Didapat!
                             </h1>
                         </div>
@@ -120,8 +120,8 @@
 
                     <div id="img-content"
                         class="-mt-16 opacity-0 invisible max-h-0 group-hover:opacity-100 group-hover:visible group-hover:max-h-120 transition-all duration-700 ease-in-out">
-                        <img src="{{ asset('images/login.svg') }}" alt="Mahasiswa Berprestasi"
-                            class="w-full max-w-xl object-contain transition-transform duration-700 hover:scale-110 hover:rotate-3">
+                        <img src="{{ asset('images/login-asset.svg') }}" alt="Mahasiswa Berprestasi"
+                            class="w-full max-w-xl object-contain transition-transform duration-700 hover:scale-110 hover:-rotate-1">
                     </div>
                 </div>
             </div>
