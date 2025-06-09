@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Dosen;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class VerifikasiPrestasiController extends Controller
+class VerifikasiAchievementController extends Controller
 {
     public function index()
     {
-        $activeMenu = 'verifikasi-prestasi';
+        $activeMenu = 'verifikasi-achievement';
         $role = 'dosen';
 
-        return view('dosen.verifikasi-prestasi', [
+        return view('dosen.verifikasi-achievement', [
             'activeMenu' => $activeMenu,
             'role' => $role,
         ]);

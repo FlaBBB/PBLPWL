@@ -6,8 +6,8 @@
     <aside x-data="{ openDropdown: '' }" x-init="() => {
     if (['kelola-mahasiswa', 'kelola-dosen', 'kelola-admin'].includes('{{ $activeMenu }}')) {
         openDropdown = 'kelola-mahasiswa-group';
-    } else if (['verifikasi-prestasi', 'daftar-prestasi'].includes('{{ $activeMenu }}')) {
-        openDropdown = 'kelola-prestasi-group';
+    } else if (['verifikasi-achievement', 'daftar-achievement'].includes('{{ $activeMenu }}')) {
+        openDropdown = 'kelola-achievement-group';
     } else if (['tambah-lomba', 'daftar-lomba', 'verifikasi-lomba'].includes('{{ $activeMenu }}')) {
         openDropdown = 'kelola-lomba-group';
     } else if (['program-studi', 'periode'].includes('{{ $activeMenu }}')) {
@@ -68,31 +68,31 @@
                     <!-- Dropdown 2: Kelola Prestasi -->
                     <div>
                         <a href="#"
-                            @click.prevent="openDropdown = (openDropdown === 'kelola-prestasi-group' ? '' : 'kelola-prestasi-group')"
-                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['verifikasi-prestasi', 'daftar-prestasi']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-                            </svg>
-                            Kelola Prestasi
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="size-4 ml-auto mr-2 transition-transform duration-200"
-                                :class="openDropdown === 'kelola-prestasi-group' ? 'rotate-180' : ''">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        </a>
-                        <div x-show="openDropdown === 'kelola-prestasi-group'" x-transition
-                            class="ml-10 my-3 flex flex-col gap-3">
-                            <a href="{{ route('admin.verifikasi-prestasi') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'verifikasi-prestasi' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
-                                Verifikasi Prestasi
-                            </a>
-                            <a href="{{ route('admin.daftar-prestasi') }}"
-                                class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'daftar-prestasi' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
-                                Daftar Prestasi
-                            </a>
-                        </div>
+                            @click.prevent="openDropdown = (openDropdown === 'kelola-achievement-group' ? '' : 'kelola-achievement-group')"
+                            class="flex text-sm font-semibold items-center gap-3 pl-10 py-2 pr-3 {{ in_array($activeMenu, ['verifikasi-achievement', 'daftar-achievement']) ? 'text-[#1E6AAE] font-semibold bg-blue-50 border-r-[#1E6AAE] border-r-3' : 'hover:bg-blue-50 transition text-[#7C8DB5]' }}">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-6">
+                                 <path stroke-linecap="round" stroke-linejoin="round"
+                                     d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                             </svg>
+                             Kelola Achievement
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                 stroke="currentColor" class="size-4 ml-auto mr-2 transition-transform duration-200"
+                                 :class="openDropdown === 'kelola-achievement-group' ? 'rotate-180' : ''">
+                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                             </svg>
+                         </a>
+                         <div x-show="openDropdown === 'kelola-achievement-group'" x-transition
+                             class="ml-10 my-3 flex flex-col gap-3">
+                             <a href="{{ route('admin.verifikasi-achievement') }}"
+                                 class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'verifikasi-achievement' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                 Verifikasi Achievement
+                             </a>
+                             <a href="{{ route('admin.daftar-achievement') }}"
+                                 class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'daftar-achievement' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
+                                 Daftar Achievement
+                             </a>
+                         </div>
                     </div>
                     <!-- Dropdown 3: Kelola Lomba -->
                     <div>

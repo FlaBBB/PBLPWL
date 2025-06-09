@@ -25,7 +25,7 @@ class SupervisorAchievementSeeder extends Seeder
             }
 
             // Get a random dosen that hasn't been assigned to this achievement yet
-            $assignedDosenNidns = $achievement->supervisor->pluck('nidn')->toArray();
+            $assignedDosenNidns = $achievement->dosen->pluck('nidn')->toArray();
             $availableDosen = $dosen->whereNotIn('nidn', $assignedDosenNidns);
 
             if ($availableDosen->isNotEmpty()) {

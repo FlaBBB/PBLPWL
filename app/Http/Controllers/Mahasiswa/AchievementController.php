@@ -20,18 +20,18 @@ use App\Enums\AchievementStatusEnum;
 use Yajra\DataTables\Facades\DataTables;
 use App\Helpers\NotificationHelper; // Import NotificationHelper
 
-class PrestasiController extends Controller
+class AchievementController extends Controller
 {
     public function daftar(Request $request)
     {
         $activeMenu = 'daftar-prestasi';
         $breadcrumbs = [
             [
-                'label' => 'Daftar Prestasi',
-                'url' => route('mahasiswa.daftar-prestasi')
+                'label' => 'Daftar Achievement',
+                'url' => route('mahasiswa.daftar-achievement')
             ],
         ];
-        $headerTitle = 'Prestasi';
+        $headerTitle = 'Achievement';
         $headerDesc = 'Lihat dan pantau seluruh prestasi yang telah Anda unggah selama masa studi. Pastikan setiap prestasi disertai bukti sah seperti sertifikat atau surat keterangan resmi.';
 
         $user = Auth::user();
@@ -42,11 +42,9 @@ class PrestasiController extends Controller
             return redirect()->back();
         }
 
-        $query = Achievement::query()
+        $query = Achievement::with('tags')
             ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
             ->where('mahasiswa_achievement.nim', $mahasiswa->nim)
-            ->leftJoin('tag', 'mahasiswa_achievement.id_tag', '=', 'tag.id')
-            ->select('achievement.*', 'tag.name as tag_name')
             ->distinct();
 
         // Apply search filter
@@ -60,7 +58,9 @@ class PrestasiController extends Controller
         // Apply category filter (tag name)
         if ($request->has('kategori') && $request->input('kategori') != '') {
             $kategori = $request->input('kategori');
-            $query->where('tag.name', $kategori);
+            $query->whereHas('tags', function ($q) use ($kategori) {
+                $q->where('name', $kategori);
+            });
         }
 
         // Apply level filter
@@ -83,7 +83,7 @@ class PrestasiController extends Controller
 
         $categories = Tag::all(); // Fetch all tags for the dropdown
 
-        return view('mahasiswa.prestasi.daftar-prestasi', [
+        return view('mahasiswa.achievement.daftar-achievement', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
@@ -106,11 +106,9 @@ class PrestasiController extends Controller
             return response()->json(['data' => []]);
         }
 
-        $query = Achievement::query()
+        $query = Achievement::with('tags')
             ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
             ->where('mahasiswa_achievement.nim', $mahasiswa->nim)
-            ->leftJoin('tag', 'mahasiswa_achievement.id_tag', '=', 'tag.id')
-            ->select('achievement.*', 'tag.name as tag_name')
             ->distinct();
 
         // Apply filters from DataTables request
@@ -118,7 +116,9 @@ class PrestasiController extends Controller
             $searchValue = $request->input('search');
             $query->where(function ($q) use ($searchValue) {
                 $q->where('achievement.competition_name', 'like', '%' . $searchValue . '%')
-                  ->orWhere('tag.name', 'like', '%' . $searchValue . '%')
+                  ->orWhereHas('tags', function ($q) use ($searchValue) {
+                      $q->where('name', 'like', '%' . $searchValue . '%');
+                  })
                   ->orWhere('achievement.place', 'like', '%' . $searchValue . '%')
                   ->orWhere('achievement.level', 'like', '%' . $searchValue . '%')
                   ->orWhere('achievement.status', 'like', '%' . $searchValue . '%');
@@ -126,7 +126,9 @@ class PrestasiController extends Controller
         }
 
         if ($request->filled('kategori')) {
-            $query->where('tag.name', $request->input('kategori'));
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('name', $request->input('kategori'));
+            });
         }
         if ($request->filled('tingkat')) {
             $query->where('achievement.level', CompetitionLevelEnum::from($request->input('tingkat')));
@@ -138,7 +140,7 @@ class PrestasiController extends Controller
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tag_name', function($achievement) {
-                return $achievement->tag_name;
+                return $achievement->tags->pluck('name')->join(', ');
             })
             ->addColumn('level', function($achievement) {
                 return $achievement->level->value;
@@ -186,21 +188,21 @@ class PrestasiController extends Controller
     public function tambah()
     {
         // Logic to display the form for adding a new competition
-        $activeMenu = 'tambah-prestasi';
+        $activeMenu = 'tambah-achievement';
         $breadcrumbs = [
             [
-                'label' => 'Tambah Prestasi',
-                'url' => route('mahasiswa.tambah-prestasi')
+                'label' => 'Tambah Achievement',
+                'url' => route('mahasiswa.tambah-achievement')
             ],
         ];
-        $headerTitle = 'Prestasi';
-        $headerDesc = 'Jelajahi daftar prestasi dan tambahkan prestasi baru dengan mudah.';
+        $headerTitle = 'Achievement';
+        $headerDesc = 'Jelajahi daftar achievement dan tambahkan achievement baru dengan mudah.';
         $tags = Tag::orderBy('name')->get(); // Fetch all tags ordered lexically by name
         $mahasiswaList = Mahasiswa::orderBy('name')->get(['nim', 'name']); // Fetch all mahasiswa
         $dosenList = Dosen::orderBy('name')->get(['nidn', 'name']); // Fetch all dosen
         $roleSupervisorList = RoleSupervisor::orderBy('description')->get(['id', 'description']); // Fetch all roles for supervisors
 
-        return view('mahasiswa.prestasi.tambah-prestasi', [
+        return view('mahasiswa.achievement.tambah-achievement', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
@@ -393,8 +395,8 @@ class PrestasiController extends Controller
         }
 
 
-        NotificationHelper::success('Prestasi berhasil ditambahkan!');
-        return redirect()->route('mahasiswa.daftar-prestasi');
+        NotificationHelper::success('Achievement berhasil ditambahkan!');
+        return redirect()->route('mahasiswa.daftar-achievement');
     }
 
     public function detail($id)
@@ -423,19 +425,19 @@ class PrestasiController extends Controller
 
     public function edit($id)
     {
-        $activeMenu = 'daftar-prestasi';
+        $activeMenu = 'daftar-achievement';
         $breadcrumbs = [
             [
-                'label' => 'Daftar Prestasi',
-                'url' => route('mahasiswa.daftar-prestasi')
+                'label' => 'Daftar Achievement',
+                'url' => route('mahasiswa.daftar-achievement')
             ],
             [
-                'label' => 'Edit Prestasi',
-                'url' => route('mahasiswa.edit-prestasi', $id)
+                'label' => 'Edit Achievement',
+                'url' => route('mahasiswa.edit-achievement', $id)
             ],
         ];
-        $headerTitle = 'Edit Prestasi';
-        $headerDesc = 'Perbarui data prestasi yang telah kamu raih selama masa studi. Pastikan kamu mengunggah bukti yang valid seperti sertifikat atau surat keterangan resmi.';
+        $headerTitle = 'Edit Achievement';
+        $headerDesc = 'Perbarui data achievement yang telah kamu raih selama masa studi. Pastikan kamu mengunggah bukti yang valid seperti sertifikat atau surat keterangan resmi.';
 
         $user = Auth::user();
         $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
@@ -453,14 +455,14 @@ class PrestasiController extends Controller
             ->first();
 
         if (!$achievement) {
-            NotificationHelper::error('Prestasi tidak ditemukan atau Anda tidak memiliki akses ke prestasi ini.');
-            return redirect()->route('mahasiswa.daftar-prestasi');
+            NotificationHelper::error('Achievement tidak ditemukan atau Anda tidak memiliki akses ke achievement ini.');
+            return redirect()->route('mahasiswa.daftar-achievement');
         }
 
         // Check if the achievement status allows editing
         if ($achievement->status !== AchievementStatusEnum::WAITING && $achievement->status !== AchievementStatusEnum::REVISION) {
-            NotificationHelper::error('Prestasi dengan status "' . $achievement->status->value . '" tidak dapat diedit.');
-            return redirect()->route('mahasiswa.daftar-prestasi');
+            NotificationHelper::error('Achievement dengan status "' . $achievement->status->value . '" tidak dapat diedit.');
+            return redirect()->route('mahasiswa.daftar-achievement');
         }
 
         $tags = Tag::orderBy('name')->get();
@@ -468,7 +470,7 @@ class PrestasiController extends Controller
         $dosenList = Dosen::orderBy('name')->get(['nidn', 'name']);
         $roleSupervisorList = RoleSupervisor::orderBy('description')->get(['id', 'description']);
 
-        return view('mahasiswa.prestasi.edit-prestasi', [
+        return view('mahasiswa.achievement.edit-achievement', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
@@ -494,14 +496,14 @@ class PrestasiController extends Controller
         $achievement = Achievement::find($id);
 
         if (!$achievement) {
-            NotificationHelper::error('Prestasi tidak ditemukan.');
+            NotificationHelper::error('Achievement tidak ditemukan.');
             return redirect()->back();
         }
 
         // Check if the achievement status allows editing
         if ($achievement->status !== AchievementStatusEnum::WAITING && $achievement->status !== AchievementStatusEnum::REVISION) {
-            NotificationHelper::error('Prestasi dengan status "' . $achievement->status->value . '" tidak dapat diedit.');
-            return redirect()->route('mahasiswa.daftar-prestasi');
+            NotificationHelper::error('Achievement dengan status "' . $achievement->status->value . '" tidak dapat diedit.');
+            return redirect()->route('mahasiswa.daftar-achievement');
         }
 
         $validator = Validator::make($request->all(), [
@@ -677,7 +679,7 @@ class PrestasiController extends Controller
             }
         }
 
-        NotificationHelper::success('Prestasi berhasil diperbarui dan status diatur ulang menjadi Menunggu.');
-        return redirect()->route('mahasiswa.daftar-prestasi');
+        NotificationHelper::success('Achievement berhasil diperbarui dan status diatur ulang menjadi Menunggu.');
+        return redirect()->route('mahasiswa.daftar-achievement');
     }
 }

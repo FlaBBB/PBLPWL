@@ -3,15 +3,15 @@
 @section('content')
     <main class="flex-1 px-10 pb-16">
         <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
-            <h2 class="text-xl font-semibold mb-2">Tambah Prestasi Baru</h2>
-            <p class="text-sm text-gray-400">Lengkapi data prestasi yang telah kamu raih selama masa studi. Pastikan kamu
+            <h2 class="text-xl font-semibold mb-2">Tambah Achievement Baru</h2>
+            <p class="text-sm text-gray-400">Lengkapi data achievement yang telah kamu raih selama masa studi. Pastikan kamu
                 mengunggah bukti yang valid seperti sertifikat atau surat keterangan resmi.</p>
 
             <div class="relative p-8 pt-14 mt-4 border border-gray-200 rounded-sm">
                 <div class="absolute inset-x-0 top-0 h-10 w-full bg-[#1e6aae] flex rounded-t-md items-center">
                     <span class="text-white font-medium pl-4">Data Kompetisi</span>
                 </div>
-                <form action="{{ route('mahasiswa.store-prestasi') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <form action="{{ route('mahasiswa.store-achievement') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
                     <!-- Nama Lomba -->
                     <div class="flex items-center space-x-4">
