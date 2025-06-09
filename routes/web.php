@@ -136,6 +136,10 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('kelola-lomba')->group(function () {
                 Route::get('/daftar', [KelolaLombaController::class, 'daftar'])->name('admin.daftar-lomba');
                 Route::get('/verifikasi', [KelolaLombaController::class, 'verifikasi'])->name('admin.verifikasi-lomba');
+                Route::get('/{id}/show', [KelolaLombaController::class, 'show'])->name('admin.lomba.show');
+                Route::post('/{id}/approve', [KelolaLombaController::class, 'approve'])->name('admin.lomba.approve');
+                Route::post('/{id}/reject', [KelolaLombaController::class, 'reject'])->name('admin.lomba.reject');
+                Route::post('/{id}/revision', [KelolaLombaController::class, 'revision'])->name('admin.lomba.revision');
                 Route::get('/{id}/detail', [KelolaLombaController::class, 'detail'])->name('admin.lomba.detail');
             });
             // Akademik

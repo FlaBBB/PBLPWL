@@ -1,18 +1,13 @@
 @extends('layout.template')
-@php
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
-@endphp
-
 @section('content')
     <main class="flex-1 px-10">
         <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg">
             <h2 class="text-xl font-semibold">Verifikasi Lomba</h2>
-            <div class="flex flex-wrap gap-4 pb-4 items-center">
-                <div class="flex flex-wrap gap-4 py-4 items-center w-full">
-                    <!-- Search Input -->
+
+                <form action="{{ route('admin.verifikasi-lomba') }}" method="GET" class="flex flex-wrap gap-4 pb-4 items-center w-full">
+                    {{-- Search Input --}}
                     <div class="relative">
-                        <input type="text" placeholder="Cari disini"
+                        <input type="text" placeholder="Cari disini" name="search" value="{{ $search }}"
                             class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
                         <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -21,52 +16,35 @@ use Illuminate\Database\Eloquent\Collection;
                         </svg>
                     </div>
                     <p class="text-sm text-gray-700 ml-4">Filter berdasarkan:</p>
-                    <!-- Dropdown: Kategori -->
+                    {{-- Dropdown: Bidang --}}
                     <div class="relative w-54">
-                        <select
+                        <select name="bidang" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Pilih Kategori</option>
-                            <option>Cyber Security</option>
-                            <option>IoT</option>
-                            <option>Software Development</option>
+                            <option value="" {{ !$bidang ? 'selected' : '' }}>Bidang</option>
+                            @foreach($bidangOptions as $option)
+                                <option value="{{ $option->name }}" {{ $bidang == $option->name ? 'selected' : '' }}>{{ $option->name }}</option>
+                            @endforeach
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>
-                    <!-- Dropdown: Tingkat Lomba -->
+                    {{-- Dropdown: Tingkat Lomba --}}
                     <div class="relative w-40">
-                        <select
+                        <select name="tingkat" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Pilih Tingkat</option>
-                            <option>Internasional</option>
-                            <option>Nasional</option>
-                            <option>Provinsi</option>
-                            <option>Kota/Kabupaten</option>
-                            <option>Internal</option>
+                            <option value="" {{ !$tingkat ? 'selected' : '' }}>Tingkat</option>
+                            @foreach($tingkatOptions as $option)
+                                <option value="{{ $option->value }}" {{ $tingkat == $option->value ? 'selected' : '' }}>{{ ucfirst(strtolower($option->value)) }}</option>
+                            @endforeach
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>
-                    <!-- Dropdown: Status -->
-                    <div class="relative w-40">
-                        <select
-                            class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Status</option>
-                            <option value="ACCEPTED">Terverifikasi</option>
-                            <option value="WAITING">Menunggu</option>
-                            <option value="REJECTED">Ditolak</option>
-                            <option value="REVISION">Revisi</option>
-                        </select>
-                        <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                </div>
+                </form>
 
                 {{-- Opsi jumlah baris per halaman --}}
                 <div class="flex flex-cols items-center justify-between gap-auto w-full">
@@ -75,7 +53,7 @@ use Illuminate\Database\Eloquent\Collection;
                         <select name="perPage" id="perPage" onchange="changePerPage(this.value)"
                             class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#1e6aae]">
                             @foreach ([5, 10, 25, 50] as $size)
-                                <option value="{{ $size }}" {{ request('perPage', 10) == $size ? 'selected' : '' }}>
+                                <option value="{{ $size }}" {{ $perPage == $size ? 'selected' : '' }}>
                                     {{ $size }}
                                 </option>
                             @endforeach
@@ -86,16 +64,9 @@ use Illuminate\Database\Eloquent\Collection;
 
                 <script>
                     function changePerPage(value) {
-                        // Get current URL
                         const currentUrl = new URL(window.location.href);
-
-                        // Set new perPage value and reset page to 1
                         currentUrl.searchParams.set('perPage', value);
                         currentUrl.searchParams.set('page', 1);
-
-                        console.log('Redirecting to:', currentUrl.toString());
-
-                        // Navigate to new URL
                         window.location.href = currentUrl.toString();
                     }
                 </script>
@@ -104,62 +75,47 @@ use Illuminate\Database\Eloquent\Collection;
                     <thead class="text-gray-500">
                         <tr class="border-b border-gray-200">
                             <th class="w-[5%] px-4 py-2 text-left">No</th>
-                            <th class="w-[25%] px-2 py-2 text-left">Nama Lomba</th>
-                            <th class="w-[15%] px-2 py-2 text-left">Penyelenggara</th>
-                            <th class="w-[10%] px-2 py-2 text-left">Tingkat</th>
-                            <th class="w-[10%] px-2 py-2 text-left">Kategori</th>
+                            <th class="w-[40%] px-2 py-2 text-left">Nama Lomba</th>
+                            <th class="w-[20%] px-2 py-2 text-left">Penyelenggara</th>
                             <th class="w-[15%] px-2 py-2 text-left">Status</th>
                             <th class="w-[20%] px-2 py-2 text-left">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- Contoh data paginasi, ganti dengan data dari controller --}}
-                        @php
-                            $perPage = request('perPage', 10);
-                            $page = request('page', 1);
-                            $total = 15; // total data, ganti sesuai kebutuhan
-                            $start = ($page - 1) * $perPage + 1;
-                            $end = min($start + $perPage - 1, $total);
-                        @endphp
-                        @for($i = $start; $i <= $end; $i++)
+                        @forelse($lomba as $item)
                             <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                <td class="px-4 py-2">{{$i}}</td>
-                                <td class="px-2 py-2">{{ Str::limit('Kompetisi Programming Nasional 2024', 30) }}</td>
-                                <td class="px-2 py-2">{{ Str::limit('Universitas Indonesia', 20) }}</td>
-                                <td class="px-2 py-2">Nasional</td>
-                                <td class="px-2 py-2">Software Development</td>
+                                <td class="px-4 py-2">{{ $loop->iteration + ($lomba->currentPage() - 1) * $lomba->perPage() }}</td>
+                                <td class="px-2 py-2">{{ $item->name }}</td>
+                                <td class="px-2 py-2">{{ $item->organizer }}</td>
                                 <td class="px-2 py-2">
-                                     @php
-                                        $status = ['WAITING', 'ACCEPTED', 'REJECTED', 'REVISION'][($i - 1) % 4]; 
-                                    @endphp 
-                                     @if($status == 'WAITING') 
+                                    @if($item->status->value == 'WAITING')
                                         <span
                                             class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-[#1e6aae]/10 text-[#1e6aae]">
                                             <span class="w-1.5 h-1.5 rounded-full bg-[#1e6aae]"></span>
                                             Perlu Verifikasi
                                         </span>
-                                     @elseif($status == 'ACCEPTED') 
+                                    @elseif($item->status->value == 'ACCEPTED')
                                         <span
                                             class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
                                             <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                                             Terverifikasi
                                         </span>
-                                     @elseif($status == 'REJECTED') 
-                                        <span
-                                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
-                                            Ditolak
-                                        </span>
-                                     @elseif($status == 'REVISION') 
+                                    @elseif($item->status->value == 'REJECTED')
                                         <span
                                             class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
                                             <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                                            Ditolak
+                                        </span>
+                                    @elseif($item->status->value == 'REVISION')
+                                        <span
+                                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
                                             Revisi
                                         </span>
-                                     @endif 
+                                    @endif
                                 </td>
                                 <td class="px-2 py-2">
-                                    <button type="button" onclick="openModal('modal-detail')"
+                                    <button type="button" onclick="openDetailModal({{ $item->id }})"
                                         class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white px-2 py-2 rounded text-sm flex items-center gap-1"
                                         title="Lihat Detail">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -173,32 +129,22 @@ use Illuminate\Database\Eloquent\Collection;
                                     </button>
                                 </td>
                             </tr>
-                        @endfor
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-4 py-2 text-center text-gray-500">Tidak ada data lomba.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-            {{-- Navigasi halaman --}}
-            @php
-                $lastPage = ceil($total / $perPage);
-            @endphp
-
-            <div class="flex justify-end mt-6">
-                <nav class="inline-flex -space-x-px">
-                    <a href="?perPage={{ $perPage }}&page={{ max(1, $page - 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-l {{ $page == 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &laquo;
-                    </a>
-                    @for ($p = 1; $p <= $lastPage; $p++)
-                        <a href="?perPage={{ $perPage }}&page={{ $p }}"
-                            class="px-3 py-1 border-t text-gray-600 border-b border-gray-300 {{ $p == $page ? 'bg-[#1e6aae] text-white' : 'hover:bg-gray-200' }}">
-                            {{ $p }}
-                        </a>
-                    @endfor
-                    <a href="?perPage={{ $perPage }}&page={{ min($lastPage, $page + 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-r {{ $page == $lastPage ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &raquo;
-                    </a>
-                </nav>
+            {{-- Navigasi halaman dan informasi jumlah data --}}
+            <div class="flex justify-between items-center mt-6">
+                <div class="text-sm text-gray-700">
+                    Menampilkan {{ $lomba->firstItem() }} hingga {{ $lomba->lastItem() }} dari {{ $lomba->total() }} hasil
+                </div>
+                <div>
+                    {{ $lomba->links('pagination::tailwind') }}
+                </div>
             </div>
         </div>
 
@@ -223,90 +169,76 @@ use Illuminate\Database\Eloquent\Collection;
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Kolom Kiri -->
                     <div class="space-y-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">Informasi Lomba</h4>
+                        <h4 class="font-semibold text-gray-800 mb-2">Data Lomba</h4>
                         <table class="w-full text-gray-800 text-left text-sm">
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Nama Lomba</td>
-                                <td class="border border-gray-200 px-3 py-2">Kompetisi Programming Nasional 2024</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-nama-lomba"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Penyelenggara</td>
-                                <td class="border border-gray-200 px-3 py-2">Universitas Indonesia</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-penyelenggara"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tingkat Lomba</td>
-                                <td class="border border-gray-200 px-3 py-2">Nasional</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-tingkat-lomba"></td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Kategori</td>
-                                <td class="border border-gray-200 px-3 py-2">Software Development</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Bidang</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-bidang"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tanggal Mulai</td>
-                                <td class="border border-gray-200 px-3 py-2">15 Oktober 2024</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-tanggal-mulai"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tanggal Berakhir</td>
-                                <td class="border border-gray-200 px-3 py-2">17 Oktober 2024</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-tanggal-berakhir"></td>
                             </tr>
                             <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tipe Peserta</td>
-                                <td class="border border-gray-200 px-3 py-2">Tim</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">URL Lomba</td>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Link Pendaftaran</td>
                                 <td class="border border-gray-200 px-3 py-2">
-                                    <a href="https://programming-contest.ui.ac.id" target="_blank"
-                                        class="text-blue-600 hover:underline">
-                                        Lihat Website
+                                    <a href="#" target="_blank" class="text-blue-600 hover:underline" id="detail-link-pendaftaran">
+                                        Lihat Link
                                     </a>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Biaya Pendaftaran</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-biaya-pendaftaran"></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Batas Pendaftaran</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-batas-pendaftaran"></td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Maksimal Peserta</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-max-peserta"></td>
                             </tr>
                         </table>
                     </div>
 
                     <!-- Kolom Kanan -->
                     <div class="space-y-4">
-                        <!-- Informasi Pendaftaran -->
+                        <!-- Deskripsi Lomba -->
                         <div>
-                            <h4 class="font-semibold text-gray-800 mb-2">Informasi Pendaftaran</h4>
-                            <table class="w-full text-gray-800 text-left text-sm">
-                                <tr>
-                                    <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Tanggal Buka</td>
-                                    <td class="border border-gray-200 px-3 py-2">01 Oktober 2024</td>
-                                </tr>
-                                <tr>
-                                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tanggal Tutup</td>
-                                    <td class="border border-gray-200 px-3 py-2">10 Oktober 2024</td>
-                                </tr>
-                            </table>
+                            <h4 class="font-semibold text-gray-800 mb-2">Deskripsi Lomba</h4>
+                            <div class="border border-gray-200 px-3 py-2 bg-gray-50" id="detail-deskripsi"></div>
                         </div>
 
-                        <!-- File Dokumen -->
+                        <!-- Poster Lomba -->
                         <div>
-                            <h4 class="font-semibold text-gray-800 mb-2">Dokumen</h4>
-                            <table class="w-full text-gray-800 text-left text-sm">
-                                <tr>
-                                    <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Poster</td>
-                                    <td class="border border-gray-200 px-3 py-2">
-                                        <a href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Deskripsi</td>
-                                    <td class="border border-gray-200 px-3 py-2">Kompetisi programming untuk mahasiswa se-Indonesia dengan tema artificial intelligence dan machine learning.</td>
-                                </tr>
-                            </table>
+                            <h4 class="font-semibold text-gray-800 mb-2">Poster Lomba</h4>
+                            <div class="border border-gray-200 px-3 py-2 bg-gray-50 text-center">
+                                <img id="detail-poster" src="#" alt="Poster Lomba" class="max-w-full h-auto mx-auto">
+                                <a href="#" target="_blank" class="text-blue-600 hover:underline mt-2 block" id="detail-poster-link">Lihat Gambar</a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-8 flex justify-end">
                     <div class="flex gap-3">
-                        <button type="button" onclick="openMessageModal('revision')"
-                            class="px-4 py-2 text-sm font-medium text-amber-500 border border-amber-500 rounded-md hover:bg-amber-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600">
-                            Minta Revisi
-                        </button>
                         <button type="button" onclick="openMessageModal('reject')"
                             class="px-4 py-2 text-sm font-medium text-red-600 border border-red-600 rounded-md hover:bg-red-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">
                             Tolak
@@ -366,6 +298,7 @@ use Illuminate\Database\Eloquent\Collection;
 
     <script>
         let currentAction = '';
+        let currentLombaId = null; // To store the ID of the lomba being detailed/verified
 
         // Prevent default behavior dan event bubbling
         function openModal(modalId, event) {
@@ -446,6 +379,7 @@ use Illuminate\Database\Eloquent\Collection;
                 // 'pointer-events-none' will be added after transition.
                 modal.classList.remove('pointer-events-auto');
 
+
                 if (modalDialog) {
                     modalDialog.classList.remove('translate-y-0', 'scale-100');
                     modalDialog.classList.add('-translate-y-full', 'scale-95');
@@ -482,12 +416,76 @@ use Illuminate\Database\Eloquent\Collection;
             }
         }
 
-        function handleVerification(action) {
+        async function openDetailModal(id) {
+            currentLombaId = id;
+            try {
+                const response = await fetch(`/admin/kelola-lomba/${id}/show`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log(data);
+
+                // Populate Data Lomba
+                document.getElementById('detail-nama-lomba').textContent = data.name || 'N/A';
+                document.getElementById('detail-penyelenggara').textContent = data.organizer || 'N/A';
+                document.getElementById('detail-tingkat-lomba').textContent = data.level ? data.level.charAt(0).toUpperCase() + data.level.slice(1).toLowerCase() : 'N/A';
+                document.getElementById('detail-bidang').textContent = data.tags.map(tag => tag.name).join(', ') || 'N/A';
+                document.getElementById('detail-tanggal-mulai').textContent = data.start_at || 'N/A';
+                document.getElementById('detail-tanggal-berakhir').textContent = data.end_at || 'N/A';
+                document.getElementById('detail-link-pendaftaran').href = data.registration_link || '#';
+                document.getElementById('detail-link-pendaftaran').textContent = data.registration_link ? 'Lihat Link' : 'Tidak Tersedia';
+                document.getElementById('detail-biaya-pendaftaran').textContent = data.registration_fee || 'N/A';
+                document.getElementById('detail-batas-pendaftaran').textContent = data.registration_deadline || 'N/A';
+                document.getElementById('detail-max-peserta').textContent = data.max_participation_amount || 'N/A';
+                document.getElementById('detail-deskripsi').textContent = data.description || 'N/A';
+
+                // Populate Poster Lomba
+                const posterImg = document.getElementById('detail-poster');
+                const posterLink = document.getElementById('detail-poster-link');
+                if (data.poster) {
+                    posterImg.src = '/' + data.poster;
+                    posterLink.href = '/' + data.poster;
+                    posterLink.textContent = 'Lihat Gambar';
+                } else {
+                    posterImg.src = '#';
+                    posterLink.href = '#';
+                    posterLink.textContent = 'Tidak Tersedia';
+                }
+
+                openModal('modal-detail');
+            } catch (error) {
+                console.error('Error fetching lomba details:', error);
+                alert('Gagal memuat detail lomba. Silakan coba lagi.');
+            }
+        }
+
+        async function handleVerification(action) {
+            if (!currentLombaId) {
+                alert('Tidak ada lomba yang dipilih.');
+                return;
+            }
+
             if (action === 'approve') {
-                // Handle direct approval without message
-                console.log('Lomba diverifikasi');
-                // Add your approval logic here
-                closeModal('modal-detail');
+                try {
+                    const response = await fetch(`/admin/kelola-lomba/${currentLombaId}/approve`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const result = await response.json();
+                    alert(result.message);
+                    closeModal('modal-detail');
+                    location.reload(); // Reload page to reflect changes
+                } catch (error) {
+                    console.error('Error approving lomba:', error);
+                    alert('Gagal memverifikasi lomba. Silakan coba lagi.');
+                }
             }
         }
 
@@ -498,18 +496,7 @@ use Illuminate\Database\Eloquent\Collection;
             const messageLabel = document.getElementById('message-label');
             const confirmBtn = document.getElementById('confirm-action-btn');
 
-            if (action === 'revision') {
-                messageIcon.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 mb-4';
-                messageIcon.innerHTML = `
-                        <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                        </svg>
-                    `;
-                messageTitle.textContent = 'Minta Revisi Lomba';
-                messageLabel.textContent = 'Alasan revisi:';
-                confirmBtn.textContent = 'Kirim Revisi';
-                confirmBtn.className = 'w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-yellow-600 border border-transparent rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500';
-            } else if (action === 'reject') {
+            if (action === 'reject') {
                 messageIcon.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4';
                 messageIcon.innerHTML = `
                         <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -527,7 +514,7 @@ use Illuminate\Database\Eloquent\Collection;
             openModal('modal-message');
         }
 
-        function confirmAction() {
+        async function confirmAction() {
             const message = document.getElementById('message-text').value.trim();
 
             if (!message) {
@@ -535,16 +522,37 @@ use Illuminate\Database\Eloquent\Collection;
                 return;
             }
 
-            if (currentAction === 'revision') {
-                console.log('Lomba diminta revisi dengan pesan:', message);
-                // Add your revision logic here
-            } else if (currentAction === 'reject') {
-                console.log('Lomba ditolak dengan pesan:', message);
-                // Add your rejection logic here
+            if (!currentLombaId) {
+                alert('Tidak ada lomba yang dipilih.');
+                return;
             }
 
-            closeModal('modal-message');
-            closeModal('modal-detail');
+            let url = `/admin/kelola-lomba/${currentLombaId}/reject`;
+            let successMessage = 'Lomba berhasil ditolak.';
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                alert(result.message || successMessage);
+                closeModal('modal-message');
+                closeModal('modal-detail');
+                location.reload(); // Reload page to reflect changes
+            } catch (error) {
+                console.error(`Error ${currentAction}ing lomba:`, error);
+                alert(`Gagal ${currentAction} lomba. Silakan coba lagi.`);
+            }
         }
 
         // Close modal when clicking outside
