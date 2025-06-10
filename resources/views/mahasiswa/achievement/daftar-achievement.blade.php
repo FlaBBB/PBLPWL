@@ -4,9 +4,7 @@
     <main class="flex-1 px-10 pb-96">
         <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
             <h2 class="text-xl font-semibold mb-2">Daftar Achievement</h2>
-            <p class="text-sm text-gray-400">Lihat dan pantau seluruh achievement yang telah Anda unggah selama masa studi.
-                Pastikan setiap achievement disertai bukti sah seperti sertifikat atau surat keterangan resmi.</p>
-            <form id="filterForm" action="{{ route('mahasiswa.daftar-achievement') }}" method="GET" class="flex flex-wrap gap-4 py-4 items-center">
+            <form id="filterForm" class="flex flex-wrap gap-4 py-4 items-center">
                 <div class="flex flex-wrap gap-4 py-4 items-center w-full">
                     <!-- Search Input -->
                     <div class="relative">

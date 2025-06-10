@@ -12,6 +12,11 @@
         rel="stylesheet">
     @vite(['resources/css/app.css'])
 </head>
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 
 <body class="max-h-250 bg-gradient-to-b from-[#0c2c48] to-[#1e6aae] bg-no-repeat font-poppins overflow-x-hidden">
     <div class="w-4/5 h-full mx-auto">
@@ -19,29 +24,17 @@
         <header class="text-white p-4 flex justify-between items-center">
             <img src="{{ asset('images/Logo.svg') }}" alt="" class="w-[12%] h-[12%]">
             <div class="flex space-x-14 text-xs uppercase tracking-widest">
-                <a href="{{ url('/fitur') }}"
+                <a href="#reason"
                     class="hover:underline hover:underline-offset-4 hover:decoration-2 hover:decoration-white hover:scale-110 transition duration-300 ease-in-out">
-                    <p>Fitur</p>
+                    <p>Reason</p>
                 </a>
-                <a href="#about"
+                <a href="#fitur"
                     class="hover:underline hover:underline-offset-4 hover:decoration-2 hover:decoration-white hover:scale-110 transition duration-300 ease-in-out">
-                    <p>About Us</p>
+                    <p>Feature</p>
                 </a>
-                <a href=""
+                <a href="#offer"
                     class="hover:underline hover:underline-offset-4 hover:decoration-2 hover:decoration-white hover:scale-110 transition duration-300 ease-in-out">
-                    <p>Lorem</p>
-                </a>
-                <a href=""
-                    class="hover:underline hover:underline-offset-4 hover:decoration-2 hover:decoration-white hover:scale-110 transition duration-300 ease-in-out">
-                    <p>About Us</p>
-                </a>
-                <a href=""
-                    class="hover:underline hover:underline-offset-4 hover:decoration-2 hover:decoration-white hover:scale-110 transition duration-300 ease-in-out">
-                    <p>Ipsum</p>
-                </a>
-                <a href=""
-                    class="hover:underline hover:underline-offset-4 hover:decoration-2 hover:decoration-white hover:scale-110 transition duration-300 ease-in-out">
-                    <p>Campaigns</p>
+                    <p>Our Offer</p>
                 </a>
             </div>
             <a href="{{ url('/login') }}"
@@ -87,6 +80,14 @@
         </div>
     </main>
 
+    <button id="backToTopBtn" title="Kembali ke atas"
+        class="fixed bottom-8 right-8 z-50 bg-[#1e6aae] text-white rounded-full p-3 shadow-lg hover:bg-[#17497C] transition-all duration-300 hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+            stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
     <!-- Reason -->
     <section id="reason" class="w-4/5 mx-auto flex flex-col relative py-20 px-25 bg-gray-50 shadow-2xl rounded-3xl">
         <h2 class="text-xl font-bold text-sky-600 pb-3 uppercase">Reason</h2>
@@ -120,7 +121,7 @@
     </section>
 
 
-    <section id="about"class="w-4/5 mx-auto flex flex-col relative py-20 px-25 align-content-center">
+    <section id="about" class="w-4/5 mx-auto flex flex-col relative py-20 px-25 align-content-center">
         <div class="flex flex-col text-center items-center justify-center">
             <h3>Namun, proses memilih peserta lomba yang tepat masih menghadapi tantangan:</h3>
             <h3 class="font-semibold text-gray-50 bg-indigo-700 w-fit py-1 px-3 mt-4">Bagaimana memastikan setiap lomba
@@ -134,7 +135,7 @@
             <h1 class="text-4xl font-semibold">Solusi Cerdas untuk Prestasi Lebih Gemilang</h1>
         </div>
 
-        <div class="flex flex-col text-center items-center justify-center mt-20 mb-20 space-y-10">
+        <div id="fitur" class="flex flex-col text-center items-center justify-center mt-20 mb-20 space-y-10">
             <img src="{{ asset('images/Logo-Blue.svg') }}" alt="">
             <div class="flex flex-row space-x-20 mt-10">
                 <div class="flex flex-col w-2/4 items-start bg-indigo-100 rounded-2xl p-10 shadow-sm">
@@ -192,7 +193,7 @@
     </section>
 
     <!-- Our Offer -->
-    <section class="flex flex-row mt-20 mb-20 bg-[#002147] py-20">
+    <section id="offer" class="flex flex-row mt-20 mb-20 bg-[#002147] py-20">
         <div class="w-4/5 mx-auto px-4">
             <div class="bg-[#002147] text-white px-6 py-10">
                 <p class="text-yellow-400 font-semibold uppercase text-md mb-2">Our Offer</p>
@@ -295,3 +296,20 @@
 </body>
 
 </html>
+
+<script>
+    // Tampilkan tombol saat scroll ke bawah
+    window.onscroll = function() {
+        const btn = document.getElementById("backToTopBtn");
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            btn.classList.remove('hidden');
+        } else {
+            btn.classList.add('hidden');
+        }
+    };
+
+    // Smooth scroll ke atas saat tombol diklik
+    document.getElementById("backToTopBtn").onclick = function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+</script>
