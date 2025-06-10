@@ -10,6 +10,9 @@ use App\Models\Mahasiswa;
 use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LaporanExport;
 
 class LaporanController extends Controller
 {
@@ -140,4 +143,6 @@ class LaporanController extends Controller
             'isIncrease'
         ));
     }
+    
+    
 }
