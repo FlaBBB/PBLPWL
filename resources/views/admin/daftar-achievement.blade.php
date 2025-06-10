@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="flex-1 px-10">
-        <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg">
+        <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
             <h2 class="text-xl font-semibold">Daftar Achievement</h2>
             <form action="{{ route('admin.daftar-achievement') }}" method="GET" class="flex flex-wrap gap-4 pb-4 items-center w-full">
                 {{-- Search Input --}}
@@ -47,7 +47,7 @@
             </form>
 
             {{-- Opsi jumlah baris per halaman --}}
-            <div class="flex flex-cols items-center justify-between gap-auto w-full">
+            <div class="flex flex-cols items-center justify-between gap-auto mb-4 w-full">
                 <div>
                     <label for="perPage" class="text-sm text-gray-700">Tampilkan</label>
                     <select name="perPage" id="perPage" onchange="changePerPage(this.value)"

@@ -85,7 +85,7 @@
                     class="h-63 border border-gray-200 rounded-lg transform hover:-translate-y-1 transition duration-300 hover:shadow-lg hover:border-[#1e6aae] ">
                     <img src="https://placehold.co/400x120?text=Poster&font=poppins" alt="Banner Event"
                         class="w-full rounded-t-lg h-30 object-cover object-top">
-                    <div class="p-4">
+                    <div class="p-4 truncate">
                         @foreach ($i->tags as $tag)
                         <span class="text-xs text-[#1e6aae] font-bold">{{ $tag->name }} @if(!$loop->last), @endif </span>
                         @endforeach

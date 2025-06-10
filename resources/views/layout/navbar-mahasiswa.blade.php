@@ -40,11 +40,11 @@ $activeMenu = $activeMenu ?? '';
                             </svg>
                         </a>
                         <div x-show="openDropdown === 'prestasi-group'" x-transition class="ml-10 my-3 flex flex-col gap-3 text-sm">
-                            <a href="{{ route('mahasiswa.daftar-prestasi') }}" 
+                            <a href="{{ route('mahasiswa.daftar-achievement') }}" 
                                 class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'daftar-prestasi' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
                                 Daftar Prestasi
                             </a>
-                            <a href="{{ route('mahasiswa.tambah-prestasi') }}"
+                            <a href="{{ route('mahasiswa.tambah-achievement') }}"
                                 class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'tambah-prestasi' ? 'text-[#1E6AAE] font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
                                 Tambah Prestasi Baru
                             </a>
