@@ -57,7 +57,7 @@ class Vikor
                 $s += $weighted_normalized_diff;
                 $r = max($r, $w_j * $normalized_diff);
                 $normalized_diff_per_criterion[$criterionName] = $normalized_diff;
-                $weighted_normalizeed_diff_per_criterion[$criterionName] = $weighted_normalized_diff;
+                $weighted_normalized_diff_per_criterion[$criterionName] = $weighted_normalized_diff;
             }
             $s_values[$altKey] = $s;
             $r_values[$altKey] = $r;
