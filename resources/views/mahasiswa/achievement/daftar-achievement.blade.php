@@ -3,9 +3,9 @@
 @section('content')
     <main class="flex-1 px-10 pb-96">
         <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
-            <h2 class="text-xl font-semibold mb-2">Daftar Prestasi</h2>
-            <p class="text-sm text-gray-400">Lihat dan pantau seluruh prestasi yang telah Anda unggah selama masa studi.
-                Pastikan setiap prestasi disertai bukti sah seperti sertifikat atau surat keterangan resmi.</p>
+            <h2 class="text-xl font-semibold mb-2">Daftar Achievement</h2>
+            <p class="text-sm text-gray-400">Lihat dan pantau seluruh achievement yang telah Anda unggah selama masa studi.
+                Pastikan setiap achievement disertai bukti sah seperti sertifikat atau surat keterangan resmi.</p>
             <form id="filterForm" class="flex flex-wrap gap-4 py-4 items-center">
                 <div class="flex flex-wrap gap-4 py-4 items-center w-full">
                     <!-- Search Input -->
@@ -35,7 +35,7 @@
                         </svg>
                     </div>
 
-                    <!-- Dropdown: Tingkat prestasi -->
+                    <!-- Dropdown: Tingkat Achievement -->
                     <div class="relative w-40">
                         <select id="tingkat" name="tingkat"
                             class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -66,13 +66,13 @@
                     </div>
                     <!-- Button: Tambah prestasi -->
                     <div class="ml-auto">
-                        <a href="{{route('mahasiswa.tambah-prestasi')}}">
+                        <a href="{{route('mahasiswa.tambah-achievement')}}">
                             <button type="button"
                                 class="text-sm bg-[#1e6aae] text-white px-5 py-2 rounded-md hover:bg-[#17497C] transition flex items-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                                 </svg>
-                                Tambah Prestasi
+                                Tambah Achievement
                             </button>
                         </a>
                     </div>
@@ -113,7 +113,7 @@
                         </path>
                     </svg>
                 </button>
-                <h3 class="text-xl font-semibold mb-6 text-gray-800 inline-block mr-2">Detail Prestasi</h3>
+                <h3 class="text-xl font-semibold mb-6 text-gray-800 inline-block mr-2">Detail Achievement</h3>
                 <span id="detail-status-badge"
                     class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 align-middle">
                     <span class="w-2 h-2 rounded-full bg-green-500"></span>
@@ -168,7 +168,7 @@
                             <td class="border border-gray-200 px-3 py-2" id="detail-participants"></td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">URL prestasi
+                            <td class="border border-gray-300 px-3 py-2 font-medium whitespace-nowrap">URL Achievement
                             </td>
                             <td class="border border-gray-200 px-3 py-2"><a id="detail-url" href="#" target="_blank" class="text-blue-600 hover:underline"></a></td>
                         </tr>
@@ -766,7 +766,7 @@
 
             async function openDetailModal(achievementId) {
                 try {
-                    const response = await fetch(`/prestasi/detail/${achievementId}`);
+                    const response = await fetch(`/achievement/detail/${achievementId}`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
@@ -863,8 +863,8 @@
                     // Open the correct modal based on status
                     if (achievement.status === 'WAITING') {
                         const modalWaiting = document.getElementById('modal-waiting');
-                        modalWaiting.querySelector('#waiting-detail-content').textContent = `Detail untuk prestasi "${achievement.competition_name}" sedang menunggu verifikasi.`;
-                        modalWaiting.querySelector('#waiting-edit-button').href = `{{ route('mahasiswa.edit-prestasi', '') }}/${achievementId}`;
+                        modalWaiting.querySelector('#waiting-detail-content').textContent = `Detail untuk achievement "${achievement.competition_name}" sedang menunggu verifikasi.`;
+                        modalWaiting.querySelector('#waiting-edit-button').href = `{{ route('mahasiswa.edit-achievement', '') }}/${achievementId}`;
                         openModal('modal-waiting');
                     } else if (achievement.status === 'REJECTED') {
                         const modalRejected = document.getElementById('modal-rejected');
@@ -987,7 +987,7 @@
                     searching: false, // Disable default search bar
                     lengthChange: false, // Disable "Show X entries" dropdown
                     ajax: {
-                        url: "{{ route('mahasiswa.prestasi.data') }}",
+                        url: "{{ route('mahasiswa.achievement.data') }}",
                         data: function (d) {
                             d.search = $('#search').val();
                             d.kategori = $('#kategori').val();
@@ -1005,7 +1005,7 @@
                         { data: 'action', name: 'action', orderable: false, searchable: false },
                     ],
                     language: {
-                        emptyTable: "Tidak ada data prestasi yang tersedia."
+                        emptyTable: "Tidak ada data achievement yang tersedia."
                     }
                 });
 

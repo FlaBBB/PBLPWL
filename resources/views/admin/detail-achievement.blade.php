@@ -3,7 +3,7 @@
 @section('content')
 <body class="bg-white flex items-center justify-center min-h-screen">
     <div class="bg-white p-6 rounded-lg shadow-sm w-full mb-10">
-        <h2 class="text-2xl font-bold mb-6">Detail Prestasi</h2>
+        <h2 class="text-2xl font-bold mb-6">Detail Achievement</h2>
         <div class="grid grid-cols-2 gap-6">
             <div>
                 <div class="mb-4">

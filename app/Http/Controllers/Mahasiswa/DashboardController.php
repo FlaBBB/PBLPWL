@@ -24,11 +24,14 @@ class DashboardController extends Controller
         $headerTitle = 'Welcome Back, ' . $name . ' 👋';
         $headerDesc = 'This is your dashboard, where you can manage all the data related to your achievements.';
 
+        $rekomendasiLomba = \App\Models\Competition::orderBy('start_at', 'desc')->limit(4)->get();
+
         return view('mahasiswa.dashboard', [
             'activeMenu' => $activeMenu,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
             'role' => $role,
+            'rekomendasiLomba' => $rekomendasiLomba,
             'data' => $this->data()
         ]);
     }

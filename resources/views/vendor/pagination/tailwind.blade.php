@@ -22,25 +22,25 @@
             @endif
         </div>
 
-        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        {{-- <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between space-x-3">
             <div>
                 <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
-                    {!! __('Showing') !!}
+                    {!! __('Menampilkan') !!}
                     @if ($paginator->firstItem())
                         <span class="font-medium">{{ $paginator->firstItem() }}</span>
-                        {!! __('to') !!}
+                        {!! __('hingga') !!}
                         <span class="font-medium">{{ $paginator->lastItem() }}</span>
                     @else
                         {{ $paginator->count() }}
                     @endif
-                    {!! __('of') !!}
+                    {!! __('dari') !!}
                     <span class="font-medium">{{ $paginator->total() }}</span>
-                    {!! __('results') !!}
+                    {!! __('hasil') !!}
                 </p>
-            </div>
+            </div> --}}
 
             <div>
-                <span class="relative z-0 inline-flex rtl:flex-row-reverse shadow-sm rounded-md">
+                <span class="relative z-0 inline-flex rtl:flex-row-reverse rounded-md">
                     {{-- Previous Page Link --}}
                     @if ($paginator->onFirstPage())
                         <span aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
@@ -59,29 +59,57 @@
                     @endif
 
                     {{-- Pagination Elements --}}
-                    @foreach ($elements as $element)
-                        {{-- "Three Dots" Separator --}}
-                        @if (is_string($element))
+                    @php
+                        $current = $paginator->currentPage();
+                        $last = $paginator->lastPage();
+                        $start = max(1, $current - 3);
+                        $end = min($last, $current + 3);
+                        
+                        if ($end - $start < 6) {
+                            if ($start == 1) {
+                                $end = min($last, 3);
+                            } else {
+                                $start = max(1, $last - 6);
+                            }
+                        }
+                    @endphp
+
+                    {{-- First page --}}
+                    @if ($start > 1)
+                        <a href="{{ $paginator->url(1) }}" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-[#1E6AAE] bg-white border border-[#1E6AAE] leading-5 hover:bg-[#1E6AAE] hover:text-white focus:z-10 focus:outline-none focus:ring ring-[#1E6AAE] focus:border-[#1E6AAE] active:bg-[#17497C] active:text-white transition ease-in-out duration-150">
+                            1
+                        </a>
+                        @if ($start > 2)
                             <span aria-disabled="true">
-                                <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-[#1E6AAE] bg-white border border-[#1E6AAE] cursor-default leading-5">{{ $element }}</span>
+                                <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-[#1E6AAE] bg-white border border-[#1E6AAE] cursor-default leading-5">...</span>
                             </span>
                         @endif
+                    @endif
 
-                        {{-- Array Of Links --}}
-                        @if (is_array($element))
-                            @foreach ($element as $page => $url)
-                                @if ($page == $paginator->currentPage())
-                                    <span aria-current="page">
-                                        <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-white bg-[#1E6AAE] border border-[#1E6AAE] cursor-default leading-5">{{ $page }}</span>
-                                    </span>
-                                @else
-                                    <a href="{{ $url }}" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-[#1E6AAE] bg-white border border-[#1E6AAE] leading-5 hover:bg-[#1E6AAE] hover:text-white focus:z-10 focus:outline-none focus:ring ring-[#1E6AAE] focus:border-[#1E6AAE] active:bg-[#17497C] active:text-white transition ease-in-out duration-150" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
-                                        {{ $page }}
-                                    </a>
-                                @endif
-                            @endforeach
+                    {{-- Page numbers --}}
+                    @for ($page = $start; $page <= $end; $page++)
+                        @if ($page == $current)
+                            <span aria-current="page">
+                                <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-white bg-[#1E6AAE] border border-[#1E6AAE] cursor-default leading-5">{{ $page }}</span>
+                            </span>
+                        @else
+                            <a href="{{ $paginator->url($page) }}" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-[#1E6AAE] bg-white border border-[#1E6AAE] leading-5 hover:bg-[#1E6AAE] hover:text-white focus:z-10 focus:outline-none focus:ring ring-[#1E6AAE] focus:border-[#1E6AAE] active:bg-[#17497C] active:text-white transition ease-in-out duration-150">
+                                {{ $page }}
+                            </a>
                         @endif
-                    @endforeach
+                    @endfor
+
+                    {{-- Last page --}}
+                    @if ($end < $last)
+                        @if ($end < $last - 1)
+                            <span aria-disabled="true">
+                                <span class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-[#1E6AAE] bg-white border border-[#1E6AAE] cursor-default leading-5">...</span>
+                            </span>
+                        @endif
+                        <a href="{{ $paginator->url($last) }}" class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-[#1E6AAE] bg-white border border-[#1E6AAE] leading-5 hover:bg-[#1E6AAE] hover:text-white focus:z-10 focus:outline-none focus:ring ring-[#1E6AAE] focus:border-[#1E6AAE] active:bg-[#17497C] active:text-white transition ease-in-out duration-150">
+                            {{ $last }}
+                        </a>
+                    @endif
 
                     {{-- Next Page Link --}}
                     @if ($paginator->hasMorePages())
@@ -103,4 +131,4 @@
             </div>
         </div>
     </nav>
-    @endif
+@endif

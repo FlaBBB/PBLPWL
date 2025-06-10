@@ -24,10 +24,10 @@ class MahasiswaSeeder extends Seeder
             for ($i = 0; $i < $numberOfAchievements; $i++) {
                 $achievement = Achievement::factory()->create();
 
-                $role = fake()->randomElement(MahasiswaAchievementRoleEnum::cases());
+                $role = fake()->randomElement([MahasiswaAchievementRoleEnum::PERSONAL, MahasiswaAchievementRoleEnum::LEADER]);
                 $teamSize = 1;
 
-                if ($role === MahasiswaAchievementRoleEnum::LEADER || $role === MahasiswaAchievementRoleEnum::MEMBER) {
+                if ($role === MahasiswaAchievementRoleEnum::LEADER) {
                     $teamSize = fake()->numberBetween(2, 5); // Random team size between 2 and 5
                 }
 

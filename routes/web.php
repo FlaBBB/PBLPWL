@@ -3,16 +3,16 @@
 use App\Http\Controllers\Mahasiswa\DashboardController;
 use App\Http\Controllers\Mahasiswa\LombaController;
 use App\Http\Controllers\Mahasiswa\LaporanController;
-use App\Http\Controllers\Mahasiswa\PrestasiController;
+use App\Http\Controllers\Mahasiswa\AchievementController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\KelolaUserController;
-use App\Http\Controllers\Admin\KelolaPrestasiController;
+use App\Http\Controllers\Admin\KelolaAchievementController;
 use App\Http\Controllers\Admin\KelolaLombaController;
 use App\Http\Controllers\Admin\KelolaAkademikController;
 use App\Http\Controllers\Admin\LaporanController as AdminLaporanController;
 use App\Http\Controllers\Admin\RekomendasiController;
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
-use App\Http\Controllers\Dosen\VerifikasiPrestasiController;
+use App\Http\Controllers\Dosen\VerifikasiAchievementController;
 use App\Http\Controllers\Dosen\ManajemenMahasiswaController;
 use App\Http\Controllers\Mahasiswa\ProfileController as MahasiswaProfileController;
 use App\Http\Controllers\Dosen\ProfileController as DosenProfileController;
@@ -66,15 +66,15 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('mahasiswa.dashboard');
 
-        // Route Prestasi
-        Route::prefix('prestasi')->group(function () {
-            Route::get('/daftar-prestasi', [PrestasiController::class, 'daftar'])->name('mahasiswa.daftar-prestasi');
-            Route::get('/tambah-prestasi', [PrestasiController::class, 'tambah'])->name('mahasiswa.tambah-prestasi');
-            Route::post('/store', [PrestasiController::class, 'store'])->name('mahasiswa.store-prestasi');
-            Route::get('/detail/{id}', [PrestasiController::class, 'detail'])->name('mahasiswa.detail-prestasi');
-            Route::get('/{id}/edit', [PrestasiController::class, 'edit'])->name('mahasiswa.edit-prestasi');
-            Route::put('/{id}', [PrestasiController::class, 'update'])->name('mahasiswa.update-prestasi');
-            Route::get('/data', [PrestasiController::class, 'getData'])->name('mahasiswa.prestasi.data');
+        // Route Achievement
+        Route::prefix('achievement')->group(function () {
+            Route::get('/daftar-achievement', [AchievementController::class, 'daftar'])->name('mahasiswa.daftar-achievement');
+            Route::get('/tambah-achievement', [AchievementController::class, 'tambah'])->name('mahasiswa.tambah-achievement');
+            Route::post('/store', [AchievementController::class, 'store'])->name('mahasiswa.store-achievement');
+            Route::get('/detail/{id}', [AchievementController::class, 'detail'])->name('mahasiswa.detail-achievement');
+            Route::get('/{id}/edit', [AchievementController::class, 'edit'])->name('mahasiswa.edit-achievement');
+            Route::put('/{id}', [AchievementController::class, 'update'])->name('mahasiswa.update-achievement');
+            Route::get('/data', [AchievementController::class, 'getData'])->name('mahasiswa.achievement.data');
         });
         // Route Lomba
         Route::prefix('lomba')->group(function () {
@@ -123,16 +123,23 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/admin/{id}', [KelolaUserController::class, 'updateAdmin'])->name('admin.kelola-admin.update');
                 Route::delete('/admin/{id}', [KelolaUserController::class, 'destroyAdmin'])->name('admin.kelola-admin.destroy');
             });
-            // Prestasi
-            Route::prefix('kelola-prestasi')->group(function () {
-                Route::get('/verifikasi', [KelolaPrestasiController::class, 'verifikasi'])->name('admin.verifikasi-prestasi');
-                Route::get('/daftar', [KelolaPrestasiController::class, 'daftar'])->name('admin.daftar-prestasi');
-                // Route::get('/{id}/detail', [KelolaPrestasiController::class, 'detail'])->name('admin.detail-prestasi');
+            // Achievement
+            Route::prefix('kelola-achievement')->group(function () {
+                Route::get('/verifikasi', [KelolaAchievementController::class, 'verifikasi'])->name('admin.verifikasi-achievement');
+                Route::get('/daftar', [KelolaAchievementController::class, 'daftar'])->name('admin.daftar-achievement');
+                Route::get('/{id}/show', [KelolaAchievementController::class, 'show'])->name('admin.achievement.show');
+                Route::post('/{id}/approve', [KelolaAchievementController::class, 'approve'])->name('admin.achievement.approve');
+                Route::post('/{id}/reject', [KelolaAchievementController::class, 'reject'])->name('admin.achievement.reject');
+                Route::post('/{id}/revision', [KelolaAchievementController::class, 'revision'])->name('admin.achievement.revision');
             });
             // Lomba
             Route::prefix('kelola-lomba')->group(function () {
                 Route::get('/daftar', [KelolaLombaController::class, 'daftar'])->name('admin.daftar-lomba');
                 Route::get('/verifikasi', [KelolaLombaController::class, 'verifikasi'])->name('admin.verifikasi-lomba');
+                Route::get('/{id}/show', [KelolaLombaController::class, 'show'])->name('admin.lomba.show');
+                Route::post('/{id}/approve', [KelolaLombaController::class, 'approve'])->name('admin.lomba.approve');
+                Route::post('/{id}/reject', [KelolaLombaController::class, 'reject'])->name('admin.lomba.reject');
+                Route::post('/{id}/revision', [KelolaLombaController::class, 'revision'])->name('admin.lomba.revision');
                 Route::get('/{id}/detail', [KelolaLombaController::class, 'detail'])->name('admin.lomba.detail');
             });
             // Akademik
@@ -161,7 +168,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/profile', [DosenProfileController::class, 'index'])->name('dosen.edit-profile');
             Route::post('/profile', [DosenProfileController::class, 'update'])->name('dosen.update-profile');
             Route::delete('/profile/delete-picture', [DosenProfileController::class, 'deleteProfilePicture'])->name('dosen.delete-profile-picture');
-            Route::get('/verifikasi-prestasi', [VerifikasiPrestasiController::class, 'index'])->name('dosen.verifikasi-prestasi');
+            Route::get('/verifikasi-achievement', [VerifikasiAchievementController::class, 'index'])->name('dosen.verifikasi-achievement');
             Route::get('/mahasiswa-bimbingan', [MahasiswaBimbinganController::class, 'index'])->name('dosen.mahasiswa-bimbingan');
             Route::get('/mahasiswa-bimbingan/{id}/details', [MahasiswaBimbinganController::class, 'getAchievementDetails'])->name('dosen.mahasiswa-bimbingan.details');
 

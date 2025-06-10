@@ -15,11 +15,13 @@
                     <div class="bg-gradient-to-br from-[#1e6aae] to-[#17497C] rounded-xl shadow-lg p-8 text-white">
                         <div class="flex justify-between items-center">
                             <div>
-                                <span class="text-5xl font-bold">245</span>
+                                <span class="text-5xl font-bold">{{ $totalAchievements }}</span>
                                 <p class="text-blue-100 text-lg mt-2">Total Prestasi</p>
                             </div>
                             <div class="text-right">
-                                <span class="text-blue-100 text-base font-medium">↑ 12.5%</span>
+                                <span class="text-base font-medium @if($isIncrease) text-green-400 @else text-red-400 @endif">
+                                    @if($isIncrease) ↑ @else ↓ @endif {{ number_format($percentageChange, 1) }}%
+                                </span>
                                 <span class="text-blue-100 text-base ml-2">dari tahun lalu</span>
                             </div>
                         </div>
@@ -68,26 +70,12 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-3 py-2">2020</td>
-                                            <td class="px-3 py-2 text-right">25</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">2021</td>
-                                            <td class="px-3 py-2 text-right">42</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">2022</td>
-                                            <td class="px-3 py-2 text-right">67</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">2023</td>
-                                            <td class="px-3 py-2 text-right">89</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">2024</td>
-                                            <td class="px-3 py-2 text-right">95</td>
-                                        </tr>
+                                        @foreach ($achievementsPerYear as $data)
+                                            <tr>
+                                                <td class="px-3 py-2">{{ $data->year }}</td>
+                                                <td class="px-3 py-2 text-right">{{ $data->total }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -110,18 +98,12 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-3 py-2">Teknik Informatika</td>
-                                            <td class="px-3 py-2 text-right">120</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">Sistem Informasi</td>
-                                            <td class="px-3 py-2 text-right">80</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">Teknik Komputer</td>
-                                            <td class="px-3 py-2 text-right">45</td>
-                                        </tr>
+                                        @foreach ($achievementsPerProdi as $data)
+                                            <tr>
+                                                <td class="px-3 py-2">{{ $data->program_studi }}</td>
+                                                <td class="px-3 py-2 text-right">{{ $data->total_achievements }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -144,18 +126,12 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-3 py-2">Internasional</td>
-                                            <td class="px-3 py-2 text-right">67</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">Nasional</td>
-                                            <td class="px-3 py-2 text-right">123</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">Regional</td>
-                                            <td class="px-3 py-2 text-right">55</td>
-                                        </tr>
+                                        @foreach ($achievementsPerLevel as $data)
+                                            <tr>
+                                                <td class="px-3 py-2">{{ $data->tingkat }}</td>
+                                                <td class="px-3 py-2 text-right">{{ $data->total }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -178,18 +154,12 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-3 py-2">Juara 1</td>
-                                            <td class="px-3 py-2 text-right">89</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">Juara 2</td>
-                                            <td class="px-3 py-2 text-right">78</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">Juara 3</td>
-                                            <td class="px-3 py-2 text-right">78</td>
-                                        </tr>
+                                        @foreach ($achievementsPerCapaian as $data)
+                                            <tr>
+                                                <td class="px-3 py-2">{{ $data->capaian }}</td>
+                                                <td class="px-3 py-2 text-right">{{ $data->total }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -212,22 +182,12 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200">
-                                        <tr>
-                                            <td class="px-3 py-2">Cyber Security</td>
-                                            <td class="px-3 py-2 text-right">92</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">UI/UX</td>
-                                            <td class="px-3 py-2 text-right">68</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">Web</td>
-                                            <td class="px-3 py-2 text-right">54</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3 py-2">Lainnya</td>
-                                            <td class="px-3 py-2 text-right">31</td>
-                                        </tr>
+                                        @foreach ($achievementsPerCategory as $data)
+                                            <tr>
+                                                <td class="px-3 py-2">{{ $data->category }}</td>
+                                                <td class="px-3 py-2 text-right">{{ $data->total }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -243,13 +203,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // 1. Prestasi per Tahun (Bar Chart)
+        const achievementsPerYearData = {!! json_encode($achievementsPerYear) !!};
+        const yearLabels = achievementsPerYearData.map(item => item.year);
+        const yearData = achievementsPerYearData.map(item => item.total);
+
         new Chart(document.getElementById('yearChart'), {
             type: 'bar',
             data: {
-                labels: ['2020', '2021', '2022', '2023', '2024'],
+                labels: yearLabels,
                 datasets: [{
                     label: 'Prestasi',
-                    data: [25, 42, 67, 89, 95],
+                    data: yearData,
                     backgroundColor: '#3B82F6',
                     borderRadius: 4
                 }]
@@ -263,13 +227,17 @@
         });
 
         // 2. Prestasi per Program Studi (Pie Chart)
+        const achievementsPerProdiData = {!! json_encode($achievementsPerProdi) !!};
+        const prodiLabels = achievementsPerProdiData.map(item => item.program_studi);
+        const prodiData = achievementsPerProdiData.map(item => item.total_achievements);
+
         new Chart(document.getElementById('prodiChart'), {
             type: 'pie',
             data: {
-                labels: ['Teknik Informatika', 'Sistem Informasi', 'Teknik Komputer'],
+                labels: prodiLabels,
                 datasets: [{
-                    data: [120, 80, 45],
-                    backgroundColor: ['#3B82F6', '#10B981', '#F59E0B'],
+                    data: prodiData,
+                    backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#F97316', '#64748B', '#DC2626', '#8B5CF6', '#06B6D4'],
                     borderWidth: 0
                 }]
             },
@@ -281,13 +249,17 @@
         });
 
         // 3. Tingkat Lomba (Pie Chart)
+        const achievementsPerLevelData = {!! json_encode($achievementsPerLevel) !!};
+        const levelLabels = achievementsPerLevelData.map(item => item.tingkat);
+        const levelData = achievementsPerLevelData.map(item => item.total);
+
         new Chart(document.getElementById('levelChart'), {
             type: 'pie',
             data: {
-                labels: ['Internasional', 'Nasional', 'Regional'],
+                labels: levelLabels,
                 datasets: [{
-                    data: [67, 123, 55],
-                    backgroundColor: ['#EF4444', '#F59E0B', '#10B981'],
+                    data: levelData,
+                    backgroundColor: ['#EF4444', '#F59E0B', '#10B981', '#3B82F6', '#F97316', '#64748B', '#DC2626', '#8B5CF6', '#06B6D4'],
                     borderWidth: 0
                 }]
             },
@@ -299,13 +271,17 @@
         });
 
         // 4. Distribusi Capaian (Bar Chart)
+        const achievementsPerCapaianData = {!! json_encode($achievementsPerCapaian) !!};
+        const capaianLabels = achievementsPerCapaianData.map(item => item.capaian);
+        const capaianData = achievementsPerCapaianData.map(item => item.total);
+
         new Chart(document.getElementById('achievementChart'), {
             type: 'bar',
             data: {
-                labels: ['Juara 1', 'Juara 2', 'Juara 3'],
+                labels: capaianLabels,
                 datasets: [{
-                    data: [89, 78, 78],
-                    backgroundColor: ['#F59E0B', '#9CA3AF', '#F97316'],
+                    data: capaianData,
+                    backgroundColor: ['#F59E0B', '#9CA3AF', '#F97316', '#3B82F6', '#10B981', '#EF4444', '#64748B', '#DC2626', '#8B5CF6', '#06B6D4'],
                     borderRadius: 4
                 }]
             },
@@ -318,13 +294,17 @@
         });
 
         // 5. Kategori Lomba (Pie Chart)
+        const achievementsPerCategoryData = {!! json_encode($achievementsPerCategory) !!};
+        const categoryLabels = achievementsPerCategoryData.map(item => item.category);
+        const categoryData = achievementsPerCategoryData.map(item => item.total);
+
         new Chart(document.getElementById('categoryChart'), {
             type: 'pie',
             data: {
-                labels: ['Cyber Security', 'UI/UX', 'Web', 'Lainnya'],
+                labels: categoryLabels,
                 datasets: [{
-                    data: [92, 68, 54, 31],
-                    backgroundColor: ['#DC2626', '#8B5CF6', '#06B6D4', '#64748B'],
+                    data: categoryData,
+                    backgroundColor: ['#DC2626', '#8B5CF6', '#06B6D4', '#64748B', '#3B82F6', '#10B981', '#EF4444', '#F59E0B', '#F97316'],
                     borderWidth: 0
                 }]
             },

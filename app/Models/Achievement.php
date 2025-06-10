@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Enums\CompetitionLevelEnum;
 use App\Enums\AchievementStatusEnum;
+use App\Enums\CompetitionLevelEnum;
+use App\Enums\MahasiswaAchievementRoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,16 +55,45 @@ class Achievement extends Model
 
     public function mahasiswa(): BelongsToMany
     {
-        return $this->belongsToMany(Mahasiswa::class, 'mahasiswa_achievement', 'id_achievement', 'nim');
+        return $this->belongsToMany(Mahasiswa::class, 'mahasiswa_achievement', 'id_achievement', 'nim')->withPivot('role');
     }
 
+    public function dosen(): BelongsToMany
+    {
+        return $this->belongsToMany(Dosen::class, 'supervisor_achievement', 'id_achievement', 'nidn')->withPivot('role');
+    }
     public function supervisor(): BelongsToMany
     {
-        return $this->belongsToMany(Dosen::class, 'supervisor_achievement', 'id_achievement', 'nidn');
+        return $this->belongsToMany(Dosen::class, 'supervisor_achievement', 'id_achievement', 'nidn')->withPivot('role');
     }
 
     public function verificator(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'verificator', 'nip');
+    }
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'mahasiswa_achievement', 'id_achievement', 'id_tag');
+    }
+
+    // Accessor for nama_mahasiswa
+    public function getNamaMahasiswaAttribute(): string
+    {
+        $mahasiswa = $this->mahasiswa;
+
+        if ($mahasiswa->isEmpty()) {
+            return 'N/A';
+        }
+
+        // If there's only one student, return their name
+        if ($mahasiswa->count() === 1) {
+            return $mahasiswa->first()->name;
+        }
+
+        // If there are multiple students, find the leader
+        $leader = $mahasiswa->firstWhere('pivot.role', MahasiswaAchievementRoleEnum::LEADER->value);
+
+        // Return leader's name if found, otherwise N/A
+        return $leader ? $leader->name : 'N/A';
     }
 }

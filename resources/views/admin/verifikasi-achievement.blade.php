@@ -1,14 +1,13 @@
 @extends('layout.template')
-
 @section('content')
     <main class="flex-1 px-10">
-        <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg">
-            <h2 class="text-xl font-semibold">Verifikasi Prestasi</h2>
-            <div class="flex flex-wrap gap-4 pb-4 items-center">
-                <div class="flex flex-wrap gap-4 py-4 items-center w-full">
-                    <!-- Search Input -->
+        <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg space-y-4">
+            <h2 class="text-xl font-semibold">Verifikasi Achievement</h2>
+
+                <form action="{{ route('admin.verifikasi-achievement') }}" method="GET" class="flex flex-wrap gap-4 items-center w-full">
+                    {{-- Search Input --}}
                     <div class="relative">
-                        <input type="text" placeholder="Cari disini"
+                        <input type="text" placeholder="Cari disini" name="search" value="{{ $search }}"
                             class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
                         <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" fill="none"
                             stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -17,52 +16,29 @@
                         </svg>
                     </div>
                     <p class="text-sm text-gray-700 ml-4">Filter berdasarkan:</p>
-                    <!-- Dropdown: Bidang -->
+                    {{-- Dropdown: Status --}}
                     <div class="relative w-54">
-                        <select
+                        <select name="status" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Bidang</option>
-                            <option>Programming</option>
-                            <option>UI/UX Design</option>
-                            <option>Data Science</option>
-                            <option>Cyber Security</option>
+                            <option disabled selected hidden>Pilih Status</option>
+                            @php
+                                $statusLabels = [
+                                    'WAITING' => 'Perlu Verifikasi',
+                                    'REVISION' => 'Revisi',
+                                    'REJECTED' => 'Ditolak',
+                                    'ACCEPTED' => 'Terverifikasi'
+                                ];
+                            @endphp
+                            @foreach($statusLabels as $value => $label)
+                                <option value="{{ $value }}" {{ $status == $value ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>
-                    <!-- Dropdown: Tingkat Lomba -->
-                    <div class="relative w-40">
-                        <select
-                            class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Tingkat</option>
-                            <option>Lokal</option>
-                            <option>Regional</option>
-                            <option>Nasional</option>
-                            <option>Internasional</option>
-                        </select>
-                        <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                    <!-- Dropdown: Status -->
-                    <div class="relative w-40">
-                        <select
-                            class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Status</option>
-                            <option value="ACCEPTED">Terverifikasi</option>
-                            <option value="WAITING">Menunggu</option>
-                            <option value="REJECTED">Ditolak</option>
-                            <option value="REVISION">Revisi</option>
-                        </select>
-                        <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                </div>
+                </form>
 
                 {{-- Opsi jumlah baris per halaman --}}
                 <div class="flex flex-cols items-center justify-between gap-auto w-full">
@@ -71,7 +47,7 @@
                         <select name="perPage" id="perPage" onchange="changePerPage(this.value)"
                             class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#1e6aae]">
                             @foreach ([5, 10, 25, 50] as $size)
-                                <option value="{{ $size }}" {{ request('perPage', 10) == $size ? 'selected' : '' }}>
+                                <option value="{{ $size }}" {{ $perPage == $size ? 'selected' : '' }}>
                                     {{ $size }}
                                 </option>
                             @endforeach
@@ -82,16 +58,9 @@
 
                 <script>
                     function changePerPage(value) {
-                        // Get current URL
                         const currentUrl = new URL(window.location.href);
-
-                        // Set new perPage value and reset page to 1
                         currentUrl.searchParams.set('perPage', value);
                         currentUrl.searchParams.set('page', 1);
-
-                        console.log('Redirecting to:', currentUrl.toString());
-
-                        // Navigate to new URL
                         window.location.href = currentUrl.toString();
                     }
                 </script>
@@ -100,54 +69,49 @@
                     <thead class="text-gray-500">
                         <tr class="border-b border-gray-200">
                             <th class="w-[5%] px-4 py-2 text-left">No</th>
-                            <th class="w-[30%] px-2 py-2 text-left">Nama Lomba</th>
-                            <th class="w-[25%] px-2 py-2 text-left">Nama Mahasiswa</th>
-                            <th class="w-[10%] px-2 py-2 text-left">Ranking</th>
+                            <th class="w-[30%] px-2 py-2 text-left ">Nama Lomba</th>
+                            <th class="w-[20%] px-2 py-2 text-left">Nama Mahasiswa</th>
+                            <th class="w-[15%] px-2 py-2 text-left">Tanggal Upload</th>
                             <th class="w-[15%] px-2 py-2 text-left">Status</th>
                             <th class="w-[15%] px-2 py-2 text-left">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- Contoh data paginasi, ganti dengan data dari controller --}}
-                        @php
-                            $perPage = request('perPage', 10);
-                            $page = request('page', 1);
-                            $total = 10; // total data, ganti sesuai kebutuhan
-                            $start = ($page - 1) * $perPage + 1;
-                            $end = min($start + $perPage - 1, $total);
-                        @endphp
-                        @for($i = $start; $i <= $end; $i++)
-                            <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                <td class="px-4 py-2">{{$i}}</td>
-                                <td class="px-2 py-2">Kompetisi Programming Nasional 2024</td>
-                                <td class="px-2 py-2">Muhammad Alif Febriansyah</td>
-                                <td class="px-2 py-2 text-left">Juara 1</td>
+                        @forelse($prestasi as $item)
+                            <tr class="border-b border-gray-200 hover:bg-gray-50 overflow-hidden">
+                                <td class="px-4 py-2">{{ $loop->iteration + ($prestasi->currentPage() - 1) * $prestasi->perPage() }}</td>
+                                <td class="px-2 py-2 overflow-hidden text-ellipsis whitespace-nowrap max-w-[180px]">{{ $item->competition_name }}</td>
+                                <td class="px-2 py-2">{{ $item->nama_mahasiswa }}</td>
+                                <td class="px-2 py-2 text-left">{{ $item->upload_at }}</td>
                                 <td class="px-2 py-2">
-                                     @php
-                                        $status = 'WAITING'; 
-                                    @endphp 
-                                     @if($status == 'WAITING') 
+                                    @if($item->status->value == 'WAITING')
                                         <span
                                             class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-[#1e6aae]/10 text-[#1e6aae]">
                                             <span class="w-1.5 h-1.5 rounded-full bg-[#1e6aae]"></span>
                                             Perlu Verifikasi
                                         </span>
-                                     @elseif($status == 'REJECTED') 
+                                    @elseif($item->status->value == 'ACCEPTED')
                                         <span
-                                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
-                                            Ditolak
+                                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                            Terverifikasi
                                         </span>
-                                     @elseif($status == 'REVISION') 
+                                    @elseif($item->status->value == 'REJECTED')
                                         <span
                                             class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
                                             <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                                            Ditolak
+                                        </span>
+                                    @elseif($item->status->value == 'REVISION')
+                                        <span
+                                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
                                             Revisi
                                         </span>
-                                     @endif 
+                                    @endif
                                 </td>
                                 <td class="px-2 py-2">
-                                    <button type="button" onclick="openModal('modal-detail')"
+                                    <button type="button" onclick="openDetailModal({{ $item->id }})"
                                         class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white px-2 py-2 rounded text-sm flex items-center gap-1"
                                         title="Lihat Detail">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -161,38 +125,28 @@
                                     </button>
                                 </td>
                             </tr>
-                        @endfor
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-4 py-2 text-center text-gray-500">Tidak ada data achievement.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-            {{-- Navigasi halaman --}}
-            @php
-                $lastPage = ceil($total / $perPage);
-            @endphp
-
-            <div class="flex justify-end mt-6">
-                <nav class="inline-flex -space-x-px">
-                    <a href="?perPage={{ $perPage }}&page={{ max(1, $page - 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-l {{ $page == 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &laquo;
-                    </a>
-                    @for ($p = 1; $p <= $lastPage; $p++)
-                        <a href="?perPage={{ $perPage }}&page={{ $p }}"
-                            class="px-3 py-1 border-t text-gray-600 border-b border-gray-300 {{ $p == $page ? 'bg-[#1e6aae] text-white' : 'hover:bg-gray-200' }}">
-                            {{ $p }}
-                        </a>
-                    @endfor
-                    <a href="?perPage={{ $perPage }}&page={{ min($lastPage, $page + 1) }}"
-                        class="px-3 py-1 border border-gray-300 rounded-r {{ $page == $lastPage ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'hover:bg-gray-200' }}">
-                        &raquo;
-                    </a>
-                </nav>
+            {{-- Navigasi halaman dan informasi jumlah data --}}
+            <div class="flex justify-between items-center mt-6">
+                <div class="text-sm text-gray-700">
+                    Menampilkan {{ $prestasi->firstItem() }} hingga {{ $prestasi->lastItem() }} dari {{ $prestasi->total() }} hasil
+                </div>
+                <div>
+                    {{ $prestasi->links('pagination::tailwind') }}
+                </div>
             </div>
         </div>
 
         {{-- MODAL COMPONENTS --}}
 
-        {{-- MODAL DETAIL PRESTASI --}}
+        {{-- MODAL DETAIL ACHIEVEMENT --}}
         <div id="modal-detail"
             class="fixed inset-0 z-50 flex items-start justify-center bg-gray-900/70 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out py-8 item-center overflow-y-auto"
             data-state="closed">
@@ -206,7 +160,7 @@
                         </path>
                     </svg>
                 </button>
-                <h3 class="text-xl font-semibold mb-6 text-gray-800">Detail Prestasi</h3>
+                <h3 class="text-xl font-semibold mb-6 text-gray-800">Detail Achievement</h3>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Kolom Kiri -->
@@ -215,41 +169,40 @@
                         <table class="w-full text-gray-800 text-left text-sm">
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Nama Lomba</td>
-                                <td class="border border-gray-200 px-3 py-2">Kompetisi Programming Nasional 2024</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-nama-lomba"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Penyelenggara</td>
-                                <td class="border border-gray-200 px-3 py-2">Universitas Indonesia</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-penyelenggara"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Ranking</td>
-                                <td class="border border-gray-200 px-3 py-2">Juara 1</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-ranking"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tingkat Lomba</td>
-                                <td class="border border-gray-200 px-3 py-2">Nasional</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-tingkat-lomba"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Bidang</td>
-                                <td class="border border-gray-200 px-3 py-2">Programming</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-bidang"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tanggal Mulai</td>
-                                <td class="border border-gray-200 px-3 py-2">15 Oktober 2024</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-tanggal-mulai"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Tanggal Berakhir</td>
-                                <td class="border border-gray-200 px-3 py-2">17 Oktober 2024</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-tanggal-berakhir"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Jumlah Peserta</td>
-                                <td class="border border-gray-200 px-3 py-2">150 Tim</td>
+                                <td class="border border-gray-200 px-3 py-2" id="detail-jumlah-peserta"></td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">URL Lomba</td>
                                 <td class="border border-gray-200 px-3 py-2">
-                                    <a href="https://programming-contest.ui.ac.id" target="_blank"
-                                        class="text-blue-600 hover:underline">
+                                    <a href="#" target="_blank" class="text-blue-600 hover:underline" id="detail-url-lomba">
                                         Lihat Website
                                     </a>
                                 </td>
@@ -262,32 +215,34 @@
                         <!-- Data Mahasiswa -->
                         <div>
                             <h4 class="font-semibold text-gray-800 mb-2">Data Mahasiswa</h4>
-                            <table class="w-full text-gray-800 text-left text-sm">
-                                <tr>
-                                    <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Nama Mahasiswa
-                                    </td>
-                                    <td class="border border-gray-200 px-3 py-2">Muhammad Alif Febriansyah</td>
-                                </tr>
-                                <tr>
-                                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Role Mahasiswa</td>
-                                    <td class="border border-gray-200 px-3 py-2">Ketua Tim</td>
-                                </tr>
+                            <table class="w-full text-gray-800 text-left text-sm" id="mahasiswa-table">
+                                <thead>
+                                    <tr>
+                                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Nama Mahasiswa</td>
+                                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">NIM</td>
+                                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Role</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="mahasiswa-table-body">
+                                    <!-- Mahasiswa data will be inserted here by JS -->
+                                </tbody>
                             </table>
                         </div>
 
                         <!-- Data Dosen Pembimbing -->
                         <div>
                             <h4 class="font-semibold text-gray-800 mb-2">Data Dosen Pembimbing</h4>
-                            <table class="w-full text-gray-800 text-left text-sm">
-                                <tr>
-                                    <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Nama Dosen
-                                    </td>
-                                    <td class="border border-gray-200 px-3 py-2">Dr. Ahmad Suryanto, M.Kom</td>
-                                </tr>
-                                <tr>
-                                    <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Role Dosen</td>
-                                    <td class="border border-gray-200 px-3 py-2">Pembimbing Utama</td>
-                                </tr>
+                            <table class="w-full text-gray-800 text-left text-sm" id="dosen-table">
+                                <thead>
+                                    <tr>
+                                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Nama Dosen</td>
+                                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">NIDN</td>
+                                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Role</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="dosen-table-body">
+                                    <!-- Dosen data will be inserted here by JS -->
+                                </tbody>
                             </table>
                         </div>
 
@@ -298,25 +253,25 @@
                                 <tr>
                                     <td class="border border-gray-300 px-3 py-2 font-medium w-1/3 bg-gray-50">Surat Tugas
                                     </td>
-                                    <td class="border border-gray-200 px-3 py-2">
+                                    <td class="border border-gray-200 px-3 py-2" id="detail-surat-tugas">
                                         <a href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Sertifikat</td>
-                                    <td class="border border-gray-200 px-3 py-2">
+                                    <td class="border border-gray-200 px-3 py-2" id="detail-sertifikat">
                                         <a href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Poster</td>
-                                    <td class="border border-gray-200 px-3 py-2">
+                                    <td class="border border-gray-200 px-3 py-2" id="detail-poster">
                                         <a href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Foto Kegiatan</td>
-                                    <td class="border border-gray-200 px-3 py-2">
+                                    <td class="border border-gray-200 px-3 py-2" id="detail-foto-kegiatan">
                                         <a href="#" target="_blank" class="text-blue-600 hover:underline">Lihat File</a>
                                     </td>
                                 </tr>
@@ -390,6 +345,7 @@
 
     <script>
         let currentAction = '';
+        let currentAchievementId = null; // To store the ID of the achievement being detailed/verified
 
         // Prevent default behavior dan event bubbling
         function openModal(modalId, event) {
@@ -507,12 +463,112 @@
             }
         }
 
-        function handleVerification(action) {
+        async function openDetailModal(id) {
+            currentAchievementId = id;
+            try {
+                const response = await fetch(`/admin/kelola-achievement/${id}/show`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log(data);
+
+                // Populate Data Lomba
+                document.getElementById('detail-nama-lomba').textContent = data.competition_name || 'N/A';
+                document.getElementById('detail-penyelenggara').textContent = data.competition_location || 'N/A';
+                document.getElementById('detail-ranking').textContent = data.place || 'N/A';
+                document.getElementById('detail-tingkat-lomba').textContent = data.level || 'N/A';
+                document.getElementById('detail-bidang').textContent = data.tags.map(tag => tag.name).join(', ') || 'N/A';
+                document.getElementById('detail-tanggal-mulai').textContent = data.start_at || 'N/A';
+                document.getElementById('detail-tanggal-berakhir').textContent = data.end_at || 'N/A';
+                document.getElementById('detail-jumlah-peserta').textContent = data.partition_number || 'N/A';
+                const urlLomba = document.getElementById('detail-url-lomba');
+                if (data.competition_url) {
+                    urlLomba.href = data.competition_url;
+                    urlLomba.textContent = 'Lihat Website';
+                } else {
+                    urlLomba.href = '#';
+                    urlLomba.textContent = 'Tidak Tersedia';
+                }
+
+
+                // Populate Data Mahasiswa
+                const mahasiswaTableBody = document.getElementById('mahasiswa-table-body');
+                mahasiswaTableBody.innerHTML = ''; // Clear existing content
+                if (data.mahasiswa && data.mahasiswa.length > 0) {
+                    data.mahasiswa.forEach(mhs => {
+                        const row = mahasiswaTableBody.insertRow();
+                        row.innerHTML = `
+                            <td class="border border-gray-200 px-3 py-2">${mhs.name || 'N/A'}</td>
+                            <td class="border border-gray-200 px-3 py-2">${mhs.nim || 'N/A'}</td>
+                            <td class="border border-gray-200 px-3 py-2">${mhs.pivot.role || 'N/A'}</td>
+                        `;
+                    });
+                } else {
+                    const row = mahasiswaTableBody.insertRow();
+                    row.innerHTML = `
+                        <td colspan="3" class="border border-gray-200 px-3 py-2 text-center">Tidak ada data mahasiswa.</td>
+                    `;
+                }
+
+                // Populate Data Dosen Pembimbing
+                const dosenTableBody = document.getElementById('dosen-table-body');
+                dosenTableBody.innerHTML = ''; // Clear existing content
+                if (data.dosen && data.dosen.length > 0) { // Use data.dosen as per controller change
+                    data.dosen.forEach(dsn => {
+                        const row = dosenTableBody.insertRow();
+                        row.innerHTML = `
+                            <td class="border border-gray-200 px-3 py-2">${dsn.name || 'N/A'}</td>
+                            <td class="border border-gray-200 px-3 py-2">${dsn.nidn || 'N/A'}</td>
+                            <td class="border border-gray-200 px-3 py-2">${dsn.pivot.role || 'N/A'}</td>
+                        `;
+                    });
+                } else {
+                    const row = dosenTableBody.insertRow();
+                    row.innerHTML = `
+                        <td colspan="3" class="border border-gray-200 px-3 py-2 text-center">Tidak ada data dosen pembimbing.</td>
+                    `;
+                }
+
+                // Populate Dokumen
+                document.getElementById('detail-surat-tugas').querySelector('a').href = (data.file_assignment_letter ? '/' + data.file_assignment_letter : '#');
+                document.getElementById('detail-sertifikat').querySelector('a').href = (data.file_certificate ? '/' + data.file_certificate : '#');
+                document.getElementById('detail-poster').querySelector('a').href = (data.file_poster ? '/' + data.file_poster : '#');
+                document.getElementById('detail-foto-kegiatan').querySelector('a').href = (data.file_activity_photo ? '/' + data.file_activity_photo : '#');
+
+                openModal('modal-detail');
+            } catch (error) {
+                console.error('Error fetching achievement details:', error);
+                alert('Gagal memuat detail achievement. Silakan coba lagi.');
+            }
+        }
+
+        async function handleVerification(action) {
+            if (!currentAchievementId) {
+                alert('Tidak ada achievement yang dipilih.');
+                return;
+            }
+
             if (action === 'approve') {
-                // Handle direct approval without message
-                console.log('Prestasi diverifikasi');
-                // Add your approval logic here
-                closeModal('modal-detail');
+                try {
+                    const response = await fetch(`/admin/kelola-achievement/${currentAchievementId}/approve`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const result = await response.json();
+                    alert(result.message);
+                    closeModal('modal-detail');
+                    location.reload(); // Reload page to reflect changes
+                } catch (error) {
+                    console.error('Error approving achievement:', error);
+                    alert('Gagal memverifikasi achievement. Silakan coba lagi.');
+                }
             }
         }
 
@@ -530,7 +586,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                         </svg>
                     `;
-                messageTitle.textContent = 'Minta Revisi Prestasi';
+                messageTitle.textContent = 'Minta Revisi Achievement';
                 messageLabel.textContent = 'Alasan revisi:';
                 confirmBtn.textContent = 'Kirim Revisi';
                 confirmBtn.className = 'w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-yellow-600 border border-transparent rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500';
@@ -541,7 +597,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     `;
-                messageTitle.textContent = 'Tolak Prestasi';
+                messageTitle.textContent = 'Tolak Achievement';
                 messageLabel.textContent = 'Alasan penolakan:';
                 confirmBtn.textContent = 'Tolak Prestasi';
                 confirmBtn.className = 'w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500';
@@ -552,7 +608,7 @@
             openModal('modal-message');
         }
 
-        function confirmAction() {
+        async function confirmAction() {
             const message = document.getElementById('message-text').value.trim();
 
             if (!message) {
@@ -560,16 +616,44 @@
                 return;
             }
 
-            if (currentAction === 'revision') {
-                console.log('Prestasi diminta revisi dengan pesan:', message);
-                // Add your revision logic here
-            } else if (currentAction === 'reject') {
-                console.log('Prestasi ditolak dengan pesan:', message);
-                // Add your rejection logic here
+            if (!currentAchievementId) {
+                alert('Tidak ada achievement yang dipilih.');
+                return;
             }
 
-            closeModal('modal-message');
-            closeModal('modal-detail');
+            let url = '';
+            let successMessage = '';
+            if (currentAction === 'revision') {
+                url = `/admin/kelola-achievement/${currentAchievementId}/revision`;
+                successMessage = 'Achievement berhasil diminta revisi.';
+            } else if (currentAction === 'reject') {
+                url = `/admin/kelola-achievement/${currentAchievementId}/reject`;
+                successMessage = 'Achievement berhasil ditolak.';
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                alert(result.message || successMessage);
+                closeModal('modal-message');
+                closeModal('modal-detail');
+                location.reload(); // Reload page to reflect changes
+            } catch (error) {
+                console.error(`Error ${currentAction}ing achievement:`, error);
+                alert(`Gagal ${currentAction} achievement. Silakan coba lagi.`);
+            }
         }
 
         // Close modal when clicking outside

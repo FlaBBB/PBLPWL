@@ -4,9 +4,9 @@
     <main class="flex-1">
         <div class="fixed"
             style="width:1260px; min-height:590px; top:100px; left:295px; border-radius:10px; border:1px solid #d1d5db; padding:40px; gap:24px;">
-            <h2 class="text-xl font-bold mb-4">Daftar Prestasi</h2>
-            <p class="text-gray-400">Lihat dan pantau seluruh prestasi yang telah Anda unggah selama masa studi.
-                Pastikan setiap prestasi disertai bukti sah seperti sertifikat atau surat keterangan resmi.</p>
+            <h2 class="text-xl font-bold mb-4">Daftar Achievement</h2>
+            <p class="text-gray-400">Lihat dan pantau seluruh achievement yang telah Anda unggah selama masa studi.
+                Pastikan setiap achievement disertai bukti sah seperti sertifikat atau surat keterangan resmi.</p>
             <table class="w-full text-left text-sm bg-white rounded-lg overflow-hidden">
                 <thead>
                     <tr class="border-b border-gray-200">
