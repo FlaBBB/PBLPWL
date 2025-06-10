@@ -13,11 +13,10 @@ use App\Http\Controllers\Admin\LaporanController as AdminLaporanController;
 use App\Http\Controllers\Admin\RekomendasiController;
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 use App\Http\Controllers\Dosen\VerifikasiAchievementController;
-use App\Http\Controllers\Dosen\ManajemenMahasiswaController;
 use App\Http\Controllers\Mahasiswa\ProfileController as MahasiswaProfileController;
 use App\Http\Controllers\Dosen\ProfileController as DosenProfileController;
-use App\Http\Controllers\AuthController; // Import AuthController
-use App\Enums\UserRoleEnum; // Import UserRoleEnum
+use App\Http\Controllers\AuthController;
+use App\Enums\UserRoleEnum;
 use App\Http\Controllers\Dosen\MahasiswaBimbinganController;
 use App\Http\Controllers\Dosen\LombaController as DosenLombaController;
 use App\Http\Controllers\UserProfileController;
@@ -97,6 +96,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/tambah-lomba', [LombaController::class, 'tambah'])->name('mahasiswa.tambah-lomba');
             Route::get('/{id}/detail-lomba', [LombaController::class, 'detail'])->name('mahasiswa.detail-lomba');
             Route::get('/histori-tambah-lomba', [LombaController::class, 'histori'])->name('mahasiswa.histori-tambah-lomba');
+            Route::post('/store', [LombaController::class, 'store'])->name('mahasiswa.store-lomba');
         });
         // Route Laporan
         Route::prefix('laporan')->group(function () {
@@ -171,12 +171,13 @@ Route::middleware(['auth'])->group(function () {
 
             // Recommendation
             Route::post('/send-recommendation/{id}', [UserProfileController::class, 'sendRecommendation'])->name('admin.send-recommendation');
+
+            //Rekomendasi
+            Route::prefix('rekomendasi')->group(function () {
+                Route::get('/rekomendasi-vikor', [RekomendasiController::class, 'rekomendasiVikor'])->name('admin.rekomendasi-vikor');
+                Route::get('/rekomendasi-smart', [RekomendasiController::class, 'rekomendasiSmart'])->name('admin.rekomendasi-smart');
+            });
         });
-    });
-    //Rekomendasi
-    Route::prefix('rekomendasi')->group(function () {
-        Route::get('/rekomendasi-vikor', [RekomendasiController::class, 'rekomendasiVikor'])->name('admin.rekomendasi-vikor');
-        Route::get('/rekomendasi-smart', [RekomendasiController::class, 'rekomendasiSmart'])->name('admin.rekomendasi-smart');
     });
 
 

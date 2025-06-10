@@ -93,7 +93,7 @@ class AchievementController extends Controller
             'currentKategori' => $request->input('kategori', ''),
             'currentTingkat' => $request->input('tingkat', ''),
             'currentStatus' => $request->input('status', ''),
-            'categories' => $categories, 
+            'categories' => $categories,
         ]);
     }
 
@@ -116,12 +116,12 @@ class AchievementController extends Controller
             $searchValue = $request->input('search');
             $query->where(function ($q) use ($searchValue) {
                 $q->where('achievement.competition_name', 'like', '%' . $searchValue . '%')
-                  ->orWhereHas('tags', function ($q) use ($searchValue) {
-                      $q->where('name', 'like', '%' . $searchValue . '%');
-                  })
-                  ->orWhere('achievement.place', 'like', '%' . $searchValue . '%')
-                  ->orWhere('achievement.level', 'like', '%' . $searchValue . '%')
-                  ->orWhere('achievement.status', 'like', '%' . $searchValue . '%');
+                    ->orWhereHas('tags', function ($q) use ($searchValue) {
+                        $q->where('name', 'like', '%' . $searchValue . '%');
+                    })
+                    ->orWhere('achievement.place', 'like', '%' . $searchValue . '%')
+                    ->orWhere('achievement.level', 'like', '%' . $searchValue . '%')
+                    ->orWhere('achievement.status', 'like', '%' . $searchValue . '%');
             });
         }
 
@@ -139,13 +139,13 @@ class AchievementController extends Controller
 
         return DataTables::of($query)
             ->addIndexColumn()
-            ->addColumn('tag_name', function($achievement) {
+            ->addColumn('tag_name', function ($achievement) {
                 return $achievement->tags->pluck('name')->join(', ');
             })
-            ->addColumn('level', function($achievement) {
+            ->addColumn('level', function ($achievement) {
                 return $achievement->level->value;
             })
-            ->addColumn('status', function($achievement) {
+            ->addColumn('status', function ($achievement) {
                 $statusText = '';
                 $statusClass = '';
                 $statusDotClass = '';
@@ -178,7 +178,7 @@ class AchievementController extends Controller
                 }
                 return '<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ' . $statusClass . '"><span class="w-2 h-2 rounded-full ' . $statusDotClass . '"></span>' . $statusText . '</span>';
             })
-            ->addColumn('action', function($achievement) {
+            ->addColumn('action', function ($achievement) {
                 return '<div class="flex space-x-2"><button onclick="openDetailModal(' . $achievement->id . ')" class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white  px-2 py-2 rounded text-xs flex items-center gap-1" title="Lihat Detail"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>Lihat detail</button></div>';
             })
             ->rawColumns(['status', 'action'])
@@ -309,14 +309,9 @@ class AchievementController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $errorFields = array_keys($validator->errors()->messages());
             foreach ($validator->errors()->all() as $error) {
-                NotificationHelper::error(
-                    $error,
-                    [
-                        "duration" => 99999999,
-                        "dismissible" => true
-                    ]
-                );
+                NotificationHelper::error($error, [], $errorFields);
             }
             return redirect()->back()->withInput();
         }
@@ -588,14 +583,9 @@ class AchievementController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $errorFields = array_keys($validator->errors()->messages());
             foreach ($validator->errors()->all() as $error) {
-                NotificationHelper::error(
-                    $error,
-                    [
-                        "duration" => 99999999,
-                        "dismissible" => true
-                    ]
-                );
+                NotificationHelper::error($error, [], $errorFields);
             }
             return redirect()->back()->withInput();
         }

@@ -83,12 +83,57 @@ class LombaController extends Controller
         ];
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
+
+
         return view('mahasiswa.lomba.tambah-lomba', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'organizer' => 'required|string|max:255',
+            'level' => 'required|in:INTERNATIONAL,NATIONAL,PROVINCIAL,CITY',
+            'category' => 'required|string|max:100',
+            'start_at' => 'required|date',
+            'end_at' => 'required|date|after_or_equal:start_at',
+            'registration_deadline' => 'nullable|date',
+            'max_participation_amount' => 'required|integer|min:1',
+            'registration_link' => 'nullable|url',
+            'description' => 'nullable|string',
+            'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $data = $request->only([
+            'name',
+            'organizer',
+            'level',
+            'category',
+            'start_at',
+            'end_at',
+            'registration_deadline',
+            'max_participation_amount',
+            'registration_link',
+            'description',
+            'poster'
+        ]);
+        $data['creator'] = auth()->id();
+
+        // Handle poster upload
+        if ($request->hasFile('poster')) {
+            $data['poster_url'] = $request->file('poster')->store('images', 'public');
+        } else {
+            $data['poster_url'] = 'images/poster.jpg'; // Default poster if none is uploaded
+        }
+
+        Competition::create($data);
+
+        return redirect()->route('mahasiswa.histori-tambah-lomba')->with('success', 'Lomba berhasil ditambahkan!');
     }
     public function detail($id)
     {
@@ -125,6 +170,12 @@ class LombaController extends Controller
                 'url' => route('mahasiswa.histori-tambah-lomba')
             ],
         ];
+
+        $user = auth()->user();
+        $achievements = Competition::where('creator', $user->id)
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
         $headerTitle = 'Lomba';
         $headerDesc = 'Jelajahi katalog lomba dan tambahkan lomba baru dengan mudah.';
         return view('mahasiswa.lomba.histori-tambah-lomba', [
@@ -132,6 +183,7 @@ class LombaController extends Controller
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
+            'achievements' => $achievements,
         ]);
     }
 }
