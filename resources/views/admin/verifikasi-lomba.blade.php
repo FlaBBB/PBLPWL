@@ -143,7 +143,7 @@
                     Menampilkan {{ $lomba->firstItem() }} hingga {{ $lomba->lastItem() }} dari {{ $lomba->total() }} hasil
                 </div>
                 <div>
-                    {{ $lomba->links('pagination::tailwind') }}
+                    {{ $lomba->links('components.pagination-links') }}
                 </div>
             </div>
         </div>

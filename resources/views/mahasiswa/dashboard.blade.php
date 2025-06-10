@@ -209,7 +209,7 @@
         </table>
 
         <div class="mt-4 text-right px-2 text-sm text-gray-700 hover:text-[#1e6aae]">
-            <a href=""
+            <a href="{{@route("mahasiswa.daftar-achievement")}}"
                 class="inline-flex items-center gap-1 px-3 py-1 rounded-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-sm ">
                 <!-- beri link ke menu daftar prestasi mahasiswa saat ini -->
                 Selengkapnya

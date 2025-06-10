@@ -20,6 +20,8 @@ use App\Http\Controllers\AuthController; // Import AuthController
 use App\Enums\UserRoleEnum; // Import UserRoleEnum
 use App\Http\Controllers\Dosen\MahasiswaBimbinganController;
 use App\Http\Controllers\Dosen\LombaController as DosenLombaController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +60,18 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// User Profile Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/{role}/{id}', [UserProfileController::class, 'show'])->name('user.profile.show');
+
+    // Notification Routes
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::post('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+        Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+    });
+});
+
 
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
@@ -74,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/detail/{id}', [AchievementController::class, 'detail'])->name('mahasiswa.detail-achievement');
             Route::get('/{id}/edit', [AchievementController::class, 'edit'])->name('mahasiswa.edit-achievement');
             Route::put('/{id}', [AchievementController::class, 'update'])->name('mahasiswa.update-achievement');
+            Route::delete('/{id}', [AchievementController::class, 'destroy'])->name('mahasiswa.destroy-achievement');
             Route::get('/data', [AchievementController::class, 'getData'])->name('mahasiswa.achievement.data');
         });
         // Route Lomba
@@ -153,6 +168,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/export-pdf', [AdminLaporanController::class, 'exportPdf'])->name('laporan.exportPdf');
                 Route::get('/export-excel', [AdminLaporanController::class, 'exportExcel'])->name('laporan.exportExcel');
             });
+
+            // Recommendation
+            Route::post('/send-recommendation/{id}', [UserProfileController::class, 'sendRecommendation'])->name('admin.send-recommendation');
         });
     });
     //Rekomendasi

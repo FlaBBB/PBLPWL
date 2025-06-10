@@ -118,7 +118,7 @@
                 Menampilkan {{ $competition->firstItem() }} hingga {{ $competition->lastItem() }} dari {{ $competition->total() }} hasil
             </div>
             <div>
-                {{ $competition->links('pagination::tailwind') }}
+                {{ $competition->links('components.pagination-links') }}
             </div>
         </div>
     </div>

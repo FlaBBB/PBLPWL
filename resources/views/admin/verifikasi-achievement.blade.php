@@ -139,7 +139,7 @@
                     Menampilkan {{ $prestasi->firstItem() }} hingga {{ $prestasi->lastItem() }} dari {{ $prestasi->total() }} hasil
                 </div>
                 <div>
-                    {{ $prestasi->links('pagination::tailwind') }}
+                    {{ $prestasi->links('components.pagination-links') }}
                 </div>
             </div>
         </div>

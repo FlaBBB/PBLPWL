@@ -84,7 +84,7 @@
 
         {{-- Navigasi halaman --}}
         <div class="flex justify-end mt-6">
-            {{ $achievements->links('pagination::tailwind') }}
+            {{ $achievements->links('components.pagination-links') }}
         </div>
     </div>
 
@@ -225,7 +225,11 @@
                 data.mahasiswa_list.forEach(mahasiswa => {
                     const row = `
                             <tr>
-                                <td class="border border-gray-200 px-3 py-2 text-gray-600">${mahasiswa.name}</td>
+                                <td class="border border-gray-200 px-3 py-2 text-gray-600">
+                                    <a href="/profile/mahasiswa/${mahasiswa.id_user}" class="text-[#1e6aae] hover:underline">
+                                        ${mahasiswa.name}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-200 px-3 py-2 text-gray-600">${mahasiswa.mahasiswa_tag}</td>
                             </tr>
                         `;

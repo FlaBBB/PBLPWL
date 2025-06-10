@@ -149,7 +149,11 @@
                             <tr class="border-b border-gray-200 hover:bg-gray-50">
                                 <td class="px-4 py-2">{{ $loop->iteration }}</td>
                                 <td class="px-2 py-2">{{ $mhs->nim }}</td>
-                                <td class="px-2 py-2">{{ $mhs->name }}</td>
+                                <td class="px-2 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $mhs->user->id]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $mhs->name }}
+                                    </a>
+                                </td>
                                 <td class="px-2 py-2">{{ $mhs->prodi ?? '-' }}</td>
                                 <td class="px-2 py-2 text-center">{{ $mhs->grade ?? '-' }}</td>
                                 <td class="px-2 py-2">{{ $mhs->preferences->isNotEmpty() ? $mhs->preferences->pluck('name')->implode(', ') : '-' }}</td> {{-- New data --}}
@@ -210,7 +214,7 @@
             </div>
             {{-- Navigasi halaman --}}
             <div class="flex justify-end mt-6">
-                {{ $mahasiswa->appends(['search' => $search, 'program_studi' => $programStudi, 'tingkat' => $tingkat, 'preference' => $selectedPreference])->links('pagination::tailwind') }}
+                {{ $mahasiswa->appends(['search' => $search, 'program_studi' => $programStudi, 'tingkat' => $tingkat, 'preference' => $selectedPreference])->links('components.pagination-links') }}
             </div>
         </div>
 

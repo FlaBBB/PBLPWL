@@ -107,7 +107,11 @@
                             <tr class="border-b border-gray-200 hover:bg-gray-50">
                                 <td class="px-4 py-2">{{ $loop->iteration }}</td>
                                 <td class="px-2 py-2">{{ $dsn->nidn }}</td>
-                                <td class="px-2 py-2">{{ $dsn->name }}</td>
+                                <td class="px-2 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'dosen', 'id' => $dsn->user->id]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $dsn->name }}
+                                    </a>
+                                </td>
                                 <td class="px-2 py-2">{{ $dsn->user->email ?? '-' }}</td>
                                 <td class="px-2 py-2">{{ $dsn->preferences->isNotEmpty() ? $dsn->preferences->pluck('name')->implode(', ') : '-' }}</td>
                                 <td class="px-2 py-2 flex justify-center gap-2">
@@ -164,7 +168,7 @@
             </div>
             {{-- Navigasi halaman --}}
             <div class="flex justify-end mt-6">
-                {{ $dosen->appends(['search' => $search, 'preference' => $selectedPreference])->links('pagination::tailwind') }}
+                {{ $dosen->appends(['search' => $search, 'preference' => $selectedPreference])->links('components.pagination-links') }}
             </div>
         </div>
 
