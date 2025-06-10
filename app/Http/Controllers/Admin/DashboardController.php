@@ -96,6 +96,7 @@ class DashboardController extends Controller
             'activeMenu' => $activeMenu,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
+            'breadcrumbs' => [['name' => 'Dashboard', 'url' => '/admin/dashboard']],
             'role' => $role,
             'totalAchievements' => $totalAchievements,
             'pendingAchievements' => $pendingAchievements,

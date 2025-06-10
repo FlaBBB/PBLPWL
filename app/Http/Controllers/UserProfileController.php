@@ -32,7 +32,12 @@ class UserProfileController extends Controller
                 abort(404);
         }
 
-        return view('profile.show', compact('user'));
+        return view('profile.show', array_merge(compact('user'), [
+            'activeMenu' => 'profile',
+            'breadcrumbs' => [['name' => 'Profile', 'url' => '/profile']],
+            'headerTitle' => 'User Profile',
+            'headerDesc' => 'View user profile details.',
+        ]));
     }
 
     public function sendRecommendation(Request $request, string $id)

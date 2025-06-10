@@ -19,6 +19,9 @@ class ProfileController extends Controller
 
         return view('mahasiswa.edit-profile', [
             'activeMenu' => $activeMenu,
+            'breadcrumbs' => [['name' => 'Edit Profile', 'url' => '/mahasiswa/edit-profile']],
+            'headerTitle' => 'Edit Profile',
+            'headerDesc' => 'Edit your profile to update personal and contact information.',
             'role' => $role,
             'mahasiswa' => Auth::user()->mahasiswa,
             'tags' => Tag::all(),

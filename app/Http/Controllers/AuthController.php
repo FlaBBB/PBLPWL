@@ -28,7 +28,12 @@ class AuthController extends Controller
                     return redirect('/login');
             }
         }
-        return view('auth.login');
+        return view('auth.login', [
+            'activeMenu' => 'login',
+            'breadcrumbs' => [],
+            'headerTitle' => 'Login',
+            'headerDesc' => 'Please log in to your account.',
+        ]);
     }
 
     public function login(Request $request)
