@@ -94,7 +94,7 @@ class DashboardController extends Controller
             'activeMenu' => $activeMenu,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
-            'breadcrumbs' => [['name' => 'Dashboard', 'url' => '/dosen/dashboard']],
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/dosen/dashboard']],
             'totalMahasiswaBimbingan' => $totalMahasiswaBimbingan,
             'prestasiMenungguVerifikasi' => $prestasiMenungguVerifikasi,
             'lombaAktif' => $lombaAktif,
@@ -112,7 +112,7 @@ class DashboardController extends Controller
 
         return view('dosen.profile', [
             'activeMenu' => $activeMenu,
-            'breadcrumbs' => [['name' => 'Profile', 'url' => '/dosen/profile']],
+            'breadcrumbs' => [['label' => 'Profile', 'url' => '/dosen/profile']],
             'headerTitle' => 'Dosen Profile',
             'headerDesc' => 'View and manage your profile details.',
             'role' => $role,

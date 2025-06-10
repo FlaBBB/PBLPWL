@@ -14,7 +14,7 @@ class VerifikasiAchievementController extends Controller
 
         return view('dosen.verifikasi-achievement', [
             'activeMenu' => $activeMenu,
-            'breadcrumbs' => [['name' => 'Verifikasi Achievement', 'url' => '/dosen/verifikasi-achievement']],
+            'breadcrumbs' => [['label' => 'Verifikasi Achievement', 'url' => '/dosen/verifikasi-achievement']],
             'headerTitle' => 'Verifikasi Achievement',
             'headerDesc' => 'Verifikasi dan kelola prestasi mahasiswa.',
             'role' => $role,

@@ -39,7 +39,7 @@ class DashboardController extends Controller
             'activeMenu' => $activeMenu,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
-            'breadcrumbs' => [['name' => 'Dashboard', 'url' => '/dashboard']],
+            'breadcrumbs' => [['label' => 'Dashboard', 'url' => '/dashboard']],
             'role' => $role,
             'rekomendasiLomba' => $rekomendasiLomba,
             'hasPreferences' => $hasPreferences,

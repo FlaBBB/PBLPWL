@@ -34,7 +34,7 @@ class UserProfileController extends Controller
 
         return view('profile.show', array_merge(compact('user'), [
             'activeMenu' => 'profile',
-            'breadcrumbs' => [['name' => 'Profile', 'url' => '/profile']],
+            'breadcrumbs' => [['label' => 'Profile', 'url' => '/profile']],
             'headerTitle' => 'User Profile',
             'headerDesc' => 'View user profile details.',
         ]));

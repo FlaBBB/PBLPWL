@@ -30,7 +30,7 @@ class AuthController extends Controller
         }
         return view('auth.login', [
             'activeMenu' => 'login',
-            'breadcrumbs' => [],
+            'breadcrumbs' => [['label' => 'Login', 'url' => '/login']],
             'headerTitle' => 'Login',
             'headerDesc' => 'Please log in to your account.',
         ]);
