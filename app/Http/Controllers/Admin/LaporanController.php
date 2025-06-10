@@ -95,7 +95,7 @@ class LaporanController extends Controller
             ->get();
 
         // Tingkat Lomba
-        $achievementsPerLevel = Competition::select(
+        $achievementsPerLevel = Achievement::select(
             'level',
             DB::raw('count(*) as total')
         )
@@ -186,7 +186,7 @@ class LaporanController extends Controller
             ->orderBy('prodi', 'asc')
             ->get();
 
-        $achievementsPerLevel = Competition::select(
+        $achievementsPerLevel = Achievement::select(
             'level',
             DB::raw('count(*) as total')
         )
