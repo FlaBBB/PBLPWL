@@ -99,12 +99,12 @@ class LombaController extends Controller
             'name' => 'required|string|max:255',
             'organizer' => 'required|string|max:255',
             'level' => 'required|in:INTERNATIONAL,NATIONAL,PROVINCIAL,CITY',
-            'category' => 'required|string|max:100',
             'start_at' => 'required|date',
             'end_at' => 'required|date|after_or_equal:start_at',
             'registration_deadline' => 'nullable|date',
             'max_participation_amount' => 'required|integer|min:1',
             'registration_link' => 'nullable|url',
+            'registration_fee' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
             'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -113,22 +113,21 @@ class LombaController extends Controller
             'name',
             'organizer',
             'level',
-            'category',
             'start_at',
             'end_at',
             'registration_deadline',
             'max_participation_amount',
             'registration_link',
+            'registration_fee',
             'description',
-            'poster'
         ]);
         $data['creator'] = auth()->id();
 
         // Handle poster upload
         if ($request->hasFile('poster')) {
-            $data['poster_url'] = $request->file('poster')->store('images', 'public');
+            $data['poster'] = $request->file('poster')->store('images', 'public');
         } else {
-            $data['poster_url'] = 'images/poster.jpg'; // Default poster if none is uploaded
+            $data['poster'] = 'images/poster.jpg'; // Default poster if none is uploaded
         }
 
         Competition::create($data);
@@ -173,7 +172,7 @@ class LombaController extends Controller
 
         $user = auth()->user();
         $achievements = Competition::where('creator', $user->id)
-            ->orderByDesc('created_at')
+            ->orderByDesc('id')
             ->paginate(10);
 
         $headerTitle = 'Lomba';

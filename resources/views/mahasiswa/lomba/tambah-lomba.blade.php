@@ -105,8 +105,8 @@
                     </div>
                     <!-- URL Lomba -->
                     <div class="flex items-center space-x-4">
-                        <label for="url" class="block text-sm font-medium text-gray-700 w-50 mb-0">URL Lomba</label>
-                        <input type="url" id="url" name="url"
+                        <label for="registration_link" class="block text-sm font-medium text-gray-700 w-50 mb-0">URL Lomba</label>
+                        <input type="registration_link" id="registration_link" name="registration_link"
                             class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <!-- Deskripsi -->
@@ -115,6 +115,13 @@
                         <textarea id="description" name="description"
                             class="flex-1 block border p-4 h-32 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Tuliskan deskripsi singkat mengenai lomba"></textarea>
+                    </div>
+                    <!-- Biaya Pendaftaran -->
+                    <div class="flex items-center space-x-4">
+                        <label for="registration_fee" class="block text-sm font-medium text-gray-700 w-50 mb-0">Biaya Pendaftaran (Rp)</label>
+                        <input type="number" id="registration_fee" name="registration_fee"
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            min="0" step="1000" placeholder="Masukkan biaya (jika ada)">
                     </div>
                     <!-- Poster Lomba -->
                     <div class="flex items-center space-x-4">

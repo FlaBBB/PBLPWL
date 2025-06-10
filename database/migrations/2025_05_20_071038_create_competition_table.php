@@ -36,10 +36,10 @@ return new class extends Migration
                 "ACCEPTED",
                 "REJECTED"
             ]);
-            $table->text("rejection_note");
+            $table->text("rejection_note")->nullable();
             $table->string("verificator")->nullable();
             $table->foreign("verificator")->references("nip")->on("admin")->onDelete('cascade');
-            $table->date("verified_at");
+            $table->date("verified_at")->nullable();
         });
     }
 
