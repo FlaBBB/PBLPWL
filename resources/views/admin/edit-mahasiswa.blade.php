@@ -75,18 +75,14 @@
 
                     <!-- Grade -->
                     <div class="flex items-center space-x-4">
-                        <label for="grade" class="block text-sm font-medium text-gray-700 w-50 mb-0">Semester</label>
+                        <label for="grade" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tingkat</label>
                         <select id="grade" name="grade"
                             class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
-                            <option value="">Pilih Semester</option>
+                            <option value="">Pilih Tingkat/ Tahun Mahasiswa</option>
                             <option value="1" @selected(old('grade', $mahasiswa->grade) == '1')>1</option>
                             <option value="2" @selected(old('grade', $mahasiswa->grade) == '2')>2</option>
                             <option value="3" @selected(old('grade', $mahasiswa->grade) == '3')>3</option>
                             <option value="4" @selected(old('grade', $mahasiswa->grade) == '4')>4</option>
-                            <option value="5" @selected(old('grade', $mahasiswa->grade) == '5')>5</option>
-                            <option value="6" @selected(old('grade', $mahasiswa->grade) == '6')>6</option>
-                            <option value="7" @selected(old('grade', $mahasiswa->grade) == '7')>7</option>
-                            <option value="8" @selected(old('grade', $mahasiswa->grade) == '8')>8</option>
                         </select>
                     </div>
 

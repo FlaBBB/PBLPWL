@@ -65,7 +65,15 @@
                         </button>
                     </div>
                     <div class="flex justify-end mt-1">
-                        <a href="#" class="text-xs text-blue-600 hover:underline">Forgot your password?</a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=siprestajti@gmail.com&su=Lupa%20Password%20SIPRESTA&body=Halo%20Admin%2C%20saya%20lupa%20password%20akun%20SIPRESTA%20saya.%20Mohon%20bantuannya%20untuk%20reset%20password.%0ANama%3A%20%0AUsername%3A%20%0A"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-xs text-[#1e6aae] hover:underline relative group cursor-pointer">
+                            Forgot your password?
+                            <span
+                                class="absolute left-full top-1/2 -translate-y-1/2 ml-2 w-56 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 group-hover:visible invisible transition-opacity duration-200 z-20 pointer-events-none">
+                                Anda akan diarahkan ke email untuk mengirim pesan permintaan reset password.
+                            </span>
+                        </a>
                     </div>
                     <button type="submit"
                         class="w-full bg-[#1E6AAE] text-white font-semibold py-2 rounded-md hover:bg-[#17497C] transition duration-200">Login</button>
@@ -96,32 +104,33 @@
 
 
             <div class="relative z-20 flex flex-col items-center text-left max-w-xl">
-                <div id="text-content" class="transition-all duration-700 group">
+                <div id="animated-group" class="transition-all duration-700 group">
                     <div
-                        class="relative z-30 transition-transform duration-700 group-hover:-translate-y-4 group hover:scale-105">
+                        class="relative z-30 transition-transform duration-700 group-[.is-active]:-translate-y-4 group-[.is-active]:scale-105">
                         <h6 class="text-sm font-bold text-white leading-relax">SIPRESTA</h6>
 
                         <h1 class="text-5xl font-bold text-white leading-tight">
                             Prestasi Tercatat,
                         </h1>
 
-                        <!-- Wrap dua h1, satu untuk normal, satu untuk hover -->
-                        <div class="relative h-[4rem] overflow-hidden"> <!-- tinggi disamakan dengan h1 -->
+                        <div class="relative h-[4rem] overflow-hidden">
                             <h1
-                                class="text-5xl font-base text-white leading-tight absolute inset-0 transition-all duration-700 transform group-hover:-translate-y-full group-hover:opacity-0 group-hover:scale-110">
+                                class="text-5xl font-base text-white leading-tight absolute inset-0 transition-all duration-700 transform group-[.is-active]:-translate-y-full group-[.is-active]:opacity-0 group-[.is-active]:scale-110">
                                 Peluang Mendekat.
                             </h1>
                             <h1
-                                class="text-5xl font-bold bg-gradient-to-r from-yellow-200 to-yellow-300 via-yellow-100 bg-clip-text text-transparent leading-tight absolute inset-0 transform translate-y-full opacity-0 transition-all duration-700 group-hover:translate-y-0 group-hover:opacity-100">
+                                class="text-5xl font-bold bg-gradient-to-r from-yellow-200 to-yellow-300 via-yellow-100 bg-clip-text text-transparent leading-tight absolute inset-0 transform translate-y-full opacity-0 transition-all duration-700 group-[.is-active]:translate-y-0 group-[.is-active]:opacity-100">
                                 Mimpi Didapat!
                             </h1>
                         </div>
                     </div>
 
                     <div id="img-content"
-                        class="-mt-16 opacity-0 invisible max-h-0 group-hover:opacity-100 group-hover:visible group-hover:max-h-120 transition-all duration-700 ease-in-out">
-                        <img src="{{ asset('images/login-asset.svg') }}" alt="Mahasiswa Berprestasi"
+                        class="-mt-16 opacity-0 invisible max-h-0 group-[.is-active]:opacity-100 group-[.is-active]:visible group-[.is-active]:max-h-120 transition-all duration-700 ease-in-out">
+
+                        <img id="animated-image" src="{{ asset('images/login-asset.svg') }}" alt="Mahasiswa Berprestasi"
                             class="w-full max-w-xl object-contain transition-transform duration-700 hover:scale-110 hover:-rotate-1">
+
                     </div>
                 </div>
             </div>
@@ -130,7 +139,46 @@
     </div>
 
 
+    <script>
+    // Ambil elemen kontainer utama DAN elemen gambar
+    const animatedGroup = document.getElementById('animated-group');
+    const animatedImage = document.getElementById('animated-image');
 
+    // Fungsi untuk menjalankan seluruh sekuens animasi
+    function playAnimation() {
+        // --- TAHAP 1: Animasi Utama Dimulai ---
+        // Tambahkan class 'is-active' untuk memulai animasi slide & fade-in gambar.
+        animatedGroup.classList.add('is-active');
+
+        // --- TAHAP 2: Rotasi Gambar Dimulai (Setelah animasi utama selesai) ---
+        // Setelah 1 detik (1000ms), gambar diasumsikan sudah muncul.
+        // Kita mulai rotasi sekarang.
+        setTimeout(() => {
+            animatedImage.classList.add('scale-95');
+        }, 500); // Mulai rotasi pada detik ke-1
+
+        // --- TAHAP 3: Rotasi Gambar Berhenti ---
+        // Rotasi hanya berjalan 1 detik. Jadi kita hapus class-nya 1 detik setelah ditambahkan.
+        // 1000ms (mulai rotasi) + 1000ms (durasi rotasi) = 2000ms.
+        setTimeout(() => {
+            animatedImage.classList.remove('scale-95');
+        }, 1000); // Hentikan rotasi pada detik ke-2
+
+        // --- TAHAP 4: Reset Seluruh Animasi ---
+        // Ini adalah timeout utama untuk mengembalikan semuanya ke kondisi awal.
+        // Kita beri waktu 3 detik, cukup untuk semua animasi di atas selesai.
+        setTimeout(() => {
+            animatedGroup.classList.remove('is-active');
+        }, 3000); // Reset semuanya pada detik ke-3
+    }
+
+    // Jalankan seluruh sekuens animasi di atas setiap 5 detik.
+    // (3 detik untuk animasi berjalan + 2 detik jeda)
+    setInterval(playAnimation, 5000); 
+
+    // Jalankan animasi sekali saat halaman pertama kali dimuat
+    playAnimation();
+</script>
 </body>
 
 </html>
