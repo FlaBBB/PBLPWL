@@ -32,7 +32,7 @@ class KelolaAchievementController extends Controller
         $search = $request->input('search');
         $bidang = $request->input('bidang');
         $tingkat = $request->input('tingkat');
-        $status = $request->input('status');
+        $status = $request->input('status'); 
 
         $query = Achievement::with(['mahasiswa', 'tags'])
             ->where('status', $status);
@@ -46,11 +46,10 @@ class KelolaAchievementController extends Controller
             });
         }
 
-        if ($bidang) {
-            $query->whereHas('tags', function ($q) use ($bidang) {
-                $q->where('name', $bidang);
-            });
-        }
+        $status = $request->input('status');
+        $query = Achievement::with(['mahasiswa', 'tags'])
+            ->when($status, fn($q) => $q->where('status', $status));
+
 
         if ($tingkat) {
             $query->whereHas('competition', function ($q) use ($tingkat) {
