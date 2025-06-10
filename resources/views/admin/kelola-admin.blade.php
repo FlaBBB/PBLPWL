@@ -7,6 +7,18 @@
             <div class="flex flex-wrap gap-4 pb-4 items-center">
                 <div class="flex flex-wrap gap-4 py-4 items-center w-full">
                     <!-- Search Input -->
+                    <form action="{{ route('admin.kelola-admin') }}" method="GET" class="flex items-center gap-4">
+                        <div class="relative">
+                            <input type="text" name="search" placeholder="Cari disini" value="{{ $search }}"
+                                class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" fill="none"
+                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103 10.5a7.5 7.5 0 0013.15 6.15z" />
+                            </svg>
+                        </div>
+                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">Cari</button>
+                    </form>
                 </div>
 
                 {{-- Opsi jumlah baris per halaman --}}
@@ -43,6 +55,11 @@
                         currentUrl.searchParams.set('perPage', value);
                         currentUrl.searchParams.set('page', 1);
  
+                        // Preserve existing search parameter
+                        const searchInput = document.querySelector('input[name="search"]');
+                        if (searchInput && searchInput.value) {
+                            currentUrl.searchParams.set('search', searchInput.value);
+                        }
  
                         console.log('Redirecting to:', currentUrl.toString());
  
@@ -119,7 +136,7 @@
             </div>
             {{-- Navigasi halaman --}}
             <div class="flex justify-end mt-6">
-                {{ $admin->links('pagination::tailwind') }}
+                {{ $admin->appends(['search' => $search])->links('pagination::tailwind') }}
             </div>
         </div>
 
@@ -149,7 +166,7 @@
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Nama Lengkap</td>
-                            <td class="border border-gray-200 px-3 py-2" id="detail-nama_lengkap"></td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-name"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Email</td>
@@ -503,7 +520,7 @@
  
         function openDetailModalFromButton(button) {
             document.getElementById('detail-nip').innerText = button.dataset.id;
-            document.getElementById('detail-nama_lengkap').innerText = button.dataset.name;
+            document.getElementById('detail-name').innerText = button.dataset.name;
             document.getElementById('detail-email').innerText = button.dataset.email;
             openModal('modal-detail');
         }
@@ -518,8 +535,8 @@
             openModal('modal-edit');
         }
  
-        function openDeleteModal(id, nama_lengkap, email) {
-            document.getElementById('delete-admin-nama').innerText = nama_lengkap;
+        function openDeleteModal(id, name, email) {
+            document.getElementById('delete-admin-nama').innerText = name;
             document.getElementById('delete-admin-nip').innerText = id; // Display ID for confirmation
             document.getElementById('delete-admin-email').innerText = email;
             document.getElementById('deleteForm').action = `{{ url('admin/kelola-pengguna/admin') }}/${id}`;

@@ -17,34 +17,52 @@
                                     d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103 10.5a7.5 7.5 0 0013.15 6.15z" />
                             </svg>
                         </div>
-                        <input type="hidden" name="program_studi" value="{{ $programStudi }}">
-                        <input type="hidden" name="tingkat" value="{{ $tingkat }}">
                         <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">Cari</button>
+
+                        <p class="text-sm text-gray-700 ml-4">Filter berdasarkan:</p>
+                        <!-- Dropdown: Kategori -->
+                        <div class="relative w-54">
+                            <select name="program_studi" onchange="this.form.submit()"
+                                class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="" selected>Program Studi</option>
+                                @foreach ($prodiOptions as $prodi)
+                                    <option value="{{ $prodi->value }}" {{ $programStudi == $prodi->value ? 'selected' : '' }}>
+                                        {{ $prodi->value }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <!-- Dropdown: Tingkat Lomba -->
+                        <div class="relative w-40">
+                            <select name="tingkat" onchange="this.form.submit()"
+                                class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="" selected>Tingkat</option>
+                                <option value="1" {{ $tingkat == '1' ? 'selected' : '' }}>1</option>
+                                <option value="2" {{ $tingkat == '2' ? 'selected' : '' }}>2</option>
+                                <option value="3" {{ $tingkat == '3' ? 'selected' : '' }}>3</option>
+                                <option value="4" {{ $tingkat == '4' ? 'selected' : '' }}>4</option>
+                            </select>
+                            <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <div class="relative w-54">
+                            <select name="preference" onchange="this.form.submit()"
+                                class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="" selected>Minat & Keahlian</option>
+                                @foreach ($preferences as $pref)
+                                    <option value="{{ $pref->id }}" {{ $selectedPreference == $pref->id ? 'selected' : '' }}>
+                                        {{ $pref->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                     </form>
-                    <p class="text-sm text-gray-700 ml-4">Filter berdasarkan:</p>
-                    <!-- Dropdown: Kategori -->
-                    <div class="relative w-54">
-                        <select name="program_studi" onchange="this.form.submit()"
-                            class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="" disabled selected hidden>Program Studi</option>
-                            <option value="Teknik Informatika" {{ $programStudi == 'Teknik Informatika' ? 'selected' : '' }}>Teknik Informatika</option>
-                            <option value="Sistem Informasi Bisnis" {{ $programStudi == 'Sistem Informasi Bisnis' ? 'selected' : '' }}>Sistem Informasi Bisnis</option>
-                        </select>
-                        <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-                    <!-- Dropdown: Tingkat Lomba -->
-                    <div class="relative w-40">
-                        <select name="tingkat" onchange="this.form.submit()"
-                            class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="" disabled selected hidden>Tingkat</option>
-                            <option value="1" {{ $tingkat == '1' ? 'selected' : '' }}>1</option>
-                            <option value="2" {{ $tingkat == '2' ? 'selected' : '' }}>2</option>
-                            <option value="3" {{ $tingkat == '3' ? 'selected' : '' }}>3</option>
-                            <option value="4" {{ $tingkat == '4' ? 'selected' : '' }}>4</option>
-                        </select>
+                    <!-- Dropdown: Minat & Keahlian -->
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -87,19 +105,28 @@
                         currentUrl.searchParams.set('page', 1);
 
                         // Preserve existing search and filter parameters
-                        const searchParams = new URLSearchParams(window.location.search);
-                        if (searchParams.has('search')) {
-                            currentUrl.searchParams.set('search', searchParams.get('search'));
-                        }
-                        if (searchParams.has('program_studi')) {
-                            currentUrl.searchParams.set('program_studi', searchParams.get('program_studi'));
-                        }
-                        if (searchParams.has('tingkat')) {
-                            currentUrl.searchParams.set('tingkat', searchParams.get('tingkat'));
+                        const searchInput = document.querySelector('input[name="search"]');
+                        if (searchInput && searchInput.value) {
+                            currentUrl.searchParams.set('search', searchInput.value);
                         }
 
+                        const programStudiSelect = document.querySelector('select[name="program_studi"]');
+                        if (programStudiSelect && programStudiSelect.value) {
+                            currentUrl.searchParams.set('program_studi', programStudiSelect.value);
+                        }
+
+                        const tingkatSelect = document.querySelector('select[name="tingkat"]');
+                        if (tingkatSelect && tingkatSelect.value) {
+                            currentUrl.searchParams.set('tingkat', tingkatSelect.value);
+                        }
+ 
+                        const preferenceSelect = document.querySelector('select[name="preference"]');
+                        if (preferenceSelect && preferenceSelect.value) {
+                            currentUrl.searchParams.set('preference', preferenceSelect.value);
+                        }
+ 
                         console.log('Redirecting to:', currentUrl.toString());
-
+ 
                         // Navigate to new URL
                         window.location.href = currentUrl.toString();
                     }
@@ -110,10 +137,11 @@
                         <tr class="border-b border-gray-200">
                             <th class="w-[5%] px-4 py-2 text-left">No</th>
                             <th class="w-[15%] px-2 py-2 text-left">NIM</th>
-                            <th class="w-[25%] px-2 py-2 text-left">Nama Mahasiswa</th>
-                            <th class="w-[20%] px-2 py-2 text-left">Program Studi</th>
+                            <th class="w-[20%] px-2 py-2 text-left">Nama Mahasiswa</th>
+                            <th class="w-[15%] px-2 py-2 text-left">Program Studi</th>
                             <th class="w-[10%] px-2 py-2 text-center">Tingkat</th>
-                            <th class="w-[15%] px-2 py-2 text-center">Action</th>
+                            <th class="w-[15%] px-2 py-2 text-left">Minat & Keahlian</th> {{-- New column --}}
+                            <th class="w-[10%] px-2 py-2 text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,6 +152,7 @@
                                 <td class="px-2 py-2">{{ $mhs->name }}</td>
                                 <td class="px-2 py-2">{{ $mhs->prodi ?? '-' }}</td>
                                 <td class="px-2 py-2 text-center">{{ $mhs->grade ?? '-' }}</td>
+                                <td class="px-2 py-2">{{ $mhs->preferences->isNotEmpty() ? $mhs->preferences->pluck('name')->implode(', ') : '-' }}</td> {{-- New data --}}
                                 <td class="px-2 py-2 flex justify-center gap-2">
                                     <div class="flex space-x-2">
                                         <button type="button"
@@ -181,7 +210,7 @@
             </div>
             {{-- Navigasi halaman --}}
             <div class="flex justify-end mt-6">
-                {{ $mahasiswa->appends(['search' => $search])->links('pagination::tailwind') }}
+                {{ $mahasiswa->appends(['search' => $search, 'program_studi' => $programStudi, 'tingkat' => $tingkat, 'preference' => $selectedPreference])->links('pagination::tailwind') }}
             </div>
         </div>
 
@@ -211,7 +240,7 @@
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Nama Lengkap</td>
-                            <td class="border border-gray-200 px-3 py-2" id="detail-nama_lengkap"></td>
+                            <td class="border border-gray-200 px-3 py-2" id="detail-name"></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 px-3 py-2 font-medium bg-gray-50">Program Studi</td>
@@ -466,7 +495,7 @@
             const preferences = button.dataset.preferences;
 
             document.getElementById('detail-nim').innerText = nim;
-            document.getElementById('detail-nama_lengkap').innerText = name;
+            document.getElementById('detail-name').innerText = name;
             document.getElementById('detail-program_studi').innerText = prodi;
             document.getElementById('detail-semester').innerText = grade;
             document.getElementById('detail-ipk').innerText = ipk;
@@ -480,8 +509,8 @@
             openModal('modal-detail');
         }
 
-        function openDeleteModal(id, nama_lengkap, program_studi) {
-            document.getElementById('delete-mahasiswa-nama').innerText = nama_lengkap;
+        function openDeleteModal(id, name, program_studi) {
+            document.getElementById('delete-mahasiswa-nama').innerText = name;
             document.getElementById('delete-mahasiswa-nim').innerText = id;
             document.getElementById('delete-mahasiswa-prodi').innerText = program_studi;
             const form = document.getElementById('deleteForm');

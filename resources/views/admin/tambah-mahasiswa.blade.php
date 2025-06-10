@@ -18,8 +18,8 @@
 
                     <!-- Nama Lengkap -->
                     <div class="flex items-center space-x-4">
-                        <label for="nama_lengkap" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nama Lengkap</label>
-                        <input type="text" id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
+                        <label for="name" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nama Lengkap</label>
+                        <input type="text" id="name" name="name" value="{{ old('name') }}"
                             class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
@@ -64,8 +64,11 @@
                         <select id="prodi" name="prodi"
                             class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                             <option value="">Pilih Program Studi</option>
-                            <option value="TI" {{ old('prodi') == 'TI' ? 'selected' : '' }}>Teknik Informatika</option>
-                            <option value="SIB" {{ old('prodi') == 'SIB' ? 'selected' : '' }}>Sistem Informasi Bisnis</option>
+                            @foreach ($prodiOptions as $prodi)
+                                <option value="{{ $prodi->value }}" {{ old('prodi') == $prodi->value ? 'selected' : '' }}>
+                                    {{ $prodi->value }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 

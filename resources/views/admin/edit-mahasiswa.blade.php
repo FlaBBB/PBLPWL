@@ -65,8 +65,11 @@
                         <select id="prodi" name="prodi"
                             class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                             <option value="">Pilih Program Studi</option>
-                            <option value="Teknik Informatika" @selected(old('prodi', $mahasiswa->prodi) == 'TI')>Teknik Informatika</option>
-                            <option value="Sistem Informasi Bisnis" @selected(old('prodi', $mahasiswa->prodi) == 'SIB')>Sistem Informasi Bisnis</option>
+                            @foreach ($prodiOptions as $prodi)
+                                <option value="{{ $prodi->value }}" @selected(old('prodi', $mahasiswa->prodi) == $prodi->value)>
+                                    {{ $prodi->value }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 

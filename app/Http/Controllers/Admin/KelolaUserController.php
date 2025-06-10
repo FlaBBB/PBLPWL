@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Enums\UserRoleEnum;
+use App\Enums\Prodi;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
@@ -34,19 +35,27 @@ class KelolaUserController extends Controller
         $perPage = $request->input('perPage', 10);
         $programStudi = $request->input('program_studi');
         $tingkat = $request->input('tingkat');
+        $selectedPreference = $request->input('preference'); // New parameter for preference filter
 
         $mahasiswa = Mahasiswa::with('preferences') // Load preferences relationship
             ->when($search, function ($query, $search) {
-                $query->where('nama_lengkap', 'like', '%' . $search . '%')
-                    ->orWhere('nim', 'like', '%' . $search . '%');
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(nim) LIKE ?', ['%' . strtolower($search) . '%']);
             })
             ->when($programStudi, function ($query, $programStudi) {
-                $query->where('program_studi', $programStudi);
+                $query->where('prodi', Prodi::from($programStudi));
             })
             ->when($tingkat, function ($query, $tingkat) {
-                $query->where('tingkat', $tingkat);
+                $query->where('grade', $tingkat);
+            })
+            ->when($selectedPreference, function ($query, $selectedPreference) { // New filter logic
+                $query->whereHas('preferences', function ($q) use ($selectedPreference) {
+                    $q->where('tag.id', $selectedPreference);
+                });
             })
             ->paginate($perPage);
+
+        $preferences = Tag::all(); // Fetch all preferences for the filter dropdown
 
         return view('admin.kelola-mahasiswa', [
             'activeMenu' => $activeMenu,
@@ -57,37 +66,39 @@ class KelolaUserController extends Controller
             'search' => $search,
             'programStudi' => $programStudi,
             'tingkat' => $tingkat,
+            'prodiOptions' => Prodi::cases(),
+            'selectedPreference' => $selectedPreference, // Pass to view
+            'preferences' => $preferences, // Pass to view
         ]);
     }
 
     public function dosen(Request $request)
     {
         $search = $request->input('search');
-        $programStudi = $request->input('program_studi');
+        $selectedPreference = $request->input('preference'); // New parameter for preference filter
         $perPage = $request->input('perPage', 10);
 
         $query = Dosen::with('user', 'preferences');
 
         if ($search) {
-            $query->where('name', 'like', '%' . $search . '%')
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
                   ->with("user")
-                  ->orWhere('nidn', 'like', '%' . $search . '%')
+                  ->orWhereRaw('LOWER(nidn) LIKE ?', ['%' . strtolower($search) . '%'])
                   ->orWhereHas('user', function ($q) use ($search) {
-                      $q->where('email', 'like', '%' . $search . '%');
+                      $q->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%']);
                   });
         }
 
-        if ($programStudi) {
-            // Assuming 'program_studi' is a column in the Dosen table
-            $query->where('program_studi', $programStudi);
+        if ($selectedPreference) { // New filter logic
+            $query->whereHas('preferences', function ($q) use ($selectedPreference) {
+                $q->where('tag.id', $selectedPreference);
+            });
         }
 
         $dosen = $query->paginate($perPage);
-        $preferences = Tag::all(); // Fetch all preferences for the form
+        $preferences = Tag::all(); // Fetch all preferences for the filter dropdown
 
-        // dd($dosen);
-
-        return view('admin.kelola-dosen', compact('dosen', 'search', 'programStudi', 'preferences'));
+        return view('admin.kelola-dosen', compact('dosen', 'search', 'selectedPreference', 'preferences'));
     }
 
     public function admin(Request $request)
@@ -109,10 +120,10 @@ class KelolaUserController extends Controller
         $query = Admin::with('user');
 
         if ($search) {
-            $query->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('nip', 'like', '%' . $search . '%')
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
+                  ->orWhereRaw('LOWER(nip) LIKE ?', ['%' . strtolower($search) . '%'])
                   ->orWhereHas('user', function ($q) use ($search) {
-                      $q->where('email', 'like', '%' . $search . '%');
+                      $q->whereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%']);
                   });
         }
 
@@ -151,6 +162,7 @@ class KelolaUserController extends Controller
             'breadcrumbs' => $breadcrumbs,
             'headerTitle' => $headerTitle,
             'headerDesc' => $headerDesc,
+            'prodiOptions' => Prodi::cases(),
         ]);
     }
 
@@ -158,7 +170,7 @@ class KelolaUserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nim' => 'required|string|max:255|unique:mahasiswa,nim',
-            'nama_lengkap' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:user,email',
             'password' => 'required|string|min:8|confirmed',
             'phone_number' => 'required|string|max:20',
@@ -166,7 +178,7 @@ class KelolaUserController extends Controller
             'district' => 'required|string|max:255',
             'subdistrict' => 'required|string|max:255',
             'address' => 'required|string',
-            'prodi' => 'required|string|max:255',
+            'prodi' => ['required', Rule::in(array_column(Prodi::cases(), 'value'))],
             'grade' => 'required|integer|min:1|max:4',
         ]);
 
@@ -187,13 +199,13 @@ class KelolaUserController extends Controller
         Mahasiswa::create([
             'id_user' => $user->id,
             'nim' => $request->nim,
-            'name' => $request->nama_lengkap,
+            'name' => $request->name,
             'phone_number' => $request->phone_number,
             'city' => $request->city,
             'district' => $request->district,
             'subdistrict' => $request->subdistrict,
             'address' => $request->address,
-            'prodi' => $request->prodi,
+            'prodi' => Prodi::from($request->prodi),
             'grade' => $request->grade,
         ]);
 
@@ -228,6 +240,7 @@ class KelolaUserController extends Controller
             'headerDesc' => $headerDesc,
             'mahasiswa' => $mahasiswa,
             'tags' => $tags, // Pass tags to the view
+            'prodiOptions' => Prodi::cases(),
         ]);
     }
 
@@ -249,7 +262,7 @@ class KelolaUserController extends Controller
             'district' => 'nullable|string|max:255',
             'subdistrict' => 'nullable|string|max:255',
             'address' => 'nullable|string',
-            'prodi' => 'required|string|max:255',
+            'prodi' => ['required', Rule::in(array_column(Prodi::cases(), 'value'))],
             'grade' => 'required|integer|min:1|max:4',
             'preferences' => 'nullable|array', // Add validation for preferences
             'preferences.*' => 'exists:tag,id', // Validate each preference ID exists in the tags table
@@ -283,7 +296,7 @@ class KelolaUserController extends Controller
             'district' => $request->district,
             'subdistrict' => $request->subdistrict,
             'address' => $request->address,
-            'prodi' => $request->prodi,
+            'prodi' => Prodi::from($request->prodi),
             'grade' => $request->grade,
         ]);
 
