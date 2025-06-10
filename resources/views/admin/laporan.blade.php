@@ -18,12 +18,20 @@
                                 <span class="text-5xl font-bold">{{ $totalAchievements }}</span>
                                 <p class="text-blue-100 text-lg mt-2">Total Prestasi</p>
                             </div>
-                            <div class="text-right">
+                            <div class="text-right flex flex-col items-end">
                                 <span
-                                    class="text-base font-medium @if($isIncrease) text-green-400 @else text-red-400 @endif">
+                                    class="text-xl font-medium @if($isIncrease) text-green-400 @else text-white @endif relative group cursor-help">
                                     @if($isIncrease) ↑ @else ↓ @endif {{ number_format($percentageChange, 1) }}%
+                                    <div class="text-left leading-relaxed absolute w-48 bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800/90 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                                        @if($isIncrease)
+                                            Terjadi peningkatan jumlah prestasi sebanyak {{ number_format($percentageChange, 1) }}% dibandingkan tahun lalu
+                                        @else
+                                            Terjadi penurunan jumlah prestasi sebanyak {{ number_format($percentageChange, 1) }}% dibandingkan tahun lalu
+                                        @endif
+                                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+                                    </div>
                                 </span>
-                                <span class="text-blue-100 text-base ml-2">dari tahun lalu</span>
+                                <span class="text-blue-100 text-base">dari tahun lalu</span>
                             </div>
                         </div>
                     </div>
@@ -194,17 +202,30 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-200">
-                                        @foreach ($achievementsPerCategory as $data)
+                                        @php
+                                            $sortedCategories = collect($achievementsPerCategory)->sortByDesc('total')->values();
+                                            $topCategories = $sortedCategories->slice(0, 6);
+                                            $otherCategories = $sortedCategories->slice(6);
+                                            $otherTotal = $otherCategories->sum('total');
+                                        @endphp
+                                        @foreach ($topCategories as $data)
                                             <tr>
                                                 <td class="px-3 py-2">{{ $data->category }}</td>
                                                 <td class="px-3 py-2 text-right">{{ $data->total }}</td>
                                             </tr>
                                         @endforeach
+                                        @if ($otherCategories->count() > 0)
+                                            <tr>
+                                                <td class="px-3 py-2">Lainnya</td>
+                                                <td class="px-3 py-2 text-right">{{ $otherTotal }}</td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -307,8 +328,19 @@
 
         // 5. Kategori Lomba (Pie Chart)
         const achievementsPerCategoryData = {!! json_encode($achievementsPerCategory) !!};
-        const categoryLabels = achievementsPerCategoryData.map(item => item.category);
-        const categoryData = achievementsPerCategoryData.map(item => item.total);
+
+        // Urutkan berdasarkan total, ambil 6 teratas, sisanya dijumlahkan jadi "Lainnya"
+        const sortedCategories = achievementsPerCategoryData.sort((a, b) => b.total - a.total);
+        const topCategories = sortedCategories.slice(0, 6);
+        const otherCategories = sortedCategories.slice(6);
+
+        const categoryLabels = topCategories.map(item => item.category);
+        const categoryData = topCategories.map(item => item.total);
+
+        if (otherCategories.length > 0) {
+            categoryLabels.push('Lainnya');
+            categoryData.push(otherCategories.reduce((sum, item) => sum + item.total, 0));
+        }
 
         new Chart(document.getElementById('categoryChart'), {
             type: 'pie',
@@ -316,7 +348,7 @@
                 labels: categoryLabels,
                 datasets: [{
                     data: categoryData,
-                    backgroundColor: ['#DC2626', '#8B5CF6', '#06B6D4', '#64748B', '#3B82F6', '#10B981', '#EF4444', '#F59E0B', '#F97316'],
+                    backgroundColor: ['#DC2626', '#8B5CF6', '#06B6D4', '#64748B', '#3B82F6', '#10B981', '#F59E0B'],
                     borderWidth: 0
                 }]
             },
