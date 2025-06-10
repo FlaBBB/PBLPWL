@@ -113,7 +113,7 @@
                                 {{ $levelLabels[$item->level->value] ?? $item->level->value }}
                             </td>
                             <td class="px-2 py-2">
-                                <button type="button" onclick="openDetailModal({{ $item->id }})"
+                                <button type="button" onclick="openDetailModal('{{ $item->id }}')"
                                     class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white px-2 py-2 rounded text-sm flex items-center gap-1"
                                     title="Lihat Detail">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -450,7 +450,11 @@
                     data.mahasiswa.forEach(mhs => {
                         const row = mahasiswaTableBody.insertRow();
                         row.innerHTML = `
-                                <td class="border border-gray-200 px-3 py-2">${mhs.name || 'N/A'}</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <a href="/profile/mahasiswa/${mhs.id_user}" class="text-[#1e6aae] hover:underline">
+                                        ${mhs.name || 'N/A'}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-200 px-3 py-2">${mhs.nim || 'N/A'}</td>
                                 <td class="border border-gray-200 px-3 py-2">${mhs.pivot.role || 'N/A'}</td>
                             `;
@@ -469,7 +473,11 @@
                     data.dosen.forEach(dsn => {
                         const row = dosenTableBody.insertRow();
                         row.innerHTML = `
-                                <td class="border border-gray-200 px-3 py-2">${dsn.name || 'N/A'}</td>
+                                <td class="border border-gray-200 px-3 py-2">
+                                    <a href="/profile/dosen/${dsn.id_user}" class="text-[#1e6aae] hover:underline">
+                                        ${dsn.name || 'N/A'}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-200 px-3 py-2">${dsn.nidn || 'N/A'}</td>
                                 <td class="border border-gray-200 px-3 py-2">${dsn.pivot.role || 'N/A'}</td>
                             `;
