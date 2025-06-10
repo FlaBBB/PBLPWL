@@ -97,6 +97,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/tambah-lomba', [LombaController::class, 'tambah'])->name('mahasiswa.tambah-lomba');
             Route::get('/{id}/detail-lomba', [LombaController::class, 'detail'])->name('mahasiswa.detail-lomba');
             Route::get('/histori-tambah-lomba', [LombaController::class, 'histori'])->name('mahasiswa.histori-tambah-lomba');
+            Route::post('/store', [LombaController::class, 'store'])->name('mahasiswa.store-lomba');
         });
         // Route Laporan
         Route::prefix('laporan')->group(function () {
