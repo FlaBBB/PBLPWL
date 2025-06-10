@@ -63,7 +63,7 @@
                                         <div class="p-4 flex-1 flex flex-row items-center gap-4">
                                             {{-- Foto dosen --}}
                                             <div class="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-lg overflow-hidden">
-                                                <img src="{{ $dosen['photo_profile'] ? asset($dosen['photo_profile']) : asset('images/dosen-avatar.jpg') }}" alt="Foto Dosen"
+                                                <img src="{{ $dosen['photo_profile'] ? asset($dosen['photo_profile']) : asset('images/profile-default.jpg') }}" alt="Foto Dosen"
                                                     class="w-full h-full object-cover">
                                             </div>
                                             <div class="flex flex-col justify-center flex-1">

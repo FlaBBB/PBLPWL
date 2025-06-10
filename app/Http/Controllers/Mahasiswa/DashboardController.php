@@ -68,6 +68,12 @@ class DashboardController extends Controller
             ->where('achievement.status', AchievementStatusEnum::WAITING->value)
             ->count();
 
+        $totalRevisedPrestasi = MahasiswaAchievement::query()
+            ->join('achievement', 'mahasiswa_achievement.id_achievement', '=', 'achievement.id')
+            ->where('mahasiswa_achievement.nim', $mahasiswa->nim)
+            ->where('achievement.status', AchievementStatusEnum::REVISION->value)
+            ->count();
+
         $acceptedAchievementsByTag = MahasiswaAchievement::query()
             ->join('achievement', 'mahasiswa_achievement.id_achievement', '=', 'achievement.id')
             ->join('tag', 'mahasiswa_achievement.id_tag', '=', 'tag.id')
@@ -84,6 +90,7 @@ class DashboardController extends Controller
             'listPrestasi' => $listPrestasi,
             'totalPrestasi' => $totalPrestasi,
             'totalWaitedPrestasi' => $totalWaitedPrestasi,
+            'totalRevisedPrestasi' => $totalRevisedPrestasi,
             'totalActiveCompetition' => $activeCompetition->count(),
             'acceptedAchievementsByTag' => $acceptedAchievementsByTag
         ];

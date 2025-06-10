@@ -10,7 +10,7 @@ class DosenPreference extends Model
     use HasFactory;
 
     protected $table = 'dosen_preferences';
-    protected $primaryKey = ['nidn', 'id_tag'];
+    protected $primaryKey = null;
     public $incrementing = false;
     public $timestamps = false;
 

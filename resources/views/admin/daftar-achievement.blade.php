@@ -100,7 +100,18 @@
                             <td class="px-2 py-2">{{ $item->competition_name }}</td>
                             <td class="px-2 py-2">{{ $item->nama_mahasiswa }}</td>
                             <td class="px-2 py-2 text-left">{{ $item->place }}</td>
-                            <td class="px-2 py-2 text-left">{{ $item->level->value}}</td>
+                            <td class="px-2 py-2 text-left">
+                                @php
+                                    $levelLabels = [
+                                        'INTERNAL' => 'Internal',
+                                        'CITY' => 'Kota/ Kabupaten',
+                                        'PROVINCE' => 'Provinsi',
+                                        'NATIONAL' => 'Nasional',
+                                        'INTERNATIONAL' => 'Internasional'
+                                    ];
+                                @endphp
+                                {{ $levelLabels[$item->level->value] ?? $item->level->value }}
+                            </td>
                             <td class="px-2 py-2">
                                 <button type="button" onclick="openDetailModal({{ $item->id }})"
                                     class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white px-2 py-2 rounded text-sm flex items-center gap-1"
@@ -131,7 +142,7 @@
                 hasil
             </div>
             <div>
-                {{ $prestasi->links('pagination::tailwind') }}
+                {{ $prestasi->links('components.pagination-links') }}
             </div>
         </div>
         </div>

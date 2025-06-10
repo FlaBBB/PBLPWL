@@ -18,24 +18,10 @@
                         </svg>
                     </div>
 
-                    <!-- Dropdown: Kategori -->
-                    <div class="relative w-54">
-                        <select id="kategori" name="kategori"
-                            class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">Semua Kategori</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->name }}" {{ $currentKategori == $category->name ? 'selected' : '' }}>{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                        <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-                            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
 
                     <!-- Dropdown: Tingkat Achievement -->
                     <div class="relative w-40">
-                        <select id="tingkat" name="tingkat"
+                        <select id="tingkat" name="tingkat" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">Semua Tingkat</option>
                             <option value="INTERNATIONAL" {{ $currentTingkat == 'INTERNATIONAL' ? 'selected' : '' }}>Internasional</option>
@@ -49,7 +35,7 @@
                     </div>
                     <!-- Dropdown: Partisipan -->
                     <div class="relative w-44">
-                        <select id="status" name="status"
+                        <select id="status" name="status" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">Semua Status</option>
                             <option value="ACCEPTED" {{ $currentStatus == 'ACCEPTED' ? 'selected' : '' }}>Terverifikasi</option>
@@ -76,22 +62,101 @@
                     </div>
                 </div>
             </form>
-                <table id="achievements-table" class="w-full text-left text-sm bg-white rounded-lg overflow-hidden">
-                    <thead>
-                        <tr class="border-b border-gray-200">
-                            <th class="py-2 px-3">No</th>
-                            <th class="py-2 px-3">Nama Lomba</th>
-                            <th class="py-2 px-3">Kategori</th>
-                            <th class="py-2 px-3">Ranking</th>
-                            <th class="py-2 px-3">Tingkat</th>
-                            <th class="py-2 px-3">Status</th>
-                            <th class="py-2 px-3">Action</th>
+            <table class="w-full text-left text-sm bg-white rounded-lg border border-gray-200 rounded-sm">
+                <thead class="text-gray-500">
+                    <tr class="border-b border-gray-200">
+                        <th class="w-[5%] px-4 py-2 text-left">No</th>
+                        <th class="w-[20%] px-2 py-2 text-left">Nama Lomba</th>
+                        <th class="w-[10%] px-2 py-2 text-left">Ranking</th>
+                        <th class="w-[10%] px-2 py-2 text-left">Tingkat</th>
+                        <th class="w-[15%] px-2 py-2 text-left">Status</th>
+                        <th class="w-[15%] px-2 py-2 text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($achievements as $achievement)
+                        <tr class="border-b border-gray-200 hover:bg-gray-50">
+                            <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                            <td class="px-2 py-2">{{ $achievement->competition_name }}</td>
+                            <td class="px-2 py-2">{{ $achievement->place }}</td>
+                            <td class="px-2 py-2">{{ $achievement->level }}</td>
+                            <td class="px-2 py-2">
+                                @php
+                                    $statusClass = '';
+                                    $statusText = '';
+                                    switch ($achievement->status->value) {
+                                        case 'ACCEPTED':
+                                            $statusClass = 'bg-green-100 text-green-700';
+                                            $statusText = 'Terverifikasi';
+                                            break;
+                                        case 'WAITING':
+                                            $statusClass = 'bg-yellow-100 text-yellow-700';
+                                            $statusText = 'Menunggu';
+                                            break;
+                                        case 'REJECTED':
+                                            $statusClass = 'bg-red-100 text-red-700';
+                                            $statusText = 'Ditolak';
+                                            break;
+                                        case 'REVISION':
+                                            $statusClass = 'bg-blue-100 text-blue-700';
+                                            $statusText = 'Revisi';
+                                            break;
+                                        default:
+                                            $statusClass = 'bg-gray-100 text-gray-700';
+                                            $statusText = 'Unknown';
+                                            break;
+                                    }
+                                @endphp
+                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {{ $statusClass }}">
+                                    <span class="w-2 h-2 rounded-full {{ str_replace('100', '500', $statusClass) }}"></span>
+                                    {{ $statusText }}
+                                </span>
+                            </td>
+                            <td class="px-2 py-2 flex justify-center gap-2">
+                                <button type="button" onclick="openDetailModal('{{ $achievement->id }}')"
+                                    class="border border-[#1e6aae] text-[#1e6aae] hover:bg-[#1e6aae] hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
+                                    title="Lihat Detail">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </button>
+                                @if ($achievement->status == 'WAITING' || $achievement->status == 'REVISION')
+                                    <a href="{{ route('mahasiswa.edit-achievement', ['id' => $achievement->id]) }}"
+                                        class="border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
+                                        title="Edit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="2" stroke="currentColor" class="size-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                        </svg>
+                                    </a>
+                                    <button type="button" onclick="openDeleteModal('{{ $achievement->id }}', '{{ $achievement->competition_name }}')"
+                                        class="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-2 py-2 rounded text-xs flex items-center gap-1"
+                                        title="Hapus">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="2" stroke="currentColor" class="size-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                        </svg>
+                                    </button>
+                                @endif
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {{-- DataTables will populate this --}}
-                    </tbody>
-                </table>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-4 py-2 text-center text-gray-500">Tidak ada data achievement.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            <div class="flex justify-end mt-6">
+                @if ($achievements->hasPages())
+                    {{ $achievements->links('components.pagination-links') }}
+                @endif
             </div>
         </div>
 
@@ -657,19 +722,27 @@
                         </svg>
                     </div>
                     <h3 class="text-lg font-medium text-gray-900 mb-2">Hapus Prestasi</h3>
-                    <p class="text-sm text-gray-500 mb-6">
-                        Apakah Anda yakin ingin menghapus prestasi ini? Tindakan ini tidak dapat dibatalkan dan data
-                        prestasi akan hilang secara permanen.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-3">
+                    <div class="mb-4 space-y-4">
+                        <p class="text-sm text-gray-500 mb-2">
+                            Apakah Anda yakin ingin menghapus prestasi berikut?
+                        </p>
+                        <div class="bg-gray-50 p-3 space-y-2 rounded-lg text-left">
+                            <div class="text-sm"><strong>Nama Lomba:</strong> <span id="delete-achievement-name"></span></div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-3 justify-end">
                         <button type="button" onclick="closeModal('modal-hapus')"
-                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Batal
                         </button>
-                        <button type="button"
-                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                            Hapus Prestasi
-                        </button>
+                        <form id="deleteForm" method="POST" action="{{ route('mahasiswa.destroy-achievement', ['id' => '__ID__']) }}" class="w-full sm:w-auto">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Hapus
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -978,39 +1051,12 @@
                 }
             }
 
-            $(document).ready(function() {
-                var table = $('#achievements-table').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    searching: false, // Disable default search bar
-                    lengthChange: false, // Disable "Show X entries" dropdown
-                    ajax: {
-                        url: "{{ route('mahasiswa.achievement.data') }}",
-                        data: function (d) {
-                            d.search = $('#search').val();
-                            d.kategori = $('#kategori').val();
-                            d.tingkat = $('#tingkat').val();
-                            d.status = $('#status').val();
-                        }
-                    },
-                    columns: [
-                        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                        { data: 'competition_name', name: 'competition_name' },
-                        { data: 'tag_name', name: 'tag_name' },
-                        { data: 'place', name: 'place' },
-                        { data: 'level', name: 'level' },
-                        { data: 'status', name: 'status' },
-                        { data: 'action', name: 'action', orderable: false, searchable: false },
-                    ],
-                    language: {
-                        emptyTable: "Tidak ada data achievement yang tersedia."
-                    }
-                });
-
-                $('#filterForm select, #search').on('change keyup', function() {
-                    table.draw();
-                });
-            });
+            function openDeleteModal(id, name) {
+                document.getElementById('delete-achievement-name').innerText = name;
+                const form = document.getElementById('deleteForm');
+                form.action = form.action.replace('__ID__', id);
+                openModal('modal-hapus');
+            }
         </script>
     @endpush
 @endsection

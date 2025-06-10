@@ -14,40 +14,28 @@
                     <div class="flex items-center space-x-4">
                         <label for="nip" class="block text-sm font-medium text-gray-700 w-50 mb-0">NIP</label>
                         <input type="text" id="nip" name="nip" value="{{ old('nip', $admin->nip) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nip') border-red-500 @enderror">
-                        @error('nip')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Nama Lengkap -->
                     <div class="flex items-center space-x-4">
-                        <label for="nama_lengkap" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nama Lengkap</label>
-                        <input type="text" id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap', $admin->nama_lengkap) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nama_lengkap') border-red-500 @enderror">
-                        @error('nama_lengkap')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                        <label for="name" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nama Lengkap</label>
+                        <input type="text" id="name" name="name" value="{{ old('name', $admin->name) }}"
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Email -->
                     <div class="flex items-center space-x-4">
                         <label for="email" class="block text-sm font-medium text-gray-700 w-50 mb-0">Email</label>
                         <input type="email" id="email" name="email" value="{{ old('email', $admin->user->email) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror">
-                        @error('email')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Password -->
                     <div class="flex items-center space-x-4">
                         <label for="password" class="block text-sm font-medium text-gray-700 w-50 mb-0">Password (Kosongkan jika tidak ingin mengubah)</label>
                         <input type="password" id="password" name="password"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('password') border-red-500 @enderror">
-                        @error('password')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Confirm Password -->

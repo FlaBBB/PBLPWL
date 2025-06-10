@@ -21,10 +21,13 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_user' => User::pluck('id')->random(),
-            'code_reference' => fake()->word(),
+            'id_user' => User::inRandomOrder()->first()->id,
+            'id_reference' => fake()->optional()->randomNumber(), // Example: can be null
+            'type' => fake()->randomElement(['message', 'task', 'announcement', 'warning']),
             'content' => fake()->paragraph(),
             'is_read' => fake()->boolean(),
+            'sender_id' => fake()->optional()->randomElement(User::pluck('id')),
+            'read_at' => fake()->optional()->dateTimeBetween('-1 month', 'now'),
         ];
     }
 }
