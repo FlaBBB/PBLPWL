@@ -22,16 +22,29 @@ class MahasiswaBimbinganController extends Controller
         $headerTitle = 'Mahasiswa Bimbingan';
         $headerDesc = 'Lihat daftar mahasiswa bimbingan dan riwayat bimbingan yang pernah dilakukan.';
 
+
         $nidn = Auth::user()->dosen->nidn;
         $perPage = $request->input('perPage', 10);
 
         $achievements = SupervisorAchievement::where('nidn', $nidn)
             ->join('achievement', 'supervisor_achievement.id_achievement', '=', 'achievement.id')
             ->join('role_supervisor', 'supervisor_achievement.role', '=', 'role_supervisor.id')
+            ->leftJoin('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
+            ->leftJoin('mahasiswa', 'mahasiswa_achievement.nim', '=', 'mahasiswa.nim')
             ->select('achievement.*', 'supervisor_achievement.role', 'role_supervisor.description as supervisor_role_description')
-            ->distinct('achievement.id')
-            ->paginate($perPage);
-            
+            ->distinct('achievement.id');
+
+        $search = $request->input('search');
+
+        if ($search) {
+            $achievements->where(function ($q) use ($search) {
+                $q->where('achievement.competition_name', 'like', '%' . $search . '%')
+                    ->orWhere('mahasiswa.name', 'like', '%' . $search . '%');
+            });
+        }
+
+        $achievements = $achievements->paginate($perPage)->appends($request->query());
+
         return view('dosen.mahasiswa-bimbingan', [
             'activeMenu' => $activeMenu,
             'breadcrumbs' => $breadcrumbs,
