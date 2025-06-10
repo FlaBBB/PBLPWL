@@ -19,7 +19,8 @@
                                 <p class="text-blue-100 text-lg mt-2">Total Prestasi</p>
                             </div>
                             <div class="text-right">
-                                <span class="text-base font-medium @if($isIncrease) text-green-400 @else text-red-400 @endif">
+                                <span
+                                    class="text-base font-medium @if($isIncrease) text-green-400 @else text-red-400 @endif">
                                     @if($isIncrease) ↑ @else ↓ @endif {{ number_format($percentageChange, 1) }}%
                                 </span>
                                 <span class="text-blue-100 text-base ml-2">dari tahun lalu</span>
@@ -32,7 +33,7 @@
             <div class="flex justify-end items-center mb-6">
                 <div class="flex items-center gap-2">
                     <p class="text-sm text-gray-700 mr-2">Buat Laporan Analisis:</p>
-                    <button
+                    <button onclick="window.location.href='{{ route('laporan.exportPdf') }}'"
                         class="inline-flex items-center px-4 py-2 border border-red-600 text-red-600 rounded-lg text-sm font-medium hover:bg-red-600 hover:text-white">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path
@@ -40,7 +41,7 @@
                         </svg>
                         Export PDF
                     </button>
-                    <button
+                    <button onclick="window.location.href='{{ route('laporan.exportExcel') }}'"
                         class="inline-flex items-center px-4 py-2 border border-green-600 text-green-600 rounded-lg text-sm font-medium hover:bg-green-600 hover:text-white">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path
@@ -50,7 +51,7 @@
                     </button>
                 </div>
             </div>
-            <!-- Charts-->
+            <!-- Charts dan Tabel Statistik-->
             <div class="grid grid-cols-1 gap-8 mb-8">
                 <!-- Charts Section -->
                 <div class="grid grid-cols-2 gap-6">
@@ -100,7 +101,7 @@
                                     <tbody class="divide-y divide-gray-200">
                                         @foreach ($achievementsPerProdi as $data)
                                             <tr>
-                                                <td class="px-3 py-2">{{ $data->program_studi }}</td>
+                                                <td class="px-3 py-2">{{ $data->prodi }}</td>
                                                 <td class="px-3 py-2 text-right">{{ $data->total_achievements }}</td>
                                             </tr>
                                         @endforeach
@@ -128,7 +129,18 @@
                                     <tbody class="divide-y divide-gray-200">
                                         @foreach ($achievementsPerLevel as $data)
                                             <tr>
-                                                <td class="px-3 py-2">{{ $data->tingkat }}</td>
+                                                <td class="px-3 py-2">
+                                                    @php
+                                                        $levelLabels = [
+                                                            'INTERNAL' => 'Internal',
+                                                            'CITY' => 'Kota/ Kabupaten',
+                                                            'PROVINCE' => 'Provinsi',
+                                                            'NATIONAL' => 'Nasional',
+                                                            'INTERNATIONAL' => 'Internasional'
+                                                        ];
+                                                    @endphp
+                                                    {{ $levelLabels[$data->level->value] ?? $data->level->value }}
+                                                </td>
                                                 <td class="px-3 py-2 text-right">{{ $data->total }}</td>
                                             </tr>
                                         @endforeach
@@ -167,7 +179,7 @@
                     </div>
 
                     <!-- Kategori Lomba -->
-                    <div class="bg-white rounded-xl shadow p-6">
+                    <div class="bg-white col-span-2 rounded-xl shadow p-6">
                         <h3 class="font-bold mb-4">Kategori Lomba</h3>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="h-48">
@@ -250,7 +262,7 @@
 
         // 3. Tingkat Lomba (Pie Chart)
         const achievementsPerLevelData = {!! json_encode($achievementsPerLevel) !!};
-        const levelLabels = achievementsPerLevelData.map(item => item.tingkat);
+        const levelLabels = achievementsPerLevelData.map(item => item.level);
         const levelData = achievementsPerLevelData.map(item => item.total);
 
         new Chart(document.getElementById('levelChart'), {

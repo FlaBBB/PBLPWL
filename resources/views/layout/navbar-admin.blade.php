@@ -75,7 +75,7 @@
                                  <path stroke-linecap="round" stroke-linejoin="round"
                                      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
                              </svg>
-                             Kelola Achievement
+                             Kelola Prestasi
                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                                  stroke="currentColor" class="size-4 ml-auto mr-2 transition-transform duration-200"
                                  :class="openDropdown === 'kelola-achievement-group' ? 'rotate-180' : ''">
@@ -86,11 +86,11 @@
                              class="ml-10 my-3 flex flex-col gap-3">
                              <a href="{{ route('admin.verifikasi-achievement') }}"
                                  class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'verifikasi-achievement' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
-                                 Verifikasi Achievement
+                                 Verifikasi Prestasi
                              </a>
                              <a href="{{ route('admin.daftar-achievement') }}"
                                  class="px-3 py-1 rounded-l-2xl {{ $activeMenu == 'daftar-achievement' ? 'text-[#1E6AAE] text-sm font-medium hover:bg-blue-50 transition border-r-[#1E6AAE] border-r-3' : 'text-[#7C8DB5] font-medium text-sm hover:bg-blue-50 transition' }}">
-                                 Daftar Achievement
+                                 Daftar Prestasi
                              </a>
                          </div>
                     </div>
