@@ -2,7 +2,7 @@
 @section('content')
     <main class="flex-1 px-10">
         <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg space-y-4">
-            <h2 class="text-xl font-semibold">Verifikasi Achievement</h2>
+            <h2 class="text-xl font-semibold">Verifikasi Prestasi</h2>
 
                 <form action="{{ route('admin.verifikasi-achievement') }}" method="GET" class="flex flex-wrap gap-4 items-center w-full">
                     {{-- Search Input --}}
@@ -21,6 +21,7 @@
                         <select name="status" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option disabled selected hidden>Pilih Status</option>
+                            <option value="" {{ request('status') == '' ? 'selected' : '' }}>Semua</option>
                             @php
                                 $statusLabels = [
                                     'WAITING' => 'Perlu Verifikasi',
