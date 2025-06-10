@@ -52,8 +52,9 @@ class ProfileController extends Controller
         ], $messages);
 
         if ($validator->fails()) {
+            $errorFields = array_keys($validator->errors()->messages());
             foreach ($validator->errors()->all() as $error) {
-                NotificationHelper::error($error);
+                NotificationHelper::error($error, [], $errorFields);
             }
             return redirect()->back()->withErrors($validator)->withInput();
         }

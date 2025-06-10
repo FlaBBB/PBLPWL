@@ -70,12 +70,8 @@
         <div class="grid grid-cols-3 gap-6 mb-8">
             <div class="col-span-2 bg-white rounded-xl p-6 border border-gray-200">
                 <!--contoh saja-->
-                @php
-                    $minat = false;
-                @endphp
                 <h2 class="font-bold mb-4">Rekomendasi Lomba Untuk Anda ⚡</h2>
-
-                @if ($minat)
+                @if ($hasPreferences && $rekomendasiLomba->isNotEmpty())
                     <div>
                         <div class="gap-4 grid grid-cols-2">
                             @foreach($rekomendasiLomba as $lomba)
@@ -132,7 +128,18 @@
                             </a>
                         </div>
                     </div>
-                @elseif (!$minat) <!-- Kalau preferensi belum di pilih/ ditentukan -->
+                @elseif ($hasPreferences && $rekomendasiLomba->isEmpty()) <!-- Kalau preferensi sudah di pilih/ ditentukan tapi tidak ada rekomendasi lomba -->
+                    <div class="w-xl text-center text-gray-500 border border-[#1e6aae] p-4 rounded-md">
+                        <p class="mb-3 text-sm flex items-center gap-2 text-left text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2 text-[#1E6AAE]" size="5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Tidak ada lomba yang sedang dilaksanakan sesuai dengan minat dan keahlian Anda.
+                        </p>
+                    </div>
+                @elseif (!$hasPreferences) <!-- Kalau preferensi belum di pilih/ ditentukan -->
                     <div class="w-xl text-center text-gray-500 border border-[#1e6aae] p-4 rounded-md">
                         <p class="mb-3 text-sm flex items-center gap-2 text-left text-gray-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2 text-[#1E6AAE]" size="5" fill="none"
@@ -144,7 +151,7 @@
                             sesuai!
                         </p>
                         <div class="text-right">
-                            <a href=""
+                            <a href="{{ route('mahasiswa.profile') }}"
                                 class="inline-flex items-center gap-2 text-xs border border-[#1E6AAE] text-[#1E6AAE] py-2 px-3 rounded hover:bg-[#1E6AAE] hover:text-white transition">
                                 Atur Preferensi
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -245,7 +252,7 @@
             </table>
 
             <div class="mt-4 text-right px-2 text-sm text-gray-700 hover:text-[#1e6aae]">
-                <a href=""
+                <a href="{{@route("mahasiswa.daftar-achievement")}}"
                     class="inline-flex items-center gap-1 px-3 py-1 rounded-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-sm ">
                     <!-- beri link ke menu daftar prestasi mahasiswa saat ini -->
                     Selengkapnya
@@ -257,18 +264,6 @@
             </div>
         </div>
     </main>
-
-        <div class="mt-4 text-right px-2 text-sm text-gray-700 hover:text-[#1e6aae]">
-            <a href="{{@route("mahasiswa.daftar-achievement")}}"
-                class="inline-flex items-center gap-1 px-3 py-1 rounded-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-sm ">
-                <!-- beri link ke menu daftar prestasi mahasiswa saat ini -->
-                Selengkapnya
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
-                </svg>
-            </a>
-        </div>
     </div>
 </main>
 

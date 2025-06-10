@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mahasiswa;
 use App\Http\Controllers\Controller;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaAchievement;
+use App\Models\MahasiswaPreferences;
 use App\Enums\AchievementStatusEnum;
 use App\Models\Competition;
 use App\Models\Tag;
@@ -24,7 +25,15 @@ class DashboardController extends Controller
         $headerTitle = 'Welcome Back, ' . $name . ' 👋';
         $headerDesc = 'This is your dashboard, where you can manage all the data related to your achievements.';
 
-        $rekomendasiLomba = \App\Models\Competition::orderBy('start_at', 'desc')->limit(4)->get();
+        $mahasiswa = Mahasiswa::query()
+            ->where('id_user', Auth::user()->id)
+            ->firstOrFail();
+        $hasPreferences = MahasiswaPreferences::where('nim', $mahasiswa->nim)->exists();
+
+        $rekomendasiLomba = collect(); // Initialize as an empty collection
+        if ($hasPreferences) {
+            $rekomendasiLomba = Competition::getRecomendedCompetition($mahasiswa);
+        }
 
         return view('mahasiswa.dashboard', [
             'activeMenu' => $activeMenu,
@@ -32,6 +41,7 @@ class DashboardController extends Controller
             'headerDesc' => $headerDesc,
             'role' => $role,
             'rekomendasiLomba' => $rekomendasiLomba,
+            'hasPreferences' => $hasPreferences,
             'data' => $this->data()
         ]);
     }

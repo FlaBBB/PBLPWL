@@ -309,14 +309,9 @@ class AchievementController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $errorFields = array_keys($validator->errors()->messages());
             foreach ($validator->errors()->all() as $error) {
-                NotificationHelper::error(
-                    $error,
-                    [
-                        "duration" => 99999999,
-                        "dismissible" => true
-                    ]
-                );
+                NotificationHelper::error($error, [], $errorFields);
             }
             return redirect()->back()->withInput();
         }
@@ -588,14 +583,9 @@ class AchievementController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $errorFields = array_keys($validator->errors()->messages());
             foreach ($validator->errors()->all() as $error) {
-                NotificationHelper::error(
-                    $error,
-                    [
-                        "duration" => 99999999,
-                        "dismissible" => true
-                    ]
-                );
+                NotificationHelper::error($error, [], $errorFields);
             }
             return redirect()->back()->withInput();
         }
