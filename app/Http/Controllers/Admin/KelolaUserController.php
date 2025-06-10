@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Enums\UserRoleEnum;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
@@ -160,6 +161,13 @@ class KelolaUserController extends Controller
             'nama_lengkap' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:user,email',
             'password' => 'required|string|min:8|confirmed',
+            'phone_number' => 'required|string|max:20',
+            'city' => 'required|string|max:255',
+            'district' => 'required|string|max:255',
+            'subdistrict' => 'required|string|max:255',
+            'address' => 'required|string',
+            'prodi' => 'required|string|max:255',
+            'grade' => 'required|integer|min:1|max:4',
         ]);
 
         if ($validator->fails()) {
@@ -170,15 +178,23 @@ class KelolaUserController extends Controller
         }
 
         $user = User::create([
+            'username' => $request->nim,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'mahasiswa',
+            'role' => UserRoleEnum::MAHASISWA->value,
         ]);
 
         Mahasiswa::create([
-            'user_id' => $user->id,
+            'id_user' => $user->id,
             'nim' => $request->nim,
-            'nama_lengkap' => $request->nama_lengkap,
+            'name' => $request->nama_lengkap,
+            'phone_number' => $request->phone_number,
+            'city' => $request->city,
+            'district' => $request->district,
+            'subdistrict' => $request->subdistrict,
+            'address' => $request->address,
+            'prodi' => $request->prodi,
+            'grade' => $request->grade,
         ]);
 
         NotificationHelper::success('Mahasiswa berhasil ditambahkan.');
@@ -327,20 +343,23 @@ class KelolaUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            foreach ($validator->errors()->keys() as $field) {
-                NotificationHelper::error($validator->errors()->first($field), [], [$field]);
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error);
             }
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user = User::create([
+            'username' => $request->nidn,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'dosen',
+            'role' => UserRoleEnum::DOSEN->value,
         ]);
 
+        // dd($user->id);
+
         $dosen = Dosen::create([
-            'user_id' => $user->id,
+            'id_user' => $user->id,
             'nidn' => $request->nidn,
             'name' => $request->name,
         ]);
@@ -405,8 +424,8 @@ class KelolaUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            foreach ($validator->errors()->keys() as $field) {
-                NotificationHelper::error($validator->errors()->first($field), [], [$field]);
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error);
             }
             return redirect()->back()->withInput()->withErrors($validator);
         }
@@ -474,20 +493,21 @@ class KelolaUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            foreach ($validator->errors()->keys() as $field) {
-                NotificationHelper::error($validator->errors()->first($field), [], [$field]);
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error);
             }
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user = User::create([
+            'username' => $request->nip,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'admin',
+            'role' => UserRoleEnum::ADMIN->value,
         ]);
 
         Admin::create([
-            'user_id' => $user->id,
+            'id_user' => $user->id,
             'nip' => $request->nip,
             'name' => $request->name,
         ]);
@@ -548,8 +568,8 @@ class KelolaUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            foreach ($validator->errors()->keys() as $field) {
-                NotificationHelper::error($validator->errors()->first($field), [], [$field]);
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error);
             }
             return redirect()->back()->withInput()->withErrors($validator);
         }

@@ -14,91 +14,67 @@
                     <div class="flex items-center space-x-4">
                         <label for="nim" class="block text-sm font-medium text-gray-700 w-50 mb-0">NIM</label>
                         <input type="text" id="nim" name="nim" value="{{ old('nim', $mahasiswa->nim) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nim') border-red-500 @enderror">
-                        @error('nim')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Nama Lengkap -->
                     <div class="flex items-center space-x-4">
                         <label for="name" class="block text-sm font-medium text-gray-700 w-50 mb-0">Nama Lengkap</label>
                         <input type="text" id="name" name="name" value="{{ old('name', $mahasiswa->name) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-500 @enderror">
-                        @error('name')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Phone Number -->
                     <div class="flex items-center space-x-4">
                         <label for="phone_number" class="block text-sm font-medium text-gray-700 w-50 mb-0">No. Telepon</label>
                         <input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number', $mahasiswa->phone_number) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('phone_number') border-red-500 @enderror">
-                        @error('phone_number')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Address -->
                     <div class="flex items-center space-x-4">
                         <label for="address" class="block text-sm font-medium text-gray-700 w-50 mb-0">Alamat</label>
                         <textarea id="address" name="address"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('address') border-red-500 @enderror">{{ old('address', $mahasiswa->address) }}</textarea>
-                        @error('address')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">{{ old('address', $mahasiswa->address) }}</textarea>
                     </div>
 
                     <!-- City -->
                     <div class="flex items-center space-x-4">
                         <label for="city" class="block text-sm font-medium text-gray-700 w-50 mb-0">Kota</label>
                         <input type="text" id="city" name="city" value="{{ old('city', $mahasiswa->city) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('city') border-red-500 @enderror">
-                        @error('city')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- District -->
                     <div class="flex items-center space-x-4">
                         <label for="district" class="block text-sm font-medium text-gray-700 w-50 mb-0">Kecamatan</label>
                         <input type="text" id="district" name="district" value="{{ old('district', $mahasiswa->district) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('district') border-red-500 @enderror">
-                        @error('district')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Subdistrict -->
                     <div class="flex items-center space-x-4">
                         <label for="subdistrict" class="block text-sm font-medium text-gray-700 w-50 mb-0">Kelurahan</label>
                         <input type="text" id="subdistrict" name="subdistrict" value="{{ old('subdistrict', $mahasiswa->subdistrict) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('subdistrict') border-red-500 @enderror">
-                        @error('subdistrict')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Prodi -->
                     <div class="flex items-center space-x-4">
                         <label for="prodi" class="block text-sm font-medium text-gray-700 w-50 mb-0">Program Studi</label>
                         <select id="prodi" name="prodi"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('prodi') border-red-500 @enderror">
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                             <option value="">Pilih Program Studi</option>
                             <option value="Teknik Informatika" @selected(old('prodi', $mahasiswa->prodi) == 'TI')>Teknik Informatika</option>
                             <option value="Sistem Informasi Bisnis" @selected(old('prodi', $mahasiswa->prodi) == 'SIB')>Sistem Informasi Bisnis</option>
                         </select>
-                        @error('prodi')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <!-- Grade -->
                     <div class="flex items-center space-x-4">
                         <label for="grade" class="block text-sm font-medium text-gray-700 w-50 mb-0">Semester</label>
                         <select id="grade" name="grade"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('grade') border-red-500 @enderror">
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                             <option value="">Pilih Semester</option>
                             <option value="1" @selected(old('grade', $mahasiswa->grade) == '1')>1</option>
                             <option value="2" @selected(old('grade', $mahasiswa->grade) == '2')>2</option>
@@ -109,9 +85,6 @@
                             <option value="7" @selected(old('grade', $mahasiswa->grade) == '7')>7</option>
                             <option value="8" @selected(old('grade', $mahasiswa->grade) == '8')>8</option>
                         </select>
-                        @error('grade')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <!-- Preferensi -->
@@ -153,20 +126,14 @@
                     <div class="flex items-center space-x-4">
                         <label for="email" class="block text-sm font-medium text-gray-700 w-50 mb-0">Email</label>
                         <input type="email" id="email" name="email" value="{{ old('email', $mahasiswa->user->email) }}"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror">
-                        @error('email')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Password -->
                     <div class="flex items-center space-x-4">
                         <label for="password" class="block text-sm font-medium text-gray-700 w-50 mb-0">Password (Kosongkan jika tidak ingin mengubah)</label>
                         <input type="password" id="password" name="password"
-                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('password') border-red-500 @enderror">
-                        @error('password')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
+                            class="flex-1 block border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                     </div>
 
                     <!-- Confirm Password -->
