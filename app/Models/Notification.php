@@ -37,4 +37,9 @@ class Notification extends Model
     {
         return $this->belongsTo(User::class, 'sender_id', 'id');
     }
+
+    public function markAsRead()
+    {
+        $this->forceFill(['read_at' => $this->freshTimestamp(), 'is_read' => true])->save();
+    }
 }

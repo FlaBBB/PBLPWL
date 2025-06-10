@@ -6,6 +6,7 @@ use App\Enums\MahasiswaAchievementRoleEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Achievement; // Corrected model name
+use App\Models\Notification;
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
 use App\Models\Competition;
@@ -148,6 +149,13 @@ class KelolaAchievementController extends Controller
         $prestasi->status = 'ACCEPTED';
         $prestasi->save();
 
+        Notification::create([
+            'user_id' => $prestasi->mahasiswa->user_id,
+            'title' => 'Prestasi Disetujui',
+            'message' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah disetujui.',
+            'type' => 'success',
+        ]);
+
         return response()->json(['message' => 'Achievement berhasil diverifikasi.']);
     }
 
@@ -162,6 +170,13 @@ class KelolaAchievementController extends Controller
         $prestasi->note = $request->input('message');
         $prestasi->save();
 
+        Notification::create([
+            'user_id' => $prestasi->mahasiswa->user_id,
+            'title' => 'Prestasi Ditolak',
+            'message' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah ditolak. Alasan: ' . $prestasi->note,
+            'type' => 'danger',
+        ]);
+
         return response()->json(['message' => 'Achievement berhasil ditolak.']);
     }
 
@@ -175,6 +190,13 @@ class KelolaAchievementController extends Controller
         $prestasi->status = 'REVISION';
         $prestasi->note = $request->input('message');
         $prestasi->save();
+
+        Notification::create([
+            'user_id' => $prestasi->mahasiswa->user_id,
+            'title' => 'Prestasi Membutuhkan Revisi',
+            'message' => 'Prestasi Anda "' . $prestasi->competition_name . '" membutuhkan revisi. Alasan: ' . $prestasi->note,
+            'type' => 'warning',
+        ]);
 
         return response()->json(['message' => 'Achievement berhasil diminta revisi.']);
     }

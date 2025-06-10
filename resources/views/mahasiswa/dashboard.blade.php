@@ -292,7 +292,8 @@
                         display: false
                     }
                 }
-            });
+            }
         });
+    });
     </script>
 @endsection

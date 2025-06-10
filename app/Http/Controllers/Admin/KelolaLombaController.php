@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Competition;
+use App\Models\Notification;
 use App\Models\CompetitionTag;
 use App\Models\Tag;
 use App\Enums\CompetitionLevelEnum;
@@ -155,6 +156,13 @@ class KelolaLombaController extends Controller
         $lomba->status = 'ACCEPTED';
         $lomba->save();
 
+        Notification::create([
+            'user_id' => $lomba->creator,
+            'title' => 'Lomba Disetujui',
+            'message' => 'Entri lomba Anda "' . $lomba->name . '" telah disetujui.',
+            'type' => 'success',
+        ]);
+
         return response()->json(['message' => 'Lomba berhasil diverifikasi.']);
     }
 
@@ -168,6 +176,13 @@ class KelolaLombaController extends Controller
         $lomba->status = 'REJECTED';
         $lomba->rejection_note = $request->input('message');
         $lomba->save();
+
+        Notification::create([
+            'user_id' => $lomba->creator,
+            'title' => 'Lomba Ditolak',
+            'message' => 'Entri lomba Anda "' . $lomba->name . '" telah ditolak. Alasan: ' . $lomba->rejection_note,
+            'type' => 'danger',
+        ]);
 
         return response()->json(['message' => 'Lomba berhasil ditolak.']);
     }
