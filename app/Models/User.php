@@ -15,6 +15,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function findForPassport($username)
+    {
+        return $this->where('username', $username)->first();
+    }
+
     protected $table = "user";
     public $timestamps = false;
 

@@ -138,15 +138,6 @@
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
 <script>
-    const notyf = new Notyf();
-
-    // Cek apakah login gagal dari server-side (contoh pakai session Laravel)
-    @if (session('error') || $errors->has('error') || $errors->has('email'))
-        notyf.error("Login gagal! Periksa kembali username dan password.");
-    @endif
-</script>
-
-<script>
     function togglePassword() {
         const passwordInput = document.getElementById('password');
         const eyeIcon = document.getElementById('eyeIcon');
@@ -158,5 +149,7 @@
             eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 3.866-3.582 7-8 7s-8-3.134-8-7 3.582-7 8-7 8 3.134 8 7z" />`;
         }
     }
-
 </script>
+
+
+@include('components.notyf')

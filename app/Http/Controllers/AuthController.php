@@ -12,6 +12,22 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
+        if (Auth::check()) {
+            $user = Auth::user();
+            switch ($user->role->value) {
+                case UserRoleEnum::ADMIN->value:
+                    return redirect()->intended('/admin/dashboard');
+                case UserRoleEnum::DOSEN->value:
+                    return redirect()->intended('/dosen/dashboard');
+                case UserRoleEnum::MAHASISWA->value:
+                    return redirect()->intended('/dashboard');
+                default:
+                    Auth::logout();
+                    NotificationHelper::error('Invalid role.');
+                    NotificationHelper::success('You have been logged out.');
+                    return redirect('/login');
+            }
+        }
         return view('auth.login');
     }
 
@@ -23,6 +39,10 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $errorFields = array_keys($validator->errors()->messages());
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error, [], $errorFields);
+            }
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -42,15 +62,14 @@ class AuthController extends Controller
                     return redirect()->intended('/dashboard');
                 default:
                     Auth::logout();
-                    return redirect('/login')->withErrors(['email' => 'Invalid role.']);
+                    NotificationHelper::error('Invalid role.');
+                    NotificationHelper::success('You have been logged out.');
+                    return redirect('/login');
             }
         }
 
-
         NotificationHelper::error('Login failed. Please check your username and password.');
-        return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ])->onlyInput('username');
+        return back()->onlyInput('username');
     }
 
     public function logout(Request $request)

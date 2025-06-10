@@ -1,5 +1,10 @@
 @extends('layout.template')
 
+@php
+    use App\Enums\CompetitionLevelEnum;
+    use App\Enums\AchievementStatusEnum;
+@endphp
+
 @section('content')
     <main class="flex-1 px-10 pb-96">
         <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
@@ -24,9 +29,11 @@
                         <select id="tingkat" name="tingkat" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">Semua Tingkat</option>
-                            <option value="INTERNATIONAL" {{ $currentTingkat == 'INTERNATIONAL' ? 'selected' : '' }}>Internasional</option>
-                            <option value="NATIONAL" {{ $currentTingkat == 'NATIONAL' ? 'selected' : '' }}>Nasional</option>
-                            <option value="PROVINCE" {{ $currentTingkat == 'PROVINCE' ? 'selected' : '' }}>Provinsi</option>
+                            @foreach (CompetitionLevelEnum::cases() as $level)
+                                <option value="{{ $level->value }}" {{ $currentTingkat == $level->value ? 'selected' : '' }}>
+                                    {{ ucfirst(strtolower($level->value)) }}
+                                </option>
+                            @endforeach
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -38,10 +45,11 @@
                         <select id="status" name="status" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">Semua Status</option>
-                            <option value="ACCEPTED" {{ $currentStatus == 'ACCEPTED' ? 'selected' : '' }}>Terverifikasi</option>
-                            <option value="WAITING" {{ $currentStatus == 'WAITING' ? 'selected' : '' }}>Menunggu</option>
-                            <option value="REJECTED" {{ $currentStatus == 'REJECTED' ? 'selected' : '' }}>Ditolak</option>
-                            <option value="REVISION" {{ $currentStatus == 'REVISION' ? 'selected' : '' }}>Revisi</option>
+                            @foreach (AchievementStatusEnum::cases() as $status)
+                                <option value="{{ $status->value }}" {{ $currentStatus == $status->value ? 'selected' : '' }}>
+                                    {{ $status->getLabel() }}
+                                </option>
+                            @endforeach
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -82,34 +90,19 @@
                             <td class="px-2 py-2">{{ $achievement->level }}</td>
                             <td class="px-2 py-2">
                                 @php
-                                    $statusClass = '';
-                                    $statusText = '';
-                                    switch ($achievement->status->value) {
-                                        case 'ACCEPTED':
-                                            $statusClass = 'bg-green-100 text-green-700';
-                                            $statusText = 'Terverifikasi';
-                                            break;
-                                        case 'WAITING':
-                                            $statusClass = 'bg-yellow-100 text-yellow-700';
-                                            $statusText = 'Menunggu';
-                                            break;
-                                        case 'REJECTED':
-                                            $statusClass = 'bg-red-100 text-red-700';
-                                            $statusText = 'Ditolak';
-                                            break;
-                                        case 'REVISION':
-                                            $statusClass = 'bg-blue-100 text-blue-700';
-                                            $statusText = 'Revisi';
-                                            break;
-                                        default:
-                                            $statusClass = 'bg-gray-100 text-gray-700';
-                                            $statusText = 'Unknown';
-                                            break;
-                                    }
+                                    $status = $achievement->status;
+                                    $statusClass = match ($status) {
+                                        AchievementStatusEnum::ACCEPTED => 'bg-green-100 text-green-700',
+                                        AchievementStatusEnum::WAITING => 'bg-yellow-100 text-yellow-700',
+                                        AchievementStatusEnum::REJECTED => 'bg-red-100 text-red-700',
+                                        AchievementStatusEnum::REVISION => 'bg-blue-100 text-blue-700',
+                                        default => 'bg-gray-100 text-gray-700',
+                                    };
+                                    $statusDotClass = str_replace('100', '500', $statusClass);
                                 @endphp
                                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {{ $statusClass }}">
-                                    <span class="w-2 h-2 rounded-full {{ str_replace('100', '500', $statusClass) }}"></span>
-                                    {{ $statusText }}
+                                    <span class="w-2 h-2 rounded-full {{ $statusDotClass }}"></span>
+                                    {{ $status->getLabel() }}
                                 </span>
                             </td>
                             <td class="px-2 py-2 flex justify-center gap-2">
@@ -897,38 +890,38 @@
 
                     // Update status badge in modal-detail
                     const statusBadgeDetail = modalDetail.querySelector('#detail-status-badge');
-                    let statusText = '';
-                    let statusClass = '';
-                    let statusDotClass = '';
+                    let statusTextDetail = '';
+                    let statusClassDetail = '';
+                    let statusDotClassDetail = '';
 
                     switch (achievement.status) {
                         case 'ACCEPTED':
-                            statusText = 'Terverifikasi';
-                            statusClass = 'bg-green-100 text-green-700';
-                            statusDotClass = 'bg-green-500';
+                            statusTextDetail = 'Terverifikasi';
+                            statusClassDetail = 'bg-green-100 text-green-700';
+                            statusDotClassDetail = 'bg-green-500';
                             break;
                         case 'WAITING':
-                            statusText = 'Menunggu';
-                            statusClass = 'bg-yellow-100 text-yellow-700';
-                            statusDotClass = 'bg-yellow-500';
+                            statusTextDetail = 'Menunggu';
+                            statusClassDetail = 'bg-yellow-100 text-yellow-700';
+                            statusDotClassDetail = 'bg-yellow-500';
                             break;
                         case 'REJECTED':
-                            statusText = 'Ditolak';
-                            statusClass = 'bg-red-100 text-red-700'; // Changed to red for rejected
-                            statusDotClass = 'bg-red-500'; // Changed to red for rejected
+                            statusTextDetail = 'Ditolak';
+                            statusClassDetail = 'bg-red-100 text-red-700';
+                            statusDotClassDetail = 'bg-red-500';
                             break;
                         case 'REVISION':
-                            statusText = 'Revisi';
-                            statusClass = 'bg-blue-100 text-blue-700'; // Changed to blue for revision
-                            statusDotClass = 'bg-blue-500'; // Changed to blue for revision
+                            statusTextDetail = 'Revisi';
+                            statusClassDetail = 'bg-blue-100 text-blue-700';
+                            statusDotClassDetail = 'bg-blue-500';
                             break;
                         default:
-                            statusText = 'Unknown';
-                            statusClass = 'bg-gray-100 text-gray-700';
-                            statusDotClass = 'bg-gray-500';
+                            statusTextDetail = 'Unknown';
+                            statusClassDetail = 'bg-gray-100 text-gray-700';
+                            statusDotClassDetail = 'bg-gray-500';
                     }
-                    statusBadgeDetail.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold align-middle ' + statusClass);
-                    statusBadgeDetail.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClass}"></span>${statusText}`;
+                    statusBadgeDetail.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold align-middle ' + statusClassDetail);
+                    statusBadgeDetail.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClassDetail}"></span>${statusTextDetail}`;
 
 
                     // Open the correct modal based on status
@@ -983,10 +976,40 @@
 
                         modalRejected.querySelector('#rejected-reason-text').textContent = achievement.note; // Assuming 'note' contains rejection reason
 
-                        // Update status badge in modal-rejected
-                        const statusBadgeRejected = modalRejected.querySelector('#rejected-status-badge');
-                        statusBadgeRejected.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ' + statusClass);
-                        statusBadgeRejected.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClass}"></span>${statusText}`;
+                       // Update status badge in modal-rejected
+                       const statusBadgeRejected = modalRejected.querySelector('#rejected-status-badge');
+                       let statusTextRejected = '';
+                       let statusClassRejected = '';
+                       let statusDotClassRejected = '';
+
+                       switch (achievement.status) {
+                           case 'ACCEPTED':
+                               statusTextRejected = 'Terverifikasi';
+                               statusClassRejected = 'bg-green-100 text-green-700';
+                               statusDotClassRejected = 'bg-green-500';
+                               break;
+                           case 'WAITING':
+                               statusTextRejected = 'Menunggu';
+                               statusClassRejected = 'bg-yellow-100 text-yellow-700';
+                               statusDotClassRejected = 'bg-yellow-500';
+                               break;
+                           case 'REJECTED':
+                               statusTextRejected = 'Ditolak';
+                               statusClassRejected = 'bg-red-100 text-red-700';
+                               statusDotClassRejected = 'bg-red-500';
+                               break;
+                           case 'REVISION':
+                               statusTextRejected = 'Revisi';
+                               statusClassRejected = 'bg-blue-100 text-blue-700';
+                               statusDotClassRejected = 'bg-blue-500';
+                               break;
+                           default:
+                               statusTextRejected = 'Unknown';
+                               statusClassRejected = 'bg-gray-100 text-gray-700';
+                               statusDotClassRejected = 'bg-gray-500';
+                       }
+                       statusBadgeRejected.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ' + statusClassRejected);
+                       statusBadgeRejected.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClassRejected}"></span>${statusTextRejected}`;
 
                         openModal('modal-rejected');
                     } else if (achievement.status === 'REVISION') {
@@ -1035,10 +1058,40 @@
 
                         modalRevised.querySelector('#revised-reason-text').textContent = achievement.note; // Assuming 'note' contains revision reason
 
-                        // Update status badge in modal-revised
-                        const statusBadgeRevised = modalRevised.querySelector('#revised-status-badge');
-                        statusBadgeRevised.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ' + statusClass);
-                        statusBadgeRevised.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClass}"></span>${statusText}`;
+                       // Update status badge in modal-revised
+                       const statusBadgeRevised = modalRevised.querySelector('#revised-status-badge');
+                       let statusTextRevised = '';
+                       let statusClassRevised = '';
+                       let statusDotClassRevised = '';
+
+                       switch (achievement.status) {
+                           case 'ACCEPTED':
+                               statusTextRevised = 'Terverifikasi';
+                               statusClassRevised = 'bg-green-100 text-green-700';
+                               statusDotClassRevised = 'bg-green-500';
+                               break;
+                           case 'WAITING':
+                               statusTextRevised = 'Menunggu';
+                               statusClassRevised = 'bg-yellow-100 text-yellow-700';
+                               statusDotClassRevised = 'bg-yellow-500';
+                               break;
+                           case 'REJECTED':
+                               statusTextRevised = 'Ditolak';
+                               statusClassRevised = 'bg-red-100 text-red-700';
+                               statusDotClassRevised = 'bg-red-500';
+                               break;
+                           case 'REVISION':
+                               statusTextRevised = 'Revisi';
+                               statusClassRevised = 'bg-blue-100 text-blue-700';
+                               statusDotClassRevised = 'bg-blue-500';
+                               break;
+                           default:
+                               statusTextRevised = 'Unknown';
+                               statusClassRevised = 'bg-gray-100 text-gray-700';
+                               statusDotClassRevised = 'bg-gray-500';
+                       }
+                       statusBadgeRevised.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ' + statusClassRevised);
+                       statusBadgeRevised.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClassRevised}"></span>${statusTextRevised}`;
 
                         openModal('modal-revised');
                     } else {

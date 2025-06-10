@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Dosen;
 use App\Models\Tag;
+use App\Helpers\NotificationHelper;
 
 class ProfileController extends Controller
 {
@@ -58,7 +59,11 @@ class ProfileController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            $errorFields = array_keys($validator->errors()->messages());
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error, [], $errorFields);
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user->email = $request->email;

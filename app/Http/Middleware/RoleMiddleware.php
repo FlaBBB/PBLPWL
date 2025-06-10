@@ -25,7 +25,7 @@ class RoleMiddleware
         $user = Auth::user();
 
         if (!in_array($user->role->value, $roles)) {
-            abort(403, 'Unauthorized action.');
+            abort(404, 'Not Found.');
         }
 
         return $next($request);
