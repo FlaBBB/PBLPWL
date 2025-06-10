@@ -62,6 +62,10 @@ class Achievement extends Model
     {
         return $this->belongsToMany(Dosen::class, 'supervisor_achievement', 'id_achievement', 'nidn')->withPivot('role');
     }
+    public function supervisor(): BelongsToMany
+    {
+        return $this->belongsToMany(Dosen::class, 'supervisor_achievement', 'id_achievement', 'nidn')->withPivot('role');
+    }
 
     public function verificator(): BelongsTo
     {
