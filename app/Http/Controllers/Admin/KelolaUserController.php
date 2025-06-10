@@ -98,7 +98,12 @@ class KelolaUserController extends Controller
         $dosen = $query->paginate($perPage);
         $preferences = Tag::all(); // Fetch all preferences for the filter dropdown
 
-        return view('admin.kelola-dosen', compact('dosen', 'search', 'selectedPreference', 'preferences'));
+        return view('admin.kelola-dosen', array_merge(compact('dosen', 'search', 'selectedPreference', 'preferences'), [
+            'activeMenu' => 'kelola-dosen',
+            'breadcrumbs' => [['label' => 'Kelola Dosen', 'url' => route('admin.kelola-dosen')]],
+            'headerTitle' => 'Kelola Dosen',
+            'headerDesc' => 'Kelola dosen yang ada di dalam sistem.',
+        ]));
     }
 
     public function admin(Request $request)
