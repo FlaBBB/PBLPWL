@@ -33,7 +33,7 @@
             <div class="flex justify-end items-center mb-6">
                 <div class="flex items-center gap-2">
                     <p class="text-sm text-gray-700 mr-2">Buat Laporan Analisis:</p>
-                    <button
+                    <button onclick="window.location.href='{{ route('laporan.exportPdf') }}'"
                         class="inline-flex items-center px-4 py-2 border border-red-600 text-red-600 rounded-lg text-sm font-medium hover:bg-red-600 hover:text-white">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path
@@ -129,16 +129,16 @@
                                     <tbody class="divide-y divide-gray-200">
                                         @foreach ($achievementsPerLevel as $data)
                                             <tr>
-                                                <td class="px-3 py-2"> 
+                                                <td class="px-3 py-2">
                                                     @php
-                                                    $levelLabels = [
-                                                        'INTERNAL' => 'Internal',
-                                                        'CITY' => 'Kota/ Kabupaten',
-                                                        'PROVINCE' => 'Provinsi',
-                                                        'NATIONAL' => 'Nasional',
-                                                        'INTERNATIONAL' => 'Internasional'
-                                                    ];
-                                                @endphp
+                                                        $levelLabels = [
+                                                            'INTERNAL' => 'Internal',
+                                                            'CITY' => 'Kota/ Kabupaten',
+                                                            'PROVINCE' => 'Provinsi',
+                                                            'NATIONAL' => 'Nasional',
+                                                            'INTERNATIONAL' => 'Internasional'
+                                                        ];
+                                                    @endphp
                                                     {{ $levelLabels[$data->level->value] ?? $data->level->value }}
                                                 </td>
                                                 <td class="px-3 py-2 text-right">{{ $data->total }}</td>

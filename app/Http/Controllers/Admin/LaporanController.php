@@ -14,6 +14,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LaporanExport;
 
+
+
 class LaporanController extends Controller
 {
     public function index()
@@ -58,19 +60,19 @@ class LaporanController extends Controller
         }
 
         $achievementsPerYear = Achievement::select(
-                DB::raw("$yearFunction as year"),
-                DB::raw('count(*) as total')
-            )
+            DB::raw("$yearFunction as year"),
+            DB::raw('count(*) as total')
+        )
             ->groupBy('year')
             ->orderBy('year', 'asc')
             ->get();
 
         // Prestasi per Program Studi
         $achievementsPerProdi = Mahasiswa::select(
-                'prodi',
-                DB::raw('count(DISTINCT mahasiswa_achievement.nim) as total_students'),
-                DB::raw('count(achievement.id) as total_achievements')
-            )
+            'prodi',
+            DB::raw('count(DISTINCT mahasiswa_achievement.nim) as total_students'),
+            DB::raw('count(achievement.id) as total_achievements')
+        )
             ->join('mahasiswa_achievement', 'mahasiswa.nim', '=', 'mahasiswa_achievement.nim')
             ->join('achievement', 'mahasiswa_achievement.id_achievement', '=', 'achievement.id')
             ->groupBy('prodi')
@@ -79,32 +81,32 @@ class LaporanController extends Controller
 
         // Tingkat Lomba
         $achievementsPerLevel = Competition::select(
-                'level',
-                DB::raw('count(*) as total')
-            )
+            'level',
+            DB::raw('count(*) as total')
+        )
             ->groupBy('level')
             ->orderBy('level', 'asc')
             ->get();
 
         // Distribusi Capaian
         $achievementsPerCapaian = Achievement::select(
-                DB::raw("CASE
+            DB::raw("CASE
                     WHEN place = 1 THEN 'Juara 1'
                     WHEN place = 2 THEN 'Juara 2'
                     WHEN place = 3 THEN 'Juara 3'
                     ELSE 'Lainnya'
                 END as capaian"),
-                DB::raw('count(*) as total')
-            )
+            DB::raw('count(*) as total')
+        )
             ->groupBy('capaian')
             ->orderBy('capaian', 'asc')
             ->get();
 
         // Kategori Lomba
         $achievementsPerCategory = Achievement::select(
-                'tag.name as category',
-                DB::raw('count(achievement.id) as total')
-            )
+            'tag.name as category',
+            DB::raw('count(achievement.id) as total')
+        )
             ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
             ->join('tag', 'mahasiswa_achievement.id_tag', '=', 'tag.id')
             ->groupBy('category')
@@ -143,6 +145,68 @@ class LaporanController extends Controller
             'isIncrease'
         ));
     }
-    
-    
+
+    public function exportPdf()
+    {
+        $achievementsPerYear = Achievement::select(
+            DB::raw('YEAR(upload_at) as year'),
+            DB::raw('COUNT(*) as total')
+        )
+            ->groupBy('year')
+            ->orderBy('year')
+            ->get();
+
+        $achievementsPerProdi = Mahasiswa::select(
+            'prodi',
+            DB::raw('count(DISTINCT mahasiswa_achievement.nim) as total_students'),
+            DB::raw('count(achievement.id) as total_achievements')
+        )
+            ->join('mahasiswa_achievement', 'mahasiswa.nim', '=', 'mahasiswa_achievement.nim')
+            ->join('achievement', 'mahasiswa_achievement.id_achievement', '=', 'achievement.id')
+            ->groupBy('prodi')
+            ->orderBy('prodi', 'asc')
+            ->get();
+
+        $achievementsPerLevel = Competition::select(
+            'level',
+            DB::raw('count(*) as total')
+        )
+            ->groupBy('level')
+            ->orderBy('level', 'asc')
+            ->get();
+
+        $achievementsPerCapaian = Achievement::select(
+            DB::raw("CASE
+                    WHEN place = 1 THEN 'Juara 1'
+                    WHEN place = 2 THEN 'Juara 2'
+                    WHEN place = 3 THEN 'Juara 3'
+                    ELSE 'Lainnya'
+                END as capaian"),
+            DB::raw('count(*) as total')
+        )
+            ->groupBy('capaian')
+            ->orderBy('capaian', 'asc')
+            ->get();
+
+        $achievementsPerCategory = Achievement::select(
+            'tag.name as category',
+            DB::raw('count(achievement.id) as total')
+        )
+            ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
+            ->join('tag', 'mahasiswa_achievement.id_tag', '=', 'tag.id')
+            ->groupBy('category')
+            ->orderBy('total', 'desc')
+            ->get();
+
+        $data = [
+            'achievementsPerYear' => $achievementsPerYear,
+            'achievementsPerProdi' => $achievementsPerProdi,
+            'achievementsPerLevel' => $achievementsPerLevel,
+            'achievementsPerCapaian' => $achievementsPerCapaian,
+            'achievementsPerCategory' => $achievementsPerCategory,
+        ];
+
+        $pdf = Pdf::loadView('admin.laporan_pdf', $data);
+        return $pdf->download('laporan-prestasi.pdf');
+    }
 }
