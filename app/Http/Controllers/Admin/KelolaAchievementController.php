@@ -25,14 +25,14 @@ class KelolaAchievementController extends Controller
             ],
         ];
 
-        $headerTitle = 'Kelola Achievement';
-        $headerDesc = 'Kelola dan verifikasi achievement yang diajukan oleh mahasiswa.';
+        $headerTitle = 'Kelola Prestasi';
+        $headerDesc = 'Kelola dan verifikasi prestasi yang diajukan oleh mahasiswa.';
 
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search');
         $bidang = $request->input('bidang');
         $tingkat = $request->input('tingkat');
-        $status = $request->input('status', 'WAITING'); // Default to WAITING
+        $status = $request->input('status');
 
         $query = Achievement::with(['mahasiswa', 'tags'])
             ->where('status', $status);
@@ -81,13 +81,13 @@ class KelolaAchievementController extends Controller
         $activeMenu = 'daftar-achievement';
         $breadcrumbs = [
             [
-                'label' => 'Daftar Achievement',
+                'label' => 'Daftar Prestasi',
                 'url' => route('admin.daftar-achievement')
             ],
         ];
 
-        $headerTitle = 'Daftar Achievement';
-        $headerDesc = 'Daftar achievement yang telah diverifikasi atau menunggu verifikasi.';
+        $headerTitle = 'Kelola Prestasi';
+        $headerDesc = 'Kelola dan verifikasi prestasi yang diajukan oleh mahasiswa.';
 
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search');

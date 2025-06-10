@@ -2,9 +2,10 @@
 
 @section('content')
     <main class="flex-1 px-10">
-        <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg">
+        <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg space-y-4">
+            {{-- Breadcrumbs --}}
             <h2 class="text-xl font-semibold">Daftar Lomba</h2>
-            <form action="{{ route('admin.daftar-lomba') }}" method="GET" class="flex flex-wrap gap-4 pb-4 items-center w-full">
+            <form action="{{ route('admin.daftar-lomba') }}" method="GET" class="flex flex-wrap gap-4 items-center w-full">
                 {{-- Search Input --}}
                 <div class="relative">
                     <input type="text" placeholder="Cari disini" name="search" value="{{ $search }}"
