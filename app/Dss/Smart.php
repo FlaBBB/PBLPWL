@@ -42,7 +42,10 @@ class Smart
         // 3. Calculate Utility Alternative (Normalized Utility Values)
         $utilityAlternatives = [];
         foreach ($alternatives as $altKey => $alternative) {
-            $utilityAlternatives[$altKey] = ['name' => $alternative['name'] ?? $altKey];
+            $utilityAlternatives[$altKey] = [
+                'name' => $alternative['name'] ?? $altKey,
+                'id_user' => $alternative['id_user'] ?? null, // Preserve id_user
+            ];
             foreach ($criteria as $criterionName => $details) {
                 $value = $alternative[$criterionName];
                 $min = $minMaxValues[$criterionName]['min'];
@@ -77,6 +80,7 @@ class Smart
             $rankedAlternatives[] = [
                 'alternative' => $alternatives[$altKey]['name'] ?? $altKey,
                 'score' => $score,
+                'id_user' => $alternatives[$altKey]['id_user'] ?? null, // Preserve id_user
             ];
         }
         $results['final_ranking'] = $rankedAlternatives;

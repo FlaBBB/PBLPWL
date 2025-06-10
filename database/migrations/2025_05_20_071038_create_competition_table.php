@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string("registration_link");
             $table->unsignedBigInteger("registration_fee");
             $table->unsignedSmallInteger("max_participation_amount");
-            $table->foreignId("creator")->constrained("user");
+            $table->foreignId(column: "creator")->constrained("user");
             $table->enum("status", [
                 "WAITING",
                 "ACCEPTED",
