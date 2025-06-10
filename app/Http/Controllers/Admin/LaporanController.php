@@ -24,6 +24,17 @@ class LaporanController extends Controller
 {
     public function index()
     {
+
+        $activeMenu = 'laporan';
+        $breadcrumbs = [
+            [
+                'label' => 'Laporan',
+                'url' => route('admin.laporan')
+            ],
+        ];
+
+        $headerTitle = 'Laporan';
+        $headerDesc = 'Kelola dan verifikasi prestasi yang diajukan oleh mahasiswa.';
         // Total Prestasi
         $currentYear = date('Y');
         $previousYear = $currentYear - 1;
@@ -139,6 +150,10 @@ class LaporanController extends Controller
         $achievementsPerCategory = $filteredCategories;
 
         return view('admin.laporan', compact(
+            'headerTitle',
+            'headerDesc',
+            'activeMenu',
+            'breadcrumbs',
             'totalAchievements',
             'achievementsPerYear',
             'achievementsPerProdi',
@@ -146,7 +161,7 @@ class LaporanController extends Controller
             'achievementsPerCapaian',
             'achievementsPerCategory',
             'percentageChange',
-            'isIncrease'
+            'isIncrease',
         ));
     }
 
@@ -211,7 +226,7 @@ class LaporanController extends Controller
         ];
 
         $pdf = Pdf::loadView('admin.laporan_pdf', $data);
-        return $pdf->download('laporan-prestasi.pdf');
+        return $pdf->download('Laporan-Analitik-Prestasi_' . date('Y-m-d') . '.pdf');
     }
 
     public function exportExcel()
@@ -356,7 +371,7 @@ class LaporanController extends Controller
 
         // --- Proses Export ---
         $spreadsheet->setActiveSheetIndex(0);
-        $filename = 'Laporan_Prestasi_' . date('Y-m-d') . '.xlsx';
+        $filename = 'Laporan-Analitik-Prestasi_' . date('Y-m-d') . '.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');

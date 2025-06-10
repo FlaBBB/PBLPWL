@@ -20,8 +20,7 @@
                     <div class="relative w-54">
                         <select name="status" onchange="this.form.submit()"
                             class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option disabled selected hidden>Pilih Status</option>
-                            <option value="" {{ request('status') == '' ? 'selected' : '' }}>Semua</option>
+                            <option value="" {{ request('status') == '' ? 'selected' : '' }}>Pilih Status</option>
                             @php
                                 $statusLabels = [
                                     'WAITING' => 'Perlu Verifikasi',
