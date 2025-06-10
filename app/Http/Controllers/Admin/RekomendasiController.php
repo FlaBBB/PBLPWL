@@ -45,6 +45,7 @@ class RekomendasiController extends Controller
             'headerDesc' => $headerDesc,
             'vikorResults' => $vikorResults,
             'alternativesData' => $alternatives,
+            'recommendedDosen' => $this->getRecommendedDosen($request->input('category')),
             'categories' => $categories,
             'selectedCategory' => $selectedCategory,
         ]);
@@ -85,7 +86,7 @@ class RekomendasiController extends Controller
 
     private function prepareAlternatives(?string $category = null): array
     {
-        $query = Mahasiswa::with(['mark', 'mahasiswaAchievements.achievement.mahasiswa']);
+        $query = Mahasiswa::with(['mark', 'mahasiswaAchievements.achievement.mahasiswa', 'user']);
 
         if ($category) {
             $query->whereHas('mahasiswaAchievements', function ($q) use ($category) {
@@ -122,6 +123,7 @@ class RekomendasiController extends Controller
 
             $alternatives[] = [
                 'name' => $mahasiswa->name,
+                'id_user' => $mahasiswa->user->id, // Add id_user
                 'IPK' => $ipk,
                 'Achievement' => $totalAchievementScore,
                 'Frequency' => $achievementFrequency,
@@ -133,7 +135,7 @@ class RekomendasiController extends Controller
 
     private function getRecommendedDosen(?string $category = null): array
     {
-        $query = Dosen::select('dosen.nidn', 'dosen.name', 'user.photo_profile', DB::raw('COUNT(DISTINCT supervisor_achievement.id_achievement) as supervision_count'))
+        $query = Dosen::select('dosen.nidn', 'dosen.name', 'user.photo_profile', 'user.id as id_user', DB::raw('COUNT(DISTINCT supervisor_achievement.id_achievement) as supervision_count'))
             ->leftJoin('user', 'dosen.id_user', '=', 'user.id') // Join with user table
             ->leftJoin('supervisor_achievement', 'dosen.nidn', '=', 'supervisor_achievement.nidn')
             ->leftJoin('achievement', 'supervisor_achievement.id_achievement', '=', 'achievement.id');
@@ -144,7 +146,7 @@ class RekomendasiController extends Controller
                 ->where('tag.name', $category);
         }
 
-        $query->groupBy('dosen.nidn', 'dosen.name', 'user.photo_profile') // Add user.photo_profile to group by
+        $query->groupBy('dosen.nidn', 'dosen.name', 'user.photo_profile', 'user.id') // Add user.id to group by
             ->orderByDesc('supervision_count');
 
         return $query->get()->toArray();

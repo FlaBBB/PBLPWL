@@ -30,6 +30,7 @@
             </div>
             </form>
 
+
             <div class="flex items-center grid grid-cols-2 mt-4 gap-6">
                 <div class="w-full p-4 border border-gray-200 rounded-lg">
                     <table class="w-full text-left text-sm">
@@ -41,10 +42,15 @@
                             </tr>
                         </thead>
                         <tbody>
+            
                             @foreach ($smartResults['final_ranking'] as $rank => $data)
                                 <tr class="border-t border-gray-200 hover:bg-gray-50">
                                     <td class="py-3 px-2">{{ $rank + 1 }}</td>
-                                    <td class="py-3 px-2">{{ $data['alternative'] }}</td>
+                                    <td class="py-3 px-2">
+                                       <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $data['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                           {{ $data['alternative'] }}
+                                       </a>
+                                  </td>
                                     <td class="py-3 px-2">{{ number_format($data['score'], 3) }}</td>
                                 </tr>
                             @endforeach
@@ -67,7 +73,11 @@
                                                     class="w-full h-full object-cover">
                                             </div>
                                             <div class="flex flex-col justify-center flex-1">
-                                                <h2 class="text-base font-semibold text-gray-800">{{ $dosen['name'] }}
+                                                <h2 class="text-base font-semibold text-gray-800">
+                                                    <a href="{{ route('user.profile.show', ['role' => 'dosen', 'id' => $dosen['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                                        {{ $dosen['name'] }}
+                                                    </a>
+                                                </h2>
                                                 </h2>
                                                 {{-- Detail Dosen (Menyamping) --}}
                                                 <div class="flex flex-row flex-wrap items-center gap-x-4 gap-y-1 mt-1.5">
@@ -85,7 +95,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+                            </a>
                             @empty
                                 <p>Tidak ada rekomendasi dosen ditemukan.</p>
                             @endforelse
@@ -110,7 +120,11 @@
                     <tbody>
                         @foreach ($alternativesData as $alternative)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $alternative['name'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $alternative['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $alternative['name'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['IPK'], 2) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['Achievement'], 2) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['Frequency'], 0) }}</td>
@@ -185,7 +199,11 @@
                     <tbody>
                         @foreach ($smartResults['utility_alternative'] as $alternative)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $alternative['name'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $alternative['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $alternative['name'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['IPK'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['Achievement'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['Frequency'], 3) }}</td>
@@ -209,7 +227,11 @@
                     <tbody>
                         @foreach ($smartResults['utility_alternative'] as $altKey => $alternative)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $alternative['name'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $alternative['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $alternative['name'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['IPK'] * $smartResults['normalized_weights']['IPK'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['Achievement'] * $smartResults['normalized_weights']['Achievement'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['Frequency'] * $smartResults['normalized_weights']['Frequency'], 3) }}</td>
@@ -232,7 +254,11 @@
                     <tbody>
                         @foreach ($smartResults['final_ranking'] as $rank => $data)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $data['alternative'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $data['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $data['alternative'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($data['score'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ $rank + 1 }}</td>
                             </tr>

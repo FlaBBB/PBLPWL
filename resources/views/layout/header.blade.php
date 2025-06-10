@@ -49,7 +49,7 @@ use App\Enums\UserRoleEnum;
                     @click="isOpen = !isOpen"
                     @keydown.escape.window="isOpen = false"
                     class="flex items-center gap-2 px-3 py-1 rounded-md hover:bg-gray-100 focus:outline-none focus:ring focus:ring-[#1e6aae] transition-colors duration-150">
-                    <img src="{{ Auth::user()->photo_profile ? asset(Auth::user()->photo_profile) : asset('images/profile-default.jpg') }}" onerror="this.onerror=null;this.src='{{ asset('images/profile-default.jpg') }}';" alt="Profile" class="w-8 h-8 rounded-full object-cover">
+                    <img src="{{ Auth::user()->photo_profile ? asset(Auth::user()->photo_profile) : asset('images/profile-default.jpg') }}" onerror="this.onerror=null;this.src='/images/profile-default.jpg';" alt="Profile" class="w-8 h-8 rounded-full object-cover">
                     <!-- <span class="font-semibold text-gray-700 hidden sm:inline max-w-[150px] truncate">P</span> -->
                     <svg
                         class="w-4 h-4 text-gray-400 transition-transform duration-200 ease-in-out"

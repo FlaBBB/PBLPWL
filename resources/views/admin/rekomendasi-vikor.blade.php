@@ -29,6 +29,7 @@
                 </div>
             </form>
 
+
             <div class="flex items-center grid grid-cols-2 mt-4 gap-6">
                 <div class="w-full p-4 border border-gray-200 rounded-lg">
                     <table class="w-full text-left text-sm">
@@ -43,7 +44,11 @@
                             @foreach ($vikorResults['final_ranking'] as $rank => $data)
                                 <tr class="border-t border-gray-200 hover:bg-gray-50">
                                     <td class="py-3 px-2">{{ $rank + 1 }}</td>
-                                    <td class="py-3 px-2">{{ $data['alternative'] }}</td>
+                                    <td class="py-3 px-2">
+                                       <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $data['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                           {{ $data['alternative'] }}
+                                       </a>
+                                   </td>
                                     <td class="py-3 px-2">{{ number_format($data['Q'], 3) }}</td>
                                 </tr>
                             @endforeach
@@ -62,11 +67,15 @@
                                         <div class="p-4 flex-1 flex flex-row items-center gap-4">
                                             {{-- Foto dosen --}}
                                             <div class="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-lg overflow-hidden">
-                                                <img src="{{ $dosen['photo_profile'] ? asset('storage/' . $dosen['photo_profile']) : asset('images/dosen-avatar.jpg') }}" alt="Foto Dosen"
+                                                <img src="{{ $dosen['photo_profile'] ? asset($dosen['photo_profile']) : asset('images/dosen-avatar.jpg') }}" alt="Foto Dosen"
                                                     class="w-full h-full object-cover">
                                             </div>
                                             <div class="flex flex-col justify-center flex-1">
-                                                <h2 class="text-base font-semibold text-gray-800">{{ $dosen['name'] }}
+                                                <h2 class="text-base font-semibold text-gray-800">
+                                                    <a href="{{ route('user.profile.show', ['role' => 'dosen', 'id' => $dosen['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                                        {{ $dosen['name'] }}
+                                                    </a>
+                                                </h2>
                                                 </h2>
                                                 {{-- Detail Dosen (Menyamping) --}}
                                                 <div class="flex flex-row flex-wrap items-center gap-x-4 gap-y-1 mt-1.5">
@@ -110,7 +119,11 @@
                     <tbody>
                         @foreach ($alternativesData as $alternative)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $alternative['name'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $alternative['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $alternative['name'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['IPK'], 2) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['Achievement'], 2) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($alternative['Frequency'], 0) }}</td>
@@ -161,7 +174,11 @@
                     <tbody>
                         @foreach ($alternativesData as $altKey => $alternative)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $alternative['name'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $alternative['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $alternative['name'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['normalized_benefit_alternative'][$altKey]['IPK'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['normalized_benefit_alternative'][$altKey]['Achievement'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['normalized_benefit_alternative'][$altKey]['Frequency'], 3) }}</td>
@@ -184,7 +201,11 @@
                     <tbody>
                         @foreach ($alternativesData as $altKey => $alternative)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $alternative['name'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $alternative['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $alternative['name'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['weighted_normalized_benefit_alternative'][$altKey]['IPK'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['weighted_normalized_benefit_alternative'][$altKey]['Achievement'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['weighted_normalized_benefit_alternative'][$altKey]['Frequency'], 3) }}</td>
@@ -206,7 +227,11 @@
                     <tbody>
                         @foreach ($alternativesData as $altKey => $alternative)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $alternative['name'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $alternative['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $alternative['name'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['utility_regret_measures']['S_values'][$altKey], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['utility_regret_measures']['R_values'][$altKey], 3) }}</td>
                             </tr>
@@ -215,7 +240,7 @@
                 </table>
             </div>
             <div class="overflow-x-auto mt-6">
-                <h3 class="text-base text-gray-700 mb-2">6. Mencari nilai max dan min daari Si dan Ri</h3>
+                <h3 class="text-base text-gray-700 mb-2">6. Mencari nilai max dan min dari Si dan Ri</h3>
                 <table class="table-fixed border border-gray-300 w-full text-center text-sm">
                     <thead>
                         <tr>
@@ -228,22 +253,22 @@
                         <tr class="border-b border-gray-300 hover:bg-gray-50">
                             <td class="border border-gray-300 px-4 py-2">Si max</td>
                             <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['max_min_Si_Ri']['S_minus'], 3) }}</td>
-                            <td class="border border-gray-300 px-4 py-2"></td>
+                            <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['max_min_Si_Ri']['R_minus'], 3) }}</td>
                         </tr>
                         <tr class="border-b border-gray-300 hover:bg-gray-50">
                             <td class="border border-gray-300 px-4 py-2">Si min</td>
                             <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['max_min_Si_Ri']['S_star'], 3) }}</td>
-                            <td class="border border-gray-300 px-4 py-2"></td>
+                            <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['max_min_Si_Ri']['R_star'], 3) }}</td>
                         </tr>
                         <tr class="border-b border-gray-300 hover:bg-gray-50">
                             <td class="border border-gray-300 px-4 py-2">Ri max</td>
                             <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['max_min_Si_Ri']['R_minus'], 3) }}</td>
-                            <td class="border border-gray-300 px-4 py-2"></td>
+                            <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['max_min_Si_Ri']['R_minus'], 3) }}</td>
                         </tr>
                         <tr class="border-b border-gray-300 hover:bg-gray-50">
                             <td class="border border-gray-300 px-4 py-2">Ri min</td>
                             <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['max_min_Si_Ri']['R_star'], 3) }}</td>
-                            <td class="border border-gray-300 px-4 py-2"></td>
+                            <td class="border border-gray-300 px-4 py-2">{{ number_format($vikorResults['max_min_Si_Ri']['R_star'], 3) }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -260,7 +285,11 @@
                     <tbody>
                         @foreach ($vikorResults['final_ranking'] as $data)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $data['alternative'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $data['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $data['alternative'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($data['Q'], 3) }}</td>
                             </tr>
                         @endforeach
@@ -280,7 +309,11 @@
                     <tbody>
                         @foreach ($vikorResults['final_ranking'] as $rank => $data)
                             <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $data['alternative'] }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a href="{{ route('user.profile.show', ['role' => 'mahasiswa', 'id' => $data['id_user']]) }}" class="text-[#1e6aae] hover:underline">
+                                        {{ $data['alternative'] }}
+                                    </a>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ number_format($data['Q'], 3) }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ $rank + 1 }}</td>
                             </tr>

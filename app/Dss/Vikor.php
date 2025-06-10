@@ -108,6 +108,7 @@ class Vikor
                 'Q' => $q,
                 'S' => $s_values[$altKey],
                 'R' => $r_values[$altKey],
+                'id_user' => $alternatives[$altKey]['id_user'] ?? null, // Preserve id_user
             ];
         }
         $results['final_ranking'] = $rankedAlternatives;
