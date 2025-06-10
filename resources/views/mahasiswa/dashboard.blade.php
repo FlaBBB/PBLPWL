@@ -258,30 +258,43 @@
         </div>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const ctx = document.getElementById('prestasiChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: @json($data['acceptedAchievementsByTag']->pluck('name')),
-                    datasets: [{
-                        data: @json($data['acceptedAchievementsByTag']->pluck('total')),
-                        backgroundColor: [
-                            '#3B82F6', // blue-500
-                            '#EC4899', // pink-500
-                            '#FACC15', // yellow-400
-                            '#FB923C' // orange-400
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    cutout: '70%',
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
+        <div class="mt-4 text-right px-2 text-sm text-gray-700 hover:text-[#1e6aae]">
+            <a href="{{@route("mahasiswa.daftar-achievement")}}"
+                class="inline-flex items-center gap-1 px-3 py-1 rounded-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-sm ">
+                <!-- beri link ke menu daftar prestasi mahasiswa saat ini -->
+                Selengkapnya
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                </svg>
+            </a>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('prestasiChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: @json($data['acceptedAchievementsByTag']->pluck('name')),
+                datasets: [{
+                    data: @json($data['acceptedAchievementsByTag']->pluck('total')),
+                    backgroundColor: [
+                        '#3B82F6', // blue-500
+                        '#EC4899', // pink-500
+                        '#FACC15', // yellow-400
+                        '#FB923C' // orange-400
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false
                     }
                 }
             });

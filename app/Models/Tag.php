@@ -28,6 +28,11 @@ class Tag extends Model
         return $this->hasMany(CompetitionTag::class, 'id_tag', 'id');
     }
 
+    public function dosenPreferences(): HasMany
+    {
+        return $this->hasMany(DosenPreference::class, 'id_tag', 'id');
+    }
+
     public function mahasiswaAchievement(): HasMany
     {
         return $this->hasMany(MahasiswaAchievement::class, 'id_tag', 'id');

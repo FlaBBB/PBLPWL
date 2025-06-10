@@ -93,7 +93,7 @@ class AchievementController extends Controller
             'currentKategori' => $request->input('kategori', ''),
             'currentTingkat' => $request->input('tingkat', ''),
             'currentStatus' => $request->input('status', ''),
-            'categories' => $categories, // Pass categories to the view
+            'categories' => $categories, 
         ]);
     }
 

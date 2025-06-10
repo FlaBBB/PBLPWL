@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Mahasiswa;
 use App\Enums\UserRoleEnum;
+use App\Enums\Prodi;
 use App\Models\MahasiswaPreferences;
 use App\Models\Mark;
 use App\Models\User;
@@ -37,7 +38,7 @@ class MahasiswaFactory extends Factory
             'district' => fake()->citySuffix(),
             'subdistrict' => fake()->streetName(),
             'address' => fake()->address(),
-            'prodi' => fake()->randomElement(['TI', 'SIB']),
+            'prodi' => fake()->randomElement([Prodi::TI, Prodi::SIB, Prodi::PPLS]),
             'grade' => fake()->numberBetween(1, 8),
         ];
     }
