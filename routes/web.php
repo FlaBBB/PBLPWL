@@ -151,6 +151,7 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('laporan')->group(function () {
                 Route::get('/', [AdminLaporanController::class, 'index'])->name('admin.laporan');
                 Route::get('/export-pdf', [AdminLaporanController::class, 'exportPdf'])->name('laporan.exportPdf');
+                Route::get('/export-excel', [AdminLaporanController::class, 'exportExcel'])->name('laporan.exportExcel');
             });
         });
     });
