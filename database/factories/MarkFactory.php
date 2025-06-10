@@ -23,7 +23,7 @@ class MarkFactory extends Factory
     {
         return [
             'nim' => Mahasiswa::pluck('nim')->random(),
-            'ipk' => fake()->randomFloat(2, 0, 4),
+            'ipk' => fake()->randomFloat(2, 2, 4),
             'updated_at' => fake()->dateTimeThisYear(),
             'updated_by' => Admin::pluck('nip')->random(),
         ];
