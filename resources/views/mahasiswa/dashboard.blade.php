@@ -63,7 +63,7 @@
                                         class="w-full h-full object-cover object-top">
                                 </div>
                                 <div class="flex flex-col justify-center flex-1">
-                                    <h2 class="text-sm font-medium text-gray-800">{{ $lomba->name }}</h2>
+                                    <h2 class="text-sm font-medium text-gray-800">{{ \Str::words($lomba->name, 5, '...') }}</h2>
                                     <div class="flex items-center text-xs text-gray-600 mt-1 gap-1">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2"
                                             viewBox="0 0 24 24">
