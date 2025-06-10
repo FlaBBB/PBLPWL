@@ -11,7 +11,7 @@
 
                 <div class="flex items-center space-x-6 py-6">
                     <img src="{{ $user->photo_profile ? asset($user->photo_profile) : asset('images/user-avatar.jpg') }}"
-                        alt="Foto Profil" class="object-center w-28 h-28 rounded-full object-cover" />
+                        alt="Foto Profil" class="object-center w-28 h-28 rounded-full object-cover" onerror="this.onerror=null;this.src='{{ asset('images/profile-default.jpg') }}';" />
                     <div class="flex flex-col space-y-2">
                         <div class="space-y-1">
                             <h3 class="text-sm font-semibold text-gray-800">Foto profil</h3>
@@ -27,15 +27,11 @@
                                 onchange="displayFileName(this)">
                             <span id="file-name" class="text-sm text-gray-500"></span>
                             @if ($user->photo_profile)
-                                <form action="{{ route('mahasiswa.delete-profile-picture') }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="px-5 py-2 rounded-lg border border-gray-300 text-xs font-medium text-gray-700 bg-white hover:bg-gray-100 transition"
-                                        onclick="return confirm('Are you sure you want to delete your profile picture?');">
-                                        Hapus foto
-                                    </button>
-                                </form>
+                                <button type="button"
+                                    class="px-5 py-2 rounded-lg border border-gray-300 text-xs font-medium text-gray-700 bg-white hover:bg-gray-100 transition"
+                                    onclick="confirmDeleteProfilePicture()">
+                                    Hapus foto
+                                </button>
                             @endif
                         </div>
                     </div>
@@ -159,6 +155,11 @@
                     </button>
                 </div>
             </form>
+
+            <form id="delete-profile-picture-form" action="{{ route('mahasiswa.delete-profile-picture') }}" method="POST" style="display: none;">
+                @csrf
+                @method('DELETE')
+            </form>
         </div>
 
         <script>
@@ -173,6 +174,12 @@
 
             function toggleDropdown() {
                 document.getElementById("dropdown").classList.toggle("hidden");
+            }
+
+            function confirmDeleteProfilePicture() {
+                if (confirm('Are you sure you want to delete your profile picture?')) {
+                    document.getElementById('delete-profile-picture-form').submit();
+                }
             }
 
             document.addEventListener('DOMContentLoaded', function() {
