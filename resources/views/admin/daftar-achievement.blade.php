@@ -3,9 +3,9 @@
 @section('content')
     <main class="flex-1 px-10">
         <div class="w-full mx-auto p-6 border border-gray-200 rounded-lg">
-            <h2 class="text-xl font-semibold">Daftar Achievement</h2>
+            <h2 class="text-xl font-semibold">Daftar Prestasi</h2>
             <form action="{{ route('admin.daftar-achievement') }}" method="GET" class="flex flex-wrap gap-4 pb-4 items-center w-full">
-                {{-- Search Input --}}
+                {{-- Search Input --}}  
                 <div class="relative">
                     <input type="text" placeholder="Cari disini" name="search" value="{{ $search }}"
                         class="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
