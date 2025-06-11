@@ -30,6 +30,8 @@ return new class extends Migration
             $table->string("file_activity_photo");
             $table->string("file_poster");
             $table->enum("level", [
+                "INTERNAL",
+                "CITY",
                 "PROVINCE",
                 "NATIONAL",
                 "INTERNATIONAL"

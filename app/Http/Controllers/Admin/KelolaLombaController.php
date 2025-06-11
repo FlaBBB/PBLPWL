@@ -157,7 +157,7 @@ class KelolaLombaController extends Controller
         $lomba->save();
 
         Notification::create([
-            'user_id' => $lomba->creator,
+            'id_user' => $lomba->creator,
             'title' => 'Lomba Disetujui',
             'message' => 'Entri lomba Anda "' . $lomba->name . '" telah disetujui.',
             'type' => 'success',
@@ -178,7 +178,7 @@ class KelolaLombaController extends Controller
         $lomba->save();
 
         Notification::create([
-            'user_id' => $lomba->creator,
+            'id_user' => $lomba->creator,
             'title' => 'Lomba Ditolak',
             'message' => 'Entri lomba Anda "' . $lomba->name . '" telah ditolak. Alasan: ' . $lomba->rejection_note,
             'type' => 'danger',

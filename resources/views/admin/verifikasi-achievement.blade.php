@@ -1,10 +1,10 @@
 @extends('layout.template')
 @section('content')
     <main class="flex-1 px-10">
-        <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg space-y-4">
-            <h2 class="text-xl font-semibold">Verifikasi Prestasi</h2>
+        <div class="w-full mx-auto p-6  border border-gray-200 rounded-lg">
+            <h2 class="text-xl font-semibold">Verifikasi Achievement</h2>
 
-                <form action="{{ route('admin.verifikasi-achievement') }}" method="GET" class="flex flex-wrap gap-4 items-center w-full">
+                <form action="{{ route('admin.verifikasi-achievement') }}" method="GET" class="flex flex-wrap gap-4 pb-4 items-center w-full">
                     {{-- Search Input --}}
                     <div class="relative">
                         <input type="text" placeholder="Cari disini" name="search" value="{{ $search }}"
@@ -16,21 +16,13 @@
                         </svg>
                     </div>
                     <p class="text-sm text-gray-700 ml-4">Filter berdasarkan:</p>
-                    {{-- Dropdown: Status --}}
-                    <div class="relative w-54">
-                        <select name="status" onchange="this.form.submit()"
-                            class="appearance-none w-full py-2 pr-4 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="" {{ request('status') == '' ? 'selected' : '' }}>Pilih Status</option>
-                            @php
-                                $statusLabels = [
-                                    'WAITING' => 'Perlu Verifikasi',
-                                    'REVISION' => 'Revisi',
-                                    'REJECTED' => 'Ditolak',
-                                    'ACCEPTED' => 'Terverifikasi'
-                                ];
-                            @endphp
-                            @foreach($statusLabels as $value => $label)
-                                <option value="{{ $value }}" {{ $status == $value ? 'selected' : '' }}>{{ $label }}</option>
+                    {{-- Dropdown: Tingkat Lomba --}}
+                    <div class="relative w-40">
+                        <select name="tingkat" onchange="this.form.submit()"
+                            class="appearance-none w-full py-2 pr-10 pl-4 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="" {{ !$tingkat ? 'selected' : '' }}>Tingkat</option>
+                            @foreach($competitionLevels as $level)
+                                <option value="{{ $level->value }}" {{ $tingkat == $level->value ? 'selected' : '' }}>{{ $level->value }}</option>
                             @endforeach
                         </select>
                         <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
@@ -69,20 +61,20 @@
                     <thead class="text-gray-500">
                         <tr class="border-b border-gray-200">
                             <th class="w-[5%] px-4 py-2 text-left">No</th>
-                            <th class="w-[30%] px-2 py-2 text-left ">Nama Lomba</th>
-                            <th class="w-[20%] px-2 py-2 text-left">Nama Mahasiswa</th>
-                            <th class="w-[15%] px-2 py-2 text-left">Tanggal Upload</th>
+                            <th class="w-[30%] px-2 py-2 text-left">Nama Lomba</th>
+                            <th class="w-[25%] px-2 py-2 text-left">Nama Mahasiswa</th>
+                            <th class="w-[10%] px-2 py-2 text-left">Ranking</th>
                             <th class="w-[15%] px-2 py-2 text-left">Status</th>
                             <th class="w-[15%] px-2 py-2 text-left">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($prestasi as $item)
-                            <tr class="border-b border-gray-200 hover:bg-gray-50 overflow-hidden">
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
                                 <td class="px-4 py-2">{{ $loop->iteration + ($prestasi->currentPage() - 1) * $prestasi->perPage() }}</td>
-                                <td class="px-2 py-2 overflow-hidden text-ellipsis whitespace-nowrap max-w-[180px]">{{ $item->competition_name }}</td>
+                                <td class="px-2 py-2">{{ $item->competition_name }}</td>
                                 <td class="px-2 py-2">{{ $item->nama_mahasiswa }}</td>
-                                <td class="px-2 py-2 text-left">{{ $item->upload_at }}</td>
+                                <td class="px-2 py-2 text-left">{{ $item->place }}</td>
                                 <td class="px-2 py-2">
                                     @if($item->status->value == 'WAITING')
                                         <span
@@ -139,7 +131,7 @@
                     Menampilkan {{ $prestasi->firstItem() }} hingga {{ $prestasi->lastItem() }} dari {{ $prestasi->total() }} hasil
                 </div>
                 <div>
-                    {{ $prestasi->links('components.pagination-links') }}
+                    {{ $prestasi->links('pagination::tailwind') }}
                 </div>
             </div>
         </div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\AchievementStatusEnum;
 use App\Enums\MahasiswaAchievementRoleEnum;
+use App\Enums\CompetitionLevelEnum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Achievement; // Corrected model name
@@ -13,6 +15,7 @@ use App\Models\Competition;
 use App\Models\Tag;
 use App\Models\AchievementDocument;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class KelolaAchievementController extends Controller
 {
@@ -31,12 +34,11 @@ class KelolaAchievementController extends Controller
 
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search');
-        $bidang = $request->input('bidang');
+        // $bidang = $request->input('bidang'); // Removed as per user request
         $tingkat = $request->input('tingkat');
-        $status = $request->input('status'); 
 
         $query = Achievement::with(['mahasiswa', 'tags'])
-            ->where('status', $status);
+            ->where('status', AchievementStatusEnum::WAITING->value);
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -48,14 +50,13 @@ class KelolaAchievementController extends Controller
         }
 
         $status = $request->input('status');
-        $query = Achievement::with(['mahasiswa', 'tags'])
-            ->when($status, fn($q) => $q->where('status', $status));
+        if ($status) {
+            $query->where('status', $status);
+        }
 
 
         if ($tingkat) {
-            $query->whereHas('competition', function ($q) use ($tingkat) {
-                $q->where('tingkat', $tingkat);
-            });
+            $query->where('level', $tingkat);
         }
 
         $prestasi = $query->paginate($perPage);
@@ -70,9 +71,10 @@ class KelolaAchievementController extends Controller
             'prestasi' => $prestasi,
             'perPage' => $perPage,
             'search' => $search,
-            'bidang' => $bidang,
+            // 'bidang' => $bidang, // Removed as per user request
             'tingkat' => $tingkat,
             'status' => $status,
+            'competitionLevels' => CompetitionLevelEnum::cases(),
         ]);
     }
 
@@ -149,55 +151,81 @@ class KelolaAchievementController extends Controller
         $prestasi->status = 'ACCEPTED';
         $prestasi->save();
 
-        Notification::create([
-            'user_id' => $prestasi->mahasiswa->user_id,
-            'title' => 'Prestasi Disetujui',
-            'message' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah disetujui.',
-            'type' => 'success',
-        ]);
+        $leader = $prestasi->mahasiswa->firstWhere('pivot.role', MahasiswaAchievementRoleEnum::LEADER->value);
+        if ($leader && $leader->user) {
+            Notification::create([
+                'id_user' => $leader->user->id,
+                'content' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah disetujui.',
+                'type' => 'success',
+            ]);
+        } else {
+            Log::warning("No leader or user found for achievement ID: " . $prestasi->id . " when attempting to send approval notification.");
+        }
 
         return response()->json(['message' => 'Achievement berhasil diverifikasi.']);
     }
 
     public function reject(Request $request, $id)
     {
-        $request->validate([
-            'message' => 'required|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'message' => 'required|string|max:255',
+            ]);
 
-        $prestasi = Achievement::findOrFail($id);
-        $prestasi->status = 'REJECTED';
-        $prestasi->note = $request->input('message');
-        $prestasi->save();
+            $prestasi = Achievement::findOrFail($id);
+            $prestasi->status = 'REJECTED';
+            $prestasi->note = $request->input('message');
+            $prestasi->save();
 
-        Notification::create([
-            'user_id' => $prestasi->mahasiswa->user_id,
-            'title' => 'Prestasi Ditolak',
-            'message' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah ditolak. Alasan: ' . $prestasi->note,
-            'type' => 'danger',
-        ]);
+            $leader = $prestasi->mahasiswa->firstWhere('pivot.role', MahasiswaAchievementRoleEnum::LEADER->value);
+            if ($leader && $leader->user) {
+                Notification::create([
+                    'id_user' => $leader->user->id,
+                    'content' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah ditolak. Alasan: ' . $prestasi->note,
+                    'type' => 'danger',
+                ]);
+            } else {
+                Log::warning("No leader or user found for achievement ID: " . $prestasi->id . " when attempting to send rejection notification.");
+            }
 
-        return response()->json(['message' => 'Achievement berhasil ditolak.']);
+            return response()->json(['message' => 'Achievement berhasil ditolak.']);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            Log::error("Error rejecting achievement: " . $e->getMessage());
+            return response()->json(['message' => 'Terjadi kesalahan saat menolak achievement.'], 500);
+        }
     }
 
     public function revision(Request $request, $id)
     {
-        $request->validate([
-            'message' => 'required|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'message' => 'required|string|max:255',
+            ]);
 
-        $prestasi = Achievement::findOrFail($id);
-        $prestasi->status = 'REVISION';
-        $prestasi->note = $request->input('message');
-        $prestasi->save();
+            $prestasi = Achievement::findOrFail($id);
+            $prestasi->status = 'REVISION';
+            $prestasi->note = $request->input('message');
+            $prestasi->save();
 
-        Notification::create([
-            'user_id' => $prestasi->mahasiswa->user_id,
-            'title' => 'Prestasi Membutuhkan Revisi',
-            'message' => 'Prestasi Anda "' . $prestasi->competition_name . '" membutuhkan revisi. Alasan: ' . $prestasi->note,
-            'type' => 'warning',
-        ]);
+            $leader = $prestasi->mahasiswa->firstWhere('pivot.role', MahasiswaAchievementRoleEnum::LEADER->value);
+            if ($leader && $leader->user) {
+                Notification::create([
+                    'id_user' => $leader->user->id,
+                    'content' => 'Prestasi Anda "' . $prestasi->competition_name . '" membutuhkan revisi. Alasan: ' . $prestasi->note,
+                    'type' => 'warning',
+                ]);
+            } else {
+                Log::warning("No leader or user found for achievement ID: " . $prestasi->id . " when attempting to send revision notification.");
+            }
 
-        return response()->json(['message' => 'Achievement berhasil diminta revisi.']);
+            return response()->json(['message' => 'Achievement berhasil diminta revisi.']);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            Log::error("Error requesting revision for achievement: " . $e->getMessage());
+            return response()->json(['message' => 'Terjadi kesalahan saat meminta revisi achievement.'], 500);
+        }
     }
 }

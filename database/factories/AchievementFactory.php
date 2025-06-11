@@ -41,7 +41,7 @@ class AchievementFactory extends Factory
             'file_certificate' => $this->storeAsset('sertifikat.pdf', 'certificates'),
             'file_activity_photo' => $this->storeRandomDocumentationPhoto('activity_photos'),
             'file_poster' => $this->storeAsset('poster.jpeg', 'posters'),
-            'level' => fake()->randomElement(['PROVINCE', 'NATIONAL', 'INTERNATIONAL']),
+            'level' => fake()->randomElement(array_column(CompetitionLevelEnum::cases(), 'value')),
             'place' => fake()->numberBetween(1, 3),
             'status' => fake()->randomElement(AchievementStatusEnum::cases()),
             'note' => fake()->paragraph(),

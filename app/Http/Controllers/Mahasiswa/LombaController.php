@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mahasiswa;
 use App\Http\Controllers\Controller;
 use App\Models\Competition;
 use App\Models\Tag;
+use App\Enums\CompetitionLevelEnum;
 
 use Illuminate\Http\Request;
 
@@ -22,14 +23,15 @@ class LombaController extends Controller
         ];
 
         $kategoriList = Tag::pluck('name'); // Fetch all categories (tags) for the competition
-        $tingkatList = Competition::select('level')->distinct()->get()->pluck('level'); // Fetch all distinct levels for the competition
+        $tingkatList = collect(CompetitionLevelEnum::cases())->pluck('value'); // Fetch all distinct levels for the competition
         $partisipasi = Competition::select('max_participation_amount')->distinct()->get()->pluck('max_participation_amount'); // Fetch all distinct max participation amounts for the competition
 
         $query = Competition::with('tags');
 
         // Filter search
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $search = strtolower($request->search);
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . $search . '%']);
         }
 
         // Filter kategori (by tag)
@@ -41,7 +43,7 @@ class LombaController extends Controller
 
         // Filter tingkat
         if ($request->filled('tingkat')) {
-            $query->where('level', $request->tingkat);
+            $query->where('level', CompetitionLevelEnum::from($request->tingkat));
         }
 
         // Filter partisipan
