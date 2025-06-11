@@ -116,14 +116,6 @@
                         <label class="block text-sm font-medium text-gray-500">Name</label>
                         <p class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 bg-gray-50">{{ $user->dosen->name }}</p>
                     </div>
-                    <div class="flex flex-col space-y-1">
-                        <label class="block text-sm font-medium text-gray-500">Phone Number</label>
-                        <p class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 bg-gray-50">{{ $user->dosen->phone_number }}</p>
-                    </div>
-                    <div class="flex flex-col space-y-1">
-                        <label class="block text-sm font-medium text-gray-500">Address</label>
-                        <p class="text-sm block w-full border border-gray-300 rounded-lg px-2 py-2 bg-gray-50">{{ $user->dosen->address }}, {{ $user->dosen->subdistrict }}, {{ $user->dosen->district }}, {{ $user->dosen->city }}</p>
-                    </div>
                 </div>
             </div>
 
