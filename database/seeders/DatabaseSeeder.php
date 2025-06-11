@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             MahasiswaSeeder::class,
             RoleSupervisorSeeder::class,
             SupervisorAchievementSeeder::class,
-            NotificationSeeder::class,
             CompetitionSeeder::class,
             CompetitionTagSeeder::class,
         ]);

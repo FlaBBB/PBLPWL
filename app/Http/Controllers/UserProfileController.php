@@ -51,7 +51,7 @@ class UserProfileController extends Controller
         Notification::create([
             'id_user' => $user->id,
             'title' => 'Recommendation from Admin',
-            'message' => $request->input('message'),
+            'content' => $request->input('message'),
             'is_read' => false,
             'created_at' => now(),
             'updated_at' => now(),
