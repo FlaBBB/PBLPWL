@@ -102,7 +102,7 @@
 
             <!-- Modal Detail Lomba -->
             <div id="detail-lomba-modal" onclick="closeModal()"
-                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-25 md:bg-opacity-25 opacity-0 pointer-events-none transition-opacity duration-300"
+                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 opacity-0 pointer-events-none transition-opacity duration-300"
                 data-state="closed" style="display:none">
 
                 <div onclick="event.stopPropagation()"

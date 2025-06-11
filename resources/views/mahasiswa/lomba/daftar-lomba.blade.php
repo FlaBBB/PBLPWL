@@ -82,7 +82,7 @@
             <a href="{{ route('mahasiswa.detail-lomba', ['id' => $i]) }}">
                 <div
                     class="h-63 border border-gray-200 rounded-lg transform hover:-translate-y-1 transition duration-300 hover:shadow-lg hover:border-[#1e6aae] ">
-                    <img src="{{ asset($i->poster) }}" alt="Banner Event"
+                    <img src="https://placehold.co/400x120?text=Poster&font=poppins" alt="Banner Event"
                         class="w-full rounded-t-lg h-30 object-cover object-top">
                     <div class="p-4 truncate">
                         @foreach ($i->tags as $tag)
