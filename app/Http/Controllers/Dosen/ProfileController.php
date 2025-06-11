@@ -53,7 +53,7 @@ class ProfileController extends Controller
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:user,email,' . $user->id,
-            'profile_picture' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
         ]);
@@ -73,7 +73,13 @@ class ProfileController extends Controller
                 Storage::disk('public')->delete($user->photo_profile);
             }
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-            $user->photo_profile = $path;
+            $user->photo_profile = '/storage/' . $path;
+        } elseif ($request->has('profile_picture') && !$request->file('profile_picture')) {
+            // If profile_picture input is present but no file was uploaded (e.g., cleared input)
+            if ($user->photo_profile) { // Dosen controller doesn't check for default image
+                Storage::disk('public')->delete($user->photo_profile);
+            }
+            $user->photo_profile = null; // Set to null to remove the image
         }
 
         $user->save();

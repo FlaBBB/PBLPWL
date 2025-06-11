@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Achievement extends Model
 {
@@ -53,18 +54,19 @@ class Achievement extends Model
         'verification_at' => 'datetime',
     ];
 
+    public function mahasiswaAchievements(): HasMany
+    {
+        return $this->hasMany(MahasiswaAchievement::class, 'id_achievement', 'id');
+    }
+
+    public function supervisorAchievements(): HasMany
+    {
+        return $this->hasMany(SupervisorAchievement::class, 'id_achievement', 'id');
+    }
+
     public function mahasiswa(): BelongsToMany
     {
         return $this->belongsToMany(Mahasiswa::class, 'mahasiswa_achievement', 'id_achievement', 'nim')->withPivot('role');
-    }
-
-    public function dosen(): BelongsToMany
-    {
-        return $this->belongsToMany(Dosen::class, 'supervisor_achievement', 'id_achievement', 'nidn')->withPivot('role');
-    }
-    public function supervisor(): BelongsToMany
-    {
-        return $this->belongsToMany(Dosen::class, 'supervisor_achievement', 'id_achievement', 'nidn')->withPivot('role');
     }
 
     public function verificator(): BelongsTo

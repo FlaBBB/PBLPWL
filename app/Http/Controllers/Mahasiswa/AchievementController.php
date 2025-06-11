@@ -301,11 +301,8 @@ class AchievementController extends Controller
             'peran_mahasiswa.*.required' => 'Peran Mahasiswa wajib dipilih untuk setiap baris.',
             'peran_mahasiswa.*.in' => 'Peran Mahasiswa tidak valid.',
             'tags_mahasiswa.*.exists' => 'Tag Mahasiswa tidak valid.',
-            'nidn_dosen.*.required' => 'NIDN Dosen wajib diisi untuk setiap baris.',
-            'nidn_dosen.*.string' => 'NIDN Dosen harus berupa teks.',
-            'nidn_dosen.*.max' => 'NIDN Dosen tidak boleh lebih dari 255 karakter.',
-            'peran_dosen.*.required' => 'Peran Dosen wajib dipilih untuk setiap baris.',
-            'peran_dosen.*.exists' => 'Peran Dosen tidak valid.',
+            'nidn_dosen.*' => 'required|string|max:255',
+            'peran_dosen.*' => 'required|exists:role_supervisor,id',
         ]);
 
         if ($validator->fails()) {
@@ -403,7 +400,7 @@ class AchievementController extends Controller
             return response()->json(['message' => 'Mahasiswa data not found.'], 404);
         }
 
-        $achievement = Achievement::query()
+        $achievement = Achievement::with(['mahasiswaAchievements.mahasiswa', 'supervisorAchievements.dosen', 'supervisorAchievements.roleSupervisor'])
             ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
             ->where('achievement.id', $id)
             ->where('mahasiswa_achievement.nim', $mahasiswa->nim)
@@ -575,11 +572,8 @@ class AchievementController extends Controller
             'peran_mahasiswa.*.required' => 'Peran Mahasiswa wajib dipilih untuk setiap baris.',
             'peran_mahasiswa.*.in' => 'Peran Mahasiswa tidak valid.',
             'tags_mahasiswa.*.exists' => 'Tag Mahasiswa tidak valid.',
-            'nidn_dosen.*.required' => 'NIDN Dosen wajib diisi untuk setiap baris.',
-            'nidn_dosen.*.string' => 'NIDN Dosen harus berupa teks.',
-            'nidn_dosen.*.max' => 'NIDN Dosen tidak boleh lebih dari 255 karakter.',
-            'peran_dosen.*.required' => 'Peran Dosen wajib dipilih untuk setiap baris.',
-            'peran_dosen.*.exists' => 'Peran Dosen tidak valid.',
+            'nidn_dosen.*' => 'required|string|max:255',
+            'peran_dosen.*' => 'required|exists:role_supervisor,id',
         ]);
 
         if ($validator->fails()) {
@@ -597,15 +591,15 @@ class AchievementController extends Controller
         foreach (['file_assignment_letter', 'file_certificate', 'file_poster', 'file_activity_photo'] as $fileField) {
             if ($request->hasFile($fileField)) {
                 // Delete old file if exists
-                if ($achievement->{$fileField . '_file_path'}) {
-                    \Storage::disk('public')->delete($achievement->{$fileField . '_file_path'});
+                if ($achievement->{$fileField}) { // Corrected: removed '_file_path'
+                    Storage::disk('public')->delete($achievement->{$fileField}); // Corrected: removed '\' before Storage
                 }
                 $fileName = time() . '_' . $request->file($fileField)->getClientOriginalName();
                 $filePath = $request->file($fileField)->storeAs('uploads/achievements', $fileName, 'public');
                 $filePaths[$fileField] = $filePath;
             } else {
                 // Keep existing file path if no new file is uploaded
-                $filePaths[$fileField] = $achievement->{$fileField . '_file_path'};
+                $filePaths[$fileField] = $achievement->{$fileField}; // Corrected: removed '_file_path'
             }
         }
 
@@ -622,10 +616,10 @@ class AchievementController extends Controller
             'partition_number' => $validatedData['partition_number'],
             'assignment_letter_number' => $validatedData['assignment_letter_number'],
             'assignment_letter_date' => $validatedData['assignment_letter_date'],
-            'file_assignment_letter_file_path' => $filePaths['file_assignment_letter'],
-            'file_certificate_file_path' => $filePaths['file_certificate'],
-            'file_activity_photo_file_path' => $filePaths['file_activity_photo'],
-            'file_poster_file_path' => $filePaths['file_poster'],
+            'file_assignment_letter' => $filePaths['file_assignment_letter'],
+            'file_certificate' => $filePaths['file_certificate'],
+            'file_activity_photo' => $filePaths['file_activity_photo'],
+            'file_poster' => $filePaths['file_poster'],
             'level' => CompetitionLevelEnum::from($validatedData['level']),
             'place' => $validatedData['place'],
             'status' => AchievementStatusEnum::WAITING, // Reset status to waiting after edit
@@ -670,6 +664,53 @@ class AchievementController extends Controller
         }
 
         NotificationHelper::success('Achievement berhasil diperbarui dan status diatur ulang menjadi Menunggu.');
+        return redirect()->route('mahasiswa.daftar-achievement');
+    }
+
+    public function destroy($id)
+    {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
+
+        if (!$mahasiswa) {
+            NotificationHelper::error('Mahasiswa data not found.');
+            return redirect()->back();
+        }
+
+        $achievement = Achievement::query()
+            ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
+            ->where('achievement.id', $id)
+            ->where('mahasiswa_achievement.nim', $mahasiswa->nim)
+            ->select('achievement.*')
+            ->first();
+
+        if (!$achievement) {
+            NotificationHelper::error('Achievement tidak ditemukan atau Anda tidak memiliki akses untuk menghapus achievement ini.');
+            return redirect()->route('mahasiswa.daftar-achievement');
+        }
+
+        // Delete associated files from storage
+        $filesToDelete = [
+            $achievement->file_assignment_letter,
+            $achievement->file_certificate,
+            $achievement->file_activity_photo,
+            $achievement->file_poster,
+        ];
+
+        foreach ($filesToDelete as $filePath) {
+            if ($filePath && Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+        }
+
+        // Delete related records in pivot tables
+        $achievement->mahasiswaAchievements()->delete();
+        $achievement->supervisorAchievement()->delete();
+
+        // Delete the Achievement record
+        $achievement->delete();
+
+        NotificationHelper::success('Achievement berhasil dihapus.');
         return redirect()->route('mahasiswa.daftar-achievement');
     }
 }

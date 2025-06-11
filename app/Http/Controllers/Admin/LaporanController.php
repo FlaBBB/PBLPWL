@@ -167,8 +167,27 @@ class LaporanController extends Controller
 
     public function exportPdf()
     {
+        $driver = Config::get('database.default');
+        $yearFunction = '';
+
+        switch ($driver) {
+            case 'pgsql':
+                $yearFunction = 'EXTRACT(YEAR FROM achievement.upload_at)';
+                break;
+            case 'mysql':
+                $yearFunction = 'YEAR(achievement.upload_at)';
+                break;
+            case 'sqlite':
+                $yearFunction = 'strftime(\'%Y\', achievement.upload_at)';
+                break;
+            default:
+                // Fallback for unknown drivers, or throw an exception
+                $yearFunction = 'YEAR(achievement.upload_at)';
+                break;
+        }
+
         $achievementsPerYear = Achievement::select(
-            DB::raw('YEAR(upload_at) as year'),
+            DB::raw("$yearFunction as year"),
             DB::raw('COUNT(*) as total')
         )
             ->groupBy('year')
@@ -234,9 +253,27 @@ class LaporanController extends Controller
         // =================================================================
         // PENGAMBILAN DATA (SESUAI FUNGSI exportPdf ANDA)
         // =================================================================
+        $driver = Config::get('database.default');
+        $yearFunction = '';
+
+        switch ($driver) {
+            case 'pgsql':
+                $yearFunction = 'EXTRACT(YEAR FROM achievement.upload_at)';
+                break;
+            case 'mysql':
+                $yearFunction = 'YEAR(achievement.upload_at)';
+                break;
+            case 'sqlite':
+                $yearFunction = 'strftime(\'%Y\', achievement.upload_at)';
+                break;
+            default:
+                // Fallback for unknown drivers, or throw an exception
+                $yearFunction = 'YEAR(achievement.upload_at)';
+                break;
+        }
 
         $achievementsPerYear = Achievement::select(
-            DB::raw('YEAR(upload_at) as year'),
+            DB::raw("$yearFunction as year"),
             DB::raw('COUNT(*) as total')
         )
             ->groupBy('year')

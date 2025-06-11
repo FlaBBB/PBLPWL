@@ -151,7 +151,7 @@
                             sesuai!
                         </p>
                         <div class="text-right">
-                            <a href="{{ route('mahasiswa.profile') }}"
+                            <a href="{{ route('mahasiswa.edit-profile') }}"
                                 class="inline-flex items-center gap-2 text-xs border border-[#1E6AAE] text-[#1E6AAE] py-2 px-3 rounded hover:bg-[#1E6AAE] hover:text-white transition">
                                 Atur Preferensi
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

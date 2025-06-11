@@ -11,7 +11,7 @@ use App\Enums\UserRoleEnum;
             @elseif(Auth::user()->role === UserRoleEnum::DOSEN)
             <a href="{{ route('dosen.dashboard') }}" class="text-2xl font-bold">
             @endif
-                {{ $headerTitle ?? 'Welcome Back, ' }}<a href="{{ route('user.profile.show', ['role' => strtolower(Auth::user()->role->value), 'id' => Auth::user()->id]) }}" class="text-[#1e6aae] hover:underline">{{ Auth::user()->name }}</a> 👋
+                {{ $headerTitle ?? 'Welcome Back, ' }}<a href="{{ route('user.profile.show', ['role' => strtolower(Auth::user()->role->value), 'id' => Auth::user()->id]) }}" class="text-[#1e6aae] hover:underline">{{ Auth::user()->name }}</a>
             </a>
             @if(!empty($headerDesc) || !isset($headerTitle))
             <p class="text-gray-400 mt-1">

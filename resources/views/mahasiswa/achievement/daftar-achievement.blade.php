@@ -857,14 +857,12 @@
                     modalDetail.querySelector('#detail-file-activity-photo').href = achievement.activity_photo_file_path || '#';
                     modalDetail.querySelector('#detail-file-poster').href = achievement.poster_file_path || '#';
 
-                    // Participants (assuming achievement.mahasiswa_achievements is an array of objects with nim, role)
-                    // This part needs to be dynamic based on the actual data structure
-                    // For now, I'll just show placeholders or first few if available
+                    // Participants
                     if (achievement.mahasiswa_achievements && achievement.mahasiswa_achievements.length > 0) {
-                        for (let i = 0; i < 3; i++) { // Assuming max 3 participants for now
+                        for (let i = 0; i < 3; i++) {
                             const participant = achievement.mahasiswa_achievements[i];
-                            if (participant) {
-                                modalDetail.querySelector(`#detail-participant-name-${i + 1}`).textContent = participant.mahasiswa_name || ''; // Assuming mahasiswa_name exists
+                            if (participant && participant.mahasiswa) {
+                                modalDetail.querySelector(`#detail-participant-name-${i + 1}`).textContent = participant.mahasiswa.name || '';
                                 modalDetail.querySelector(`#detail-participant-role-${i + 1}`).textContent = participant.role || '';
                             } else {
                                 modalDetail.querySelector(`#detail-participant-name-${i + 1}`).textContent = '';
@@ -878,10 +876,16 @@
                         }
                     }
 
-                    // Supervisor (assuming achievement.supervisor_achievement is an object with name, role)
-                    if (achievement.supervisor_achievement) {
-                        modalDetail.querySelector('#detail-supervisor-name').textContent = achievement.supervisor_achievement.dosen_name || ''; // Assuming dosen_name exists
-                        modalDetail.querySelector('#detail-supervisor-role').textContent = achievement.supervisor_achievement.role || '';
+                    // Supervisor
+                    if (achievement.supervisor_achievements && achievement.supervisor_achievements.length > 0) {
+                        const supervisor = achievement.supervisor_achievements[0]; // Assuming one supervisor for now
+                        if (supervisor && supervisor.dosen && supervisor.role_supervisor) {
+                            modalDetail.querySelector('#detail-supervisor-name').textContent = supervisor.dosen.name || '';
+                            modalDetail.querySelector('#detail-supervisor-role').textContent = supervisor.role_supervisor.description || '';
+                        } else {
+                            modalDetail.querySelector('#detail-supervisor-name').textContent = '';
+                            modalDetail.querySelector('#detail-supervisor-role').textContent = '';
+                        }
                     } else {
                         modalDetail.querySelector('#detail-supervisor-name').textContent = '';
                         modalDetail.querySelector('#detail-supervisor-role').textContent = '';
@@ -943,16 +947,16 @@
                         modalRejected.querySelector('#rejected-url').textContent = achievement.competition_url;
                         modalRejected.querySelector('#rejected-url').href = achievement.competition_url;
 
-                        modalRejected.querySelector('#rejected-file-assignment-letter').href = achievement.assignment_letter_file_path || '#';
-                        modalRejected.querySelector('#rejected-file-certificate').href = achievement.certificate_file_path || '#';
-                        modalRejected.querySelector('#rejected-file-activity-photo').href = achievement.activity_photo_file_path || '#';
-                        modalRejected.querySelector('#rejected-file-poster').href = achievement.poster_file_path || '#';
+                        modalRejected.querySelector('#rejected-file-assignment-letter').href = achievement.file_assignment_letter || '#';
+                        modalRejected.querySelector('#rejected-file-certificate').href = achievement.file_certificate || '#';
+                        modalRejected.querySelector('#rejected-file-activity-photo').href = achievement.file_activity_photo || '#';
+                        modalRejected.querySelector('#rejected-file-poster').href = achievement.file_poster || '#';
 
                         if (achievement.mahasiswa_achievements && achievement.mahasiswa_achievements.length > 0) {
                             for (let i = 0; i < 3; i++) {
                                 const participant = achievement.mahasiswa_achievements[i];
-                                if (participant) {
-                                    modalRejected.querySelector(`#rejected-participant-name-${i + 1}`).textContent = participant.mahasiswa_name || '';
+                                if (participant && participant.mahasiswa) {
+                                    modalRejected.querySelector(`#rejected-participant-name-${i + 1}`).textContent = participant.mahasiswa.name || '';
                                     modalRejected.querySelector(`#rejected-participant-role-${i + 1}`).textContent = participant.role || '';
                                 } else {
                                     modalRejected.querySelector(`#rejected-participant-name-${i + 1}`).textContent = '';
@@ -966,9 +970,15 @@
                             }
                         }
 
-                        if (achievement.supervisor_achievement) {
-                            modalRejected.querySelector('#rejected-supervisor-name').textContent = achievement.supervisor_achievement.dosen_name || '';
-                            modalRejected.querySelector('#rejected-supervisor-role').textContent = achievement.supervisor_achievement.role || '';
+                        if (achievement.supervisor_achievements && achievement.supervisor_achievements.length > 0) {
+                            const supervisor = achievement.supervisor_achievements[0];
+                            if (supervisor && supervisor.dosen && supervisor.role_supervisor) {
+                                modalRejected.querySelector('#rejected-supervisor-name').textContent = supervisor.dosen.name || '';
+                                modalRejected.querySelector('#rejected-supervisor-role').textContent = supervisor.role_supervisor.description || '';
+                            } else {
+                                modalRejected.querySelector('#rejected-supervisor-name').textContent = '';
+                                modalRejected.querySelector('#rejected-supervisor-role').textContent = '';
+                            }
                         } else {
                             modalRejected.querySelector('#rejected-supervisor-name').textContent = '';
                             modalRejected.querySelector('#rejected-supervisor-role').textContent = '';
@@ -1025,16 +1035,16 @@
                         modalRevised.querySelector('#revised-url').textContent = achievement.competition_url;
                         modalRevised.querySelector('#revised-url').href = achievement.competition_url;
 
-                        modalRevised.querySelector('#revised-file-assignment-letter').href = achievement.assignment_letter_file_path || '#';
-                        modalRevised.querySelector('#revised-file-certificate').href = achievement.certificate_file_path || '#';
-                        modalRevised.querySelector('#revised-file-activity-photo').href = achievement.activity_photo_file_path || '#';
-                        modalRevised.querySelector('#revised-file-poster').href = achievement.poster_file_path || '#';
+                        modalRevised.querySelector('#revised-file-assignment-letter').href = achievement.file_assignment_letter || '#';
+                        modalRevised.querySelector('#revised-file-certificate').href = achievement.file_certificate || '#';
+                        modalRevised.querySelector('#revised-file-activity-photo').href = achievement.file_activity_photo || '#';
+                        modalRevised.querySelector('#revised-file-poster').href = achievement.file_poster || '#';
 
                         if (achievement.mahasiswa_achievements && achievement.mahasiswa_achievements.length > 0) {
                             for (let i = 0; i < 3; i++) {
                                 const participant = achievement.mahasiswa_achievements[i];
-                                if (participant) {
-                                    modalRevised.querySelector(`#revised-participant-name-${i + 1}`).textContent = participant.mahasiswa_name || '';
+                                if (participant && participant.mahasiswa) {
+                                    modalRevised.querySelector(`#revised-participant-name-${i + 1}`).textContent = participant.mahasiswa.name || '';
                                     modalRevised.querySelector(`#revised-participant-role-${i + 1}`).textContent = participant.role || '';
                                 } else {
                                     modalRevised.querySelector(`#revised-participant-name-${i + 1}`).textContent = '';
@@ -1048,9 +1058,15 @@
                             }
                         }
 
-                        if (achievement.supervisor_achievement) {
-                            modalRevised.querySelector('#revised-supervisor-name').textContent = achievement.supervisor_achievement.dosen_name || '';
-                            modalRevised.querySelector('#revised-supervisor-role').textContent = achievement.supervisor_achievement.role || '';
+                        if (achievement.supervisor_achievements && achievement.supervisor_achievements.length > 0) {
+                            const supervisor = achievement.supervisor_achievements[0];
+                            if (supervisor && supervisor.dosen && supervisor.role_supervisor) {
+                                modalRevised.querySelector('#revised-supervisor-name').textContent = supervisor.dosen.name || '';
+                                modalRevised.querySelector('#revised-supervisor-role').textContent = supervisor.role_supervisor.description || '';
+                            } else {
+                                modalRevised.querySelector('#revised-supervisor-name').textContent = '';
+                                modalRevised.querySelector('#revised-supervisor-role').textContent = '';
+                            }
                         } else {
                             modalRevised.querySelector('#revised-supervisor-name').textContent = '';
                             modalRevised.querySelector('#revised-supervisor-role').textContent = '';

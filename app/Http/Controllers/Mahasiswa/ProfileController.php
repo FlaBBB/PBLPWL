@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mahasiswa;
 use App\Helpers\NotificationHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -73,9 +74,15 @@ class ProfileController extends Controller
                 Storage::disk('public')->delete('profile_pictures/' . $user->photo_profile);
             }
 
-            $imageName = time() . '.' . $request->profile_picture->extension();
-            $request->profile_picture->storeAs('public/profile_pictures', $imageName);
-            $user->photo_profile = $imageName;
+            $path = $request->profile_picture->store('profile_pictures', 'public');
+            $user->photo_profile = '/storage/' . $path;
+            $user->save();
+        } elseif ($request->has('profile_picture') && !$request->file('profile_picture')) {
+            // If profile_picture input is present but no file was uploaded (e.g., cleared input)
+            if ($user->photo_profile && $user->photo_profile !== 'user-avatar.jpg') {
+                Storage::disk('public')->delete('profile_pictures/' . $user->photo_profile);
+            }
+            $user->photo_profile = null; // Set to null to remove the image
             $user->save();
         }
 
