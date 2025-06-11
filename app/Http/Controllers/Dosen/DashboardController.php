@@ -23,13 +23,13 @@ class DashboardController extends Controller
         $nidn = $dosen->nidn;
 
         // Total Mahasiswa Bimbingan
-        $totalMahasiswaBimbingan = Mahasiswa::whereHas('mahasiswaAchievements.achievement.supervisor', function ($query) use ($nidn) {
+        $totalMahasiswaBimbingan = Mahasiswa::whereHas('mahasiswaAchievements.achievement.supervisorAchievements', function ($query) use ($nidn) {
             $query->where('supervisor_achievement.nidn', $nidn);
         })->distinct('nim')->count();
 
         // Prestasi menunggu verifikasi
         $prestasiMenungguVerifikasi = Achievement::where('status', AchievementStatusEnum::WAITING)
-            ->whereHas('supervisor', function ($query) use ($nidn) {
+            ->whereHas('supervisorAchievements', function ($query) use ($nidn) {
                 $query->where('supervisor_achievement.nidn', $nidn);
             })
             ->count();
@@ -41,7 +41,7 @@ class DashboardController extends Controller
         $achievementsByCategory = Achievement::select('tag.name as category_name', DB::raw('count(*) as total'))
             ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
             ->join('tag', 'mahasiswa_achievement.id_tag', '=', 'tag.id')
-            ->whereHas('supervisor', function ($query) use ($nidn) {
+            ->whereHas('supervisorAchievements', function ($query) use ($nidn) {
                 $query->where('supervisor_achievement.nidn', $nidn);
             })
             ->groupBy('tag.name')
@@ -73,7 +73,7 @@ class DashboardController extends Controller
         $mahasiswaByYear = Mahasiswa::select(DB::raw("{$yearFunction} as year"), DB::raw('count(distinct mahasiswa.nim) as total'))
             ->join('mahasiswa_achievement', 'mahasiswa_achievement.nim', '=', 'mahasiswa.nim')
             ->join('achievement', 'mahasiswa_achievement.id_achievement', '=', 'achievement.id')
-            ->whereHas('mahasiswaAchievements.achievement.supervisor', function ($query) use ($nidn) {
+            ->whereHas('mahasiswaAchievements.achievement.supervisorAchievements', function ($query) use ($nidn) {
                 $query->where('supervisor_achievement.nidn', $nidn);
             })
             ->groupBy(DB::raw($yearFunction))

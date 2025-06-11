@@ -136,7 +136,7 @@ class KelolaAchievementController extends Controller
         $prestasi = Achievement::with([
             'mahasiswa',
             'tags',
-            'dosen' // Use dosen relationship for supervisor details
+            'supervisorAchievements' // Use dosen relationship for supervisor details
         ])->findOrFail($id);
 
         // No filtering for mahasiswa in detail view, all members should be di  splayed.
@@ -151,15 +151,16 @@ class KelolaAchievementController extends Controller
         $prestasi->status = 'ACCEPTED';
         $prestasi->save();
 
-        $leader = $prestasi->mahasiswa->firstWhere('pivot.role', MahasiswaAchievementRoleEnum::LEADER->value);
-        if ($leader && $leader->user) {
-            Notification::create([
-                'id_user' => $leader->user->id,
-                'content' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah disetujui.',
-                'type' => 'success',
-            ]);
-        } else {
-            Log::warning("No leader or user found for achievement ID: " . $prestasi->id . " when attempting to send approval notification.");
+        foreach ($prestasi->mahasiswa as $mahasiswa) {
+            if ($mahasiswa->user) {
+                Notification::create([
+                    'id_user' => $mahasiswa->user->id,
+                    'content' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah disetujui.',
+                    'type' => 'success',
+                ]);
+            } else {
+                Log::warning("No user found for mahasiswa ID: " . $mahasiswa->id . " in achievement ID: " . $prestasi->id . " when attempting to send approval notification.");
+            }
         }
 
         return response()->json(['message' => 'Achievement berhasil diverifikasi.']);
@@ -177,15 +178,16 @@ class KelolaAchievementController extends Controller
             $prestasi->note = $request->input('message');
             $prestasi->save();
 
-            $leader = $prestasi->mahasiswa->firstWhere('pivot.role', MahasiswaAchievementRoleEnum::LEADER->value);
-            if ($leader && $leader->user) {
-                Notification::create([
-                    'id_user' => $leader->user->id,
-                    'content' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah ditolak. Alasan: ' . $prestasi->note,
-                    'type' => 'danger',
-                ]);
-            } else {
-                Log::warning("No leader or user found for achievement ID: " . $prestasi->id . " when attempting to send rejection notification.");
+            foreach ($prestasi->mahasiswa as $mahasiswa) {
+                if ($mahasiswa->user) {
+                    Notification::create([
+                        'id_user' => $mahasiswa->user->id,
+                        'content' => 'Prestasi Anda "' . $prestasi->competition_name . '" telah ditolak. Alasan: ' . $prestasi->note,
+                        'type' => 'danger',
+                    ]);
+                } else {
+                    Log::warning("No user found for mahasiswa ID: " . $mahasiswa->id . " in achievement ID: " . $prestasi->id . " when attempting to send rejection notification.");
+                }
             }
 
             return response()->json(['message' => 'Achievement berhasil ditolak.']);
@@ -209,15 +211,16 @@ class KelolaAchievementController extends Controller
             $prestasi->note = $request->input('message');
             $prestasi->save();
 
-            $leader = $prestasi->mahasiswa->firstWhere('pivot.role', MahasiswaAchievementRoleEnum::LEADER->value);
-            if ($leader && $leader->user) {
-                Notification::create([
-                    'id_user' => $leader->user->id,
-                    'content' => 'Prestasi Anda "' . $prestasi->competition_name . '" membutuhkan revisi. Alasan: ' . $prestasi->note,
-                    'type' => 'warning',
-                ]);
-            } else {
-                Log::warning("No leader or user found for achievement ID: " . $prestasi->id . " when attempting to send revision notification.");
+            foreach ($prestasi->mahasiswa as $mahasiswa) {
+                if ($mahasiswa->user) {
+                    Notification::create([
+                        'id_user' => $mahasiswa->user->id,
+                        'content' => 'Prestasi Anda "' . $prestasi->competition_name . '" membutuhkan revisi. Alasan: ' . $prestasi->note,
+                        'type' => 'warning',
+                    ]);
+                } else {
+                    Log::warning("No user found for mahasiswa ID: " . $mahasiswa->id . " in achievement ID: " . $prestasi->id . " when attempting to send revision notification.");
+                }
             }
 
             return response()->json(['message' => 'Achievement berhasil diminta revisi.']);

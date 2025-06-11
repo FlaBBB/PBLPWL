@@ -261,7 +261,7 @@
 
         // 2. Prestasi per Program Studi (Pie Chart)
         const achievementsPerProdiData = {!! json_encode($achievementsPerProdi) !!};
-        const prodiLabels = achievementsPerProdiData.map(item => item.program_studi);
+        const prodiLabels = achievementsPerProdiData.map(item => item.prodi);
         const prodiData = achievementsPerProdiData.map(item => item.total_achievements);
 
         new Chart(document.getElementById('prodiChart'), {
