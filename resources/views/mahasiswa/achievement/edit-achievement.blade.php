@@ -76,7 +76,7 @@
                     <!-- Tanggal Surat Tugas -->
                     <div class="flex items-center space-x-4">
                         <label for="assignment_letter_date" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tanggal Surat Tugas</label>
-                        <input type="date" id="assignment_letter_date" name="assignment_letter_date" required value="{{ old('assignment_letter_date', $achievement->assignment_letter_date) }}"
+                        <input type="date" id="assignment_letter_date" name="assignment_letter_date" required value="{{ old('assignment_letter_date', $achievement->assignment_letter_date ? $achievement->assignment_letter_date->format('Y-m-d') : '') }}"
                             class="w-64 block text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
                     </div>
 
@@ -120,11 +120,11 @@
                             <select id="level" name="level"
                                 class="block w-64 text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 pr-8 focus:outline-none focus:ring-2 focus:ring-[#1e6aae] appearance-none" required>
                                 <option disabled selected hidden>Pilih Tingkat</option>
-                                <option value="INTERNATIONAL" {{ old('level', $achievement->level) == 'INTERNATIONAL' ? 'selected' : '' }}>Internasional</option>
-                                <option value="NATIONAL" {{ old('level', $achievement->level) == 'NATIONAL' ? 'selected' : '' }}>Nasional</option>
-                                <option value="PROVINCE" {{ old('level', $achievement->level) == 'PROVINCE' ? 'selected' : '' }}>Provinsi</option>
-                                <option value="KOTA_KABUPATEN" {{ old('level', $achievement->level) == 'KOTA_KABUPATEN' ? 'selected' : '' }}>Kota/Kabupaten</option>
-                                <option value="INTERNAL" {{ old('level', $achievement->level) == 'INTERNAL' ? 'selected' : '' }}>Internal</option>
+                                <option value="INTERNATIONAL" {{ old('level', $achievement->level->value ?? '') == 'INTERNATIONAL' ? 'selected' : '' }}>Internasional</option>
+                                <option value="NATIONAL" {{ old('level', $achievement->level->value ?? '') == 'NATIONAL' ? 'selected' : '' }}>Nasional</option>
+                                <option value="PROVINCE" {{ old('level', $achievement->level->value ?? '') == 'PROVINCE' ? 'selected' : '' }}>Provinsi</option>
+                                <option value="KOTA_KABUPATEN" {{ old('level', $achievement->level->value ?? '') == 'KOTA_KABUPATEN' ? 'selected' : '' }}>Kota/Kabupaten</option>
+                                <option value="INTERNAL" {{ old('level', $achievement->level->value ?? '') == 'INTERNAL' ? 'selected' : '' }}>Internal</option>
                             </select>
                             <svg class="w-4 h-4 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
                                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -140,14 +140,14 @@
                     <div class="flex items-center space-x-4">
                         <label for="start_at" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tanggal
                             Mulai</label>
-                        <input type="date" id="start_at" name="start_at" required value="{{ old('start_at', $achievement->start_at) }}"
+                        <input type="date" id="start_at" name="start_at" required value="{{ old('start_at', $achievement->start_at ? $achievement->start_at->format('Y-m-d') : '') }}"
                             class="w-64 block text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
                     </div>
                     <!-- Tanggal Berakhir -->
                     <div class="flex items-center space-x-4">
                         <label for="end_at" class="block text-sm font-medium text-gray-700 w-50 mb-0">Tanggal
                             Berakhir</label>
-                        <input type="date" id="end_at" name="end_at" required value="{{ old('end_at', $achievement->end_at) }}"
+                        <input type="date" id="end_at" name="end_at" required value="{{ old('end_at', $achievement->end_at ? $achievement->end_at->format('Y-m-d') : '') }}"
                             class="w-64 block text-sm font-normal text-gray-700 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#1e6aae]">
                     </div>
 
@@ -173,8 +173,8 @@
                             Tugas</label>
                         <input type="file" id="file_assignment_letter" name="file_assignment_letter" accept="application/pdf"
                             class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                        @if ($achievement->assignment_letter_file_path)
-                            <a href="{{ asset('storage/' . $achievement->assignment_letter_file_path) }}" target="_blank" class="text-blue-600 hover:underline text-sm">Lihat File Saat Ini</a>
+                        @if ($achievement->file_assignment_letter)
+                            <a href="{{ asset('storage/' . $achievement->file_assignment_letter) }}" target="_blank" class="text-blue-600 hover:underline text-sm">Lihat File Saat Ini</a>
                         @endif
                         @if ($errors->any() && !empty(old('file_assignment_letter')))
                             <p class="text-red-500 text-xs mt-1">File ini perlu diunggah ulang karena validasi gagal.</p>
@@ -186,8 +186,8 @@
                             Sertifikat</label>
                         <input type="file" id="file_certificate" name="file_certificate" accept="application/pdf"
                             class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                        @if ($achievement->certificate_file_path)
-                            <a href="{{ asset('storage/' . $achievement->certificate_file_path) }}" target="_blank" class="text-blue-600 hover:underline text-sm">Lihat File Saat Ini</a>
+                        @if ($achievement->file_certificate)
+                            <a href="{{ asset('storage/' . $achievement->file_certificate) }}" target="_blank" class="text-blue-600 hover:underline text-sm">Lihat File Saat Ini</a>
                         @endif
                         @if ($errors->any() && !empty(old('file_certificate')))
                             <p class="text-red-500 text-xs mt-1">File ini perlu diunggah ulang karena validasi gagal.</p>
@@ -199,8 +199,8 @@
                             Poster</label>
                         <input type="file" id="file_poster" name="file_poster" accept="image/*"
                             class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                        @if ($achievement->poster_file_path)
-                            <a href="{{ asset('storage/' . $achievement->poster_file_path) }}" target="_blank" class="text-blue-600 hover:underline text-sm">Lihat File Saat Ini</a>
+                        @if ($achievement->file_poster)
+                            <a href="{{ asset('storage/' . $achievement->file_poster) }}" target="_blank" class="text-blue-600 hover:underline text-sm">Lihat File Saat Ini</a>
                         @endif
                         @if ($errors->any() && !empty(old('file_poster')))
                             <p class="text-red-500 text-xs mt-1">File ini perlu diunggah ulang karena validasi gagal.</p>
@@ -212,8 +212,8 @@
                             Kegiatan</label>
                         <input type="file" id="file_activity_photo" name="file_activity_photo" accept="image/*"
                             class=" block w-full max-w-xs text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1e6aae] file:mr-4 file:py-2 file:px-4  file:border-r-1 file:rounded-l-lg file:border-[#1e6aae]/8  file:text-xs file:font-semibold file:bg-white file:text-[#1e6aae] hover:file:bg-[#1e6aae]/8" />
-                        @if ($achievement->activity_photo_file_path)
-                            <a href="{{ asset('storage/' . $achievement->activity_photo_file_path) }}" target="_blank" class="text-blue-600 hover:underline text-sm">Lihat File Saat Ini</a>
+                        @if ($achievement->file_activity_photo)
+                            <a href="{{ asset('storage/' . $achievement->file_activity_photo) }}" target="_blank" class="text-blue-600 hover:underline text-sm">Lihat File Saat Ini</a>
                         @endif
                         @if ($errors->any() && !empty(old('file_activity_photo')))
                             <p class="text-red-500 text-xs mt-1">File ini perlu diunggah ulang karena validasi gagal.</p>
@@ -312,6 +312,7 @@
         const mahasiswaListData = @json($mahasiswaList);
         const dosenListData = @json($dosenList);
         const roleSupervisorListData = @json($roleSupervisorList);
+        const currentMahasiswaNim = @json($currentMahasiswaNim);
 
         // Data from Blade for dynamic row population
         const oldNimMahasiswa = @json(old('nim_mahasiswa'));
@@ -320,8 +321,8 @@
         const oldNidnDosen = @json(old('nidn_dosen'));
         const oldPeranDosen = @json(old('peran_dosen'));
 
-        const existingMahasiswaAchievements = @json($achievement->mahasiswa_achievements ?? []);
-        const existingSupervisorAchievements = @json($achievement->supervisor_achievement ? [$achievement->supervisor_achievement] : []);
+        const existingMahasiswaAchievements = @json($achievement->mahasiswaAchievements ?? []);
+        const existingSupervisorAchievements = @json($achievement->supervisorAchievements ?? []);
         // @formatter:on
 
         function initializeSelect2(element, placeholderText, dropdownParentSelector) {
@@ -343,22 +344,48 @@
         }
 
         // Function to add a new Mahasiswa row and populate with old data if available
-        function addMahasiswaRow(nim = '', peran = '', tag = '') {
+        function addMahasiswaRow(nim = '', peran = '', tag = '', isFixed = false) { // Add isFixed parameter
             const mahasiswaTableBody = document.getElementById('mahasiswaTableBody');
             const newRow = document.createElement('tr');
             newRow.classList.add('bg-white', 'border-b', 'border-gray-300');
 
             const rowCount = mahasiswaTableBody.children.length + 1;
 
+            let nimSelectHtml = '';
+            let removeButtonHtml = '';
+
+            if (isFixed) {
+                // For the fixed row, display the name and NIM, and disable the select
+                const selfMahasiswa = mahasiswaListData.find(mhs => mhs.nim === nim);
+                nimSelectHtml = `
+                    <input type="hidden" name="nim_mahasiswa[]" value="${nim}">
+                    <span class="block w-full p-2 text-gray-900">${selfMahasiswa ? selfMahasiswa.name + ' (' + selfMahasiswa.nim + ')' : nim}</span>
+                `;
+                removeButtonHtml = ''; // No remove button for fixed row
+            } else {
+                // For other rows, use the select2 dropdown
+                nimSelectHtml = `
+                    <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                        <option value="">Pilih Mahasiswa</option>
+                        ${mahasiswaListData.map(mhs => `<option value="${mhs.nim}">${mhs.nim} - ${mhs.name}</option>`).join('')}
+                    </select>
+                `;
+                removeButtonHtml = `
+                    <button type="button" class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Hapus
+                    </button>
+                `;
+            }
+
             newRow.innerHTML = `
                 <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
                     ${rowCount}
                 </td>
                 <td class="px-6 py-2 border-r border-gray-300">
-                    <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
-                        <option value="">Pilih Mahasiswa</option>
-                        ${mahasiswaListData.map(mhs => `<option value="${mhs.nim}">${mhs.nim} - ${mhs.name}</option>`).join('')}
-                    </select>
+                    ${nimSelectHtml}
                 </td>
                 <td class="px-6 py-2 border-r border-gray-300">
                     <select name="peran_mahasiswa[]" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
@@ -374,25 +401,26 @@
                     </select>
                 </td>
                 <td class="w-1/8 px-4 py-2">
-                    <button type="button" class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Hapus
-                    </button>
+                    ${removeButtonHtml}
                 </td>
             `;
 
-            mahasiswaTableBody.appendChild(newRow);
+            if (isFixed) {
+                mahasiswaTableBody.prepend(newRow); // Add fixed row at the beginning
+            } else {
+                mahasiswaTableBody.appendChild(newRow);
+            }
 
             // Initialize Select2 for the newly added row and set old values
             initializeSelect2ForNewRows(newRow);
-            if (nim) {
+            if (nim && !isFixed) { // Only set value if not fixed, as fixed uses hidden input
                 $(newRow).find('.mahasiswa-select').val(nim).trigger('change');
             }
             $(newRow).find('[name="peran_mahasiswa[]"]').val(peran); // Set value for peran_mahasiswa
             if (tag) {
-                $(newRow).find('.tag-select').val(tag).trigger('change');
+                setTimeout(() => {
+                    $(newRow).find('.tag-select').val(String(tag)).trigger('change'); // Ensure tag is string for select2
+                }, 0); // Small delay to ensure select2 is fully initialized
             }
         }
 
@@ -438,7 +466,9 @@
                 $(newRow).find('.dosen-select').val(nidn).trigger('change');
             }
             if (peran) {
-                $(newRow).find('.peran-dosen-select').val(peran).trigger('change');
+                setTimeout(() => {
+                    $(newRow).find('.peran-dosen-select').val(String(peran)).trigger('change'); // Ensure peran is string for select2
+                }, 0); // Small delay to ensure select2 is fully initialized
             }
         }
 
@@ -572,16 +602,39 @@
             }
 
             // Populate existing Mahasiswa data
+            let selfMahasiswaFound = false;
             if (existingMahasiswaAchievements.length > 0) {
+                const selfMahasiswaData = existingMahasiswaAchievements.find(mhs => mhs.nim === currentMahasiswaNim);
+                if (selfMahasiswaData) {
+                    addMahasiswaRow(selfMahasiswaData.nim, selfMahasiswaData.role, selfMahasiswaData.id_tag, true);
+                    selfMahasiswaFound = true;
+                }
+
                 existingMahasiswaAchievements.forEach(mhs => {
-                    addMahasiswaRow(mhs.nim, mhs.role, mhs.tag_id);
+                    if (mhs.nim !== currentMahasiswaNim) { // Add other students
+                        addMahasiswaRow(mhs.nim, mhs.role, mhs.id_tag);
+                    }
                 });
             } else if (oldNimMahasiswa && oldNimMahasiswa.length > 0) {
+                const selfMahasiswaIndex = oldNimMahasiswa.findIndex(nim => nim === currentMahasiswaNim);
+                if (selfMahasiswaIndex !== -1) {
+                    addMahasiswaRow(oldNimMahasiswa[selfMahasiswaIndex], oldPeranMahasiswa[selfMahasiswaIndex], oldTagsMahasiswa[selfMahasiswaIndex], true);
+                    selfMahasiswaFound = true;
+                    // Remove the self-mahasiswa from old data to avoid duplication
+                    oldNimMahasiswa.splice(selfMahasiswaIndex, 1);
+                    oldPeranMahasiswa.splice(selfMahasiswaIndex, 1);
+                    oldTagsMahasiswa.splice(selfMahasiswaIndex, 1);
+                }
+
+                // Add remaining old data
                 oldNimMahasiswa.forEach((nim, index) => {
                     addMahasiswaRow(nim, oldPeranMahasiswa[index], oldTagsMahasiswa[index]);
                 });
-            } else {
-                addMahasiswaRow();
+            }
+
+            if (!selfMahasiswaFound) {
+                // If self-mahasiswa was not found in existing or old data, add it as a fixed row
+                addMahasiswaRow(currentMahasiswaNim, 'PERSONAL', '', true);
             }
 
             // Populate existing Dosen data

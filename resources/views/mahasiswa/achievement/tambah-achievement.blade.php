@@ -276,6 +276,7 @@
         const mahasiswaListData = @json($mahasiswaList);
         const dosenListData = @json($dosenList);
         const roleSupervisorListData = @json($roleSupervisorList);
+        const currentMahasiswaNim = @json($currentMahasiswaNim);
 
         // Data from Blade for dynamic row population
         const oldNimMahasiswa = @json(old('nim_mahasiswa'));
@@ -304,22 +305,48 @@
         }
 
         // Function to add a new Mahasiswa row and populate with old data if available
-        function addMahasiswaRow(nim = '', peran = '', tag = '') {
+        function addMahasiswaRow(nim = '', peran = '', tag = '', isFixed = false) { // Add isFixed parameter
             const mahasiswaTableBody = document.getElementById('mahasiswaTableBody');
             const newRow = document.createElement('tr');
             newRow.classList.add('bg-white', 'border-b', 'border-gray-300');
 
             const rowCount = mahasiswaTableBody.children.length + 1;
 
+            let nimSelectHtml = '';
+            let removeButtonHtml = '';
+
+            if (isFixed) {
+                // For the fixed row, display the name and NIM, and disable the select
+                const selfMahasiswa = mahasiswaListData.find(mhs => mhs.nim === nim);
+                nimSelectHtml = `
+                    <input type="hidden" name="nim_mahasiswa[]" value="${nim}">
+                    <span class="block w-full p-2 text-gray-900">${selfMahasiswa ? selfMahasiswa.name + ' (' + selfMahasiswa.nim + ')' : nim}</span>
+                `;
+                removeButtonHtml = ''; // No remove button for fixed row
+            } else {
+                // For other rows, use the select2 dropdown
+                nimSelectHtml = `
+                    <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
+                        <option value="">Pilih Mahasiswa</option>
+                        ${mahasiswaListData.map(mhs => `<option value="${mhs.nim}">${mhs.nim} - ${mhs.name}</option>`).join('')}
+                    </select>
+                `;
+                removeButtonHtml = `
+                    <button type="button" class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Hapus
+                    </button>
+                `;
+            }
+
             newRow.innerHTML = `
                 <td class="w-1/24 text-gray-900 px-6 py-2 border-r border-gray-300">
                     ${rowCount}
                 </td>
                 <td class="px-6 py-2 border-r border-gray-300">
-                    <select name="nim_mahasiswa[]" class="mahasiswa-select block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500" required>
-                        <option value="">Pilih Mahasiswa</option>
-                        ${mahasiswaListData.map(mhs => `<option value="${mhs.nim}">${mhs.nim} - ${mhs.name}</option>`).join('')}
-                    </select>
+                    ${nimSelectHtml}
                 </td>
                 <td class="px-6 py-2 border-r border-gray-300">
                     <select name="peran_mahasiswa[]" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring focus:ring-blue-500">
@@ -335,20 +362,20 @@
                     </select>
                 </td>
                 <td class="w-1/8 px-4 py-2">
-                    <button type="button" class="removeMahasiswa border border-red-600 text-red-600 hover:bg-red-600 hover:text-white py-1 px-2 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Hapus
-                    </button>
+                    ${removeButtonHtml}
                 </td>
             `;
 
-            mahasiswaTableBody.appendChild(newRow);
+            if (isFixed) {
+                mahasiswaTableBody.prepend(newRow); // Add fixed row at the beginning
+            } else {
+                mahasiswaTableBody.appendChild(newRow);
+            }
+
 
             // Initialize Select2 for the newly added row and set old values
             initializeSelect2ForNewRows(newRow);
-            if (nim) {
+            if (nim && !isFixed) { // Only set value if not fixed, as fixed uses hidden input
                 $(newRow).find('.mahasiswa-select').val(nim).trigger('change');
             }
             $(newRow).find('[name="peran_mahasiswa[]"]').val(peran); // Set value for peran_mahasiswa
@@ -538,8 +565,8 @@
                     addMahasiswaRow(nim, oldPeranMahasiswa[index], oldTagsMahasiswa[index]);
                 });
             } else {
-                // If no old data, add one empty row for initial display
-                addMahasiswaRow();
+                // If no old data, add the fixed row for the current user
+                addMahasiswaRow(currentMahasiswaNim, 'PERSONAL', '', true);
             }
 
             if (oldNidnDosen && oldNidnDosen.length > 0) {

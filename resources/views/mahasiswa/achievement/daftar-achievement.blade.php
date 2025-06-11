@@ -261,32 +261,8 @@
                     </table>
                     {{-- table kanan --}}
                     <div class="space-y-6">
-                        <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-name-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-role-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-name-2"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-role-2"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-name-3"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2" id="detail-participant-role-3"></td>
-                            </tr>
-
+                        <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit" id="detail-participants-table">
+                            <!-- Participant rows will be dynamically added here -->
                         </table>
                         <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
                             <tr>
@@ -448,32 +424,8 @@
                     </table>
                     {{-- table kanan --}}
                     <div class="space-y-6">
-                        <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-name-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-role-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-name-2"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-role-2"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-name-3"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2" id="rejected-participant-role-3"></td>
-                            </tr>
-
+                        <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit" id="rejected-participants-table">
+                            <!-- Participant rows will be dynamically added here -->
                         </table>
 
                         <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
@@ -612,32 +564,8 @@
                     </table>
                     {{-- table kanan --}}
                     <div class="space-y-6">
-                        <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-name-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 1</td>
-                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-role-1"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-name-2"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 2</td>
-                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-role-2"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Nama Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-name-3"></td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta 3</td>
-                                <td class="border border-gray-200 px-3 py-2" id="revised-participant-role-3"></td>
-                            </tr>
-
+                        <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit" id="revised-participants-table">
+                            <!-- Participant rows will be dynamically added here -->
                         </table>
 
                         <table class="w-full max-w-auto text-gray-800 text-left text-sm h-fit">
@@ -681,7 +609,7 @@
                     </div>
                 </div>
                 <div class="mt-8 text-right">
-                    <a id="revised-edit-button" href="#"
+                    <a id="revised-edit-button" href="{{ route('mahasiswa.edit-achievement', ['id' => 'PLACEHOLDER_ID']) }}"
                         class="px-4 py-2 rounded-lg bg-blue-200 text-blue-800 hover:bg-blue-300 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
                         Lakukan Revisi
                     </a>
@@ -728,7 +656,7 @@
                             class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Batal
                         </button>
-                        <form id="deleteForm" method="POST" action="{{ route('mahasiswa.destroy-achievement', ['id' => '__ID__']) }}" class="w-full sm:w-auto">
+                        <form id="deleteForm" method="POST" action="" class="w-full sm:w-auto">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
@@ -858,22 +786,28 @@
                     modalDetail.querySelector('#detail-file-poster').href = achievement.poster_file_path || '#';
 
                     // Participants
+                    const detailParticipantsTable = modalDetail.querySelector('#detail-participants-table');
+                    detailParticipantsTable.innerHTML = ''; // Clear existing rows
                     if (achievement.mahasiswa_achievements && achievement.mahasiswa_achievements.length > 0) {
-                        for (let i = 0; i < 3; i++) {
-                            const participant = achievement.mahasiswa_achievements[i];
-                            if (participant && participant.mahasiswa) {
-                                modalDetail.querySelector(`#detail-participant-name-${i + 1}`).textContent = participant.mahasiswa.name || '';
-                                modalDetail.querySelector(`#detail-participant-role-${i + 1}`).textContent = participant.role || '';
-                            } else {
-                                modalDetail.querySelector(`#detail-participant-name-${i + 1}`).textContent = '';
-                                modalDetail.querySelector(`#detail-participant-role-${i + 1}`).textContent = '';
-                            }
-                        }
+                        achievement.mahasiswa_achievements.forEach((participant, index) => {
+                            const row = `
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta ${index + 1}</td>
+                                    <td class="border border-gray-200 px-3 py-2">${participant.mahasiswa ? participant.mahasiswa.name : ''}</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta ${index + 1}</td>
+                                    <td class="border border-gray-200 px-3 py-2">${participant.role || ''}</td>
+                                </tr>
+                            `;
+                            detailParticipantsTable.insertAdjacentHTML('beforeend', row);
+                        });
                     } else {
-                        for (let i = 0; i < 3; i++) {
-                            modalDetail.querySelector(`#detail-participant-name-${i + 1}`).textContent = '';
-                            modalDetail.querySelector(`#detail-participant-role-${i + 1}`).textContent = '';
-                        }
+                        detailParticipantsTable.innerHTML = `
+                            <tr>
+                                <td colspan="2" class="border border-gray-200 px-3 py-2 text-center text-gray-500">Tidak ada data peserta.</td>
+                            </tr>
+                        `;
                     }
 
                     // Supervisor
@@ -932,7 +866,7 @@
                     if (achievement.status === 'WAITING') {
                         const modalWaiting = document.getElementById('modal-waiting');
                         modalWaiting.querySelector('#waiting-detail-content').textContent = `Detail untuk achievement "${achievement.competition_name}" sedang menunggu verifikasi.`;
-                        modalWaiting.querySelector('#waiting-edit-button').href = `{{ route('mahasiswa.edit-achievement', '') }}/${achievementId}`;
+                        modalWaiting.querySelector('#waiting-edit-button').href = `{{ route('mahasiswa.edit-achievement', ['id' => 'PLACEHOLDER_ID']) }}`.replace('PLACEHOLDER_ID', achievementId);
                         openModal('modal-waiting');
                     } else if (achievement.status === 'REJECTED') {
                         const modalRejected = document.getElementById('modal-rejected');
@@ -952,22 +886,28 @@
                         modalRejected.querySelector('#rejected-file-activity-photo').href = achievement.file_activity_photo || '#';
                         modalRejected.querySelector('#rejected-file-poster').href = achievement.file_poster || '#';
 
+                        const rejectedParticipantsTable = modalRejected.querySelector('#rejected-participants-table');
+                        rejectedParticipantsTable.innerHTML = ''; // Clear existing rows
                         if (achievement.mahasiswa_achievements && achievement.mahasiswa_achievements.length > 0) {
-                            for (let i = 0; i < 3; i++) {
-                                const participant = achievement.mahasiswa_achievements[i];
-                                if (participant && participant.mahasiswa) {
-                                    modalRejected.querySelector(`#rejected-participant-name-${i + 1}`).textContent = participant.mahasiswa.name || '';
-                                    modalRejected.querySelector(`#rejected-participant-role-${i + 1}`).textContent = participant.role || '';
-                                } else {
-                                    modalRejected.querySelector(`#rejected-participant-name-${i + 1}`).textContent = '';
-                                    modalRejected.querySelector(`#rejected-participant-role-${i + 1}`).textContent = '';
-                                }
-                            }
+                            achievement.mahasiswa_achievements.forEach((participant, index) => {
+                                const row = `
+                                    <tr>
+                                        <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta ${index + 1}</td>
+                                        <td class="border border-gray-200 px-3 py-2">${participant.mahasiswa ? participant.mahasiswa.name : ''}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta ${index + 1}</td>
+                                        <td class="border border-gray-200 px-3 py-2">${participant.role || ''}</td>
+                                    </tr>
+                                `;
+                                rejectedParticipantsTable.insertAdjacentHTML('beforeend', row);
+                            });
                         } else {
-                            for (let i = 0; i < 3; i++) {
-                                modalRejected.querySelector(`#rejected-participant-name-${i + 1}`).textContent = '';
-                                modalRejected.querySelector(`#rejected-participant-role-${i + 1}`).textContent = '';
-                            }
+                            rejectedParticipantsTable.innerHTML = `
+                                <tr>
+                                    <td colspan="2" class="border border-gray-200 px-3 py-2 text-center text-gray-500">Tidak ada data peserta.</td>
+                                </tr>
+                            `;
                         }
 
                         if (achievement.supervisor_achievements && achievement.supervisor_achievements.length > 0) {
@@ -1040,22 +980,28 @@
                         modalRevised.querySelector('#revised-file-activity-photo').href = achievement.file_activity_photo || '#';
                         modalRevised.querySelector('#revised-file-poster').href = achievement.file_poster || '#';
 
+                        const revisedParticipantsTable = modalRevised.querySelector('#revised-participants-table');
+                        revisedParticipantsTable.innerHTML = ''; // Clear existing rows
                         if (achievement.mahasiswa_achievements && achievement.mahasiswa_achievements.length > 0) {
-                            for (let i = 0; i < 3; i++) {
-                                const participant = achievement.mahasiswa_achievements[i];
-                                if (participant && participant.mahasiswa) {
-                                    modalRevised.querySelector(`#revised-participant-name-${i + 1}`).textContent = participant.mahasiswa.name || '';
-                                    modalRevised.querySelector(`#revised-participant-role-${i + 1}`).textContent = participant.role || '';
-                                } else {
-                                    modalRevised.querySelector(`#revised-participant-name-${i + 1}`).textContent = '';
-                                    modalRevised.querySelector(`#revised-participant-role-${i + 1}`).textContent = '';
-                                }
-                            }
+                            achievement.mahasiswa_achievements.forEach((participant, index) => {
+                                const row = `
+                                    <tr>
+                                        <td class="border border-gray-300 px-3 py-2 w-1/3 font-medium">Nama Peserta ${index + 1}</td>
+                                        <td class="border border-gray-200 px-3 py-2">${participant.mahasiswa ? participant.mahasiswa.name : ''}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-gray-300 px-3 py-2 font-medium w-1/3">Role Peserta ${index + 1}</td>
+                                        <td class="border border-gray-200 px-3 py-2">${participant.role || ''}</td>
+                                    </tr>
+                                `;
+                                revisedParticipantsTable.insertAdjacentHTML('beforeend', row);
+                            });
                         } else {
-                            for (let i = 0; i < 3; i++) {
-                                modalRevised.querySelector(`#revised-participant-name-${i + 1}`).textContent = '';
-                                modalRevised.querySelector(`#revised-participant-role-${i + 1}`).textContent = '';
-                            }
+                            revisedParticipantsTable.innerHTML = `
+                                <tr>
+                                    <td colspan="2" class="border border-gray-200 px-3 py-2 text-center text-gray-500">Tidak ada data peserta.</td>
+                                </tr>
+                            `;
                         }
 
                         if (achievement.supervisor_achievements && achievement.supervisor_achievements.length > 0) {
@@ -1109,6 +1055,9 @@
                        statusBadgeRevised.setAttribute('class', 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ' + statusClassRevised);
                        statusBadgeRevised.innerHTML = `<span class="w-2 h-2 rounded-full ${statusDotClassRevised}"></span>${statusTextRevised}`;
 
+                        // Set the href for the revised-edit-button
+                        modalRevised.querySelector('#revised-edit-button').href = `{{ route('mahasiswa.edit-achievement', ['id' => 'PLACEHOLDER_ID']) }}`.replace('PLACEHOLDER_ID', achievementId);
+
                         openModal('modal-revised');
                     } else {
                         openModal('modal-detail');
@@ -1123,7 +1072,7 @@
             function openDeleteModal(id, name) {
                 document.getElementById('delete-achievement-name').innerText = name;
                 const form = document.getElementById('deleteForm');
-                form.action = form.action.replace('__ID__', id);
+                form.action = `{{ route('mahasiswa.destroy-achievement', ['id' => 'PLACEHOLDER_ID']) }}`.replace('PLACEHOLDER_ID', id);
                 openModal('modal-hapus');
             }
         </script>

@@ -187,6 +187,14 @@ class AchievementController extends Controller
 
     public function tambah()
     {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
+
+        if (!$mahasiswa) {
+            NotificationHelper::error('Mahasiswa data not found.');
+            return redirect()->back();
+        }
+
         // Logic to display the form for adding a new competition
         $activeMenu = 'tambah-achievement';
         $breadcrumbs = [
@@ -211,6 +219,7 @@ class AchievementController extends Controller
             'mahasiswaList' => $mahasiswaList, // Pass mahasiswa list to the view
             'dosenList' => $dosenList, // Pass dosen list to the view
             'roleSupervisorList' => $roleSupervisorList, // Pass role supervisor list to the view
+            'currentMahasiswaNim' => $mahasiswa->nim, // Pass current user's NIM
         ]);
     }
 
@@ -325,6 +334,7 @@ class AchievementController extends Controller
             }
         }
 
+        Log::info('Attempting to create Achievement record.');
         // 3. Create a new Achievement record
         $achievement = Achievement::create([
             'upload_at' => now(),
@@ -350,6 +360,7 @@ class AchievementController extends Controller
             'verificator' => null, // Will be set by admin
             'verified_at' => null,
         ]);
+        Log::info('Achievement record created with ID: ' . $achievement->id);
 
         // 4. Associate the achievement with Mahasiswa
         if (isset($validatedData['nim_mahasiswa'])) {
@@ -361,12 +372,14 @@ class AchievementController extends Controller
                     continue; // Skip this entry if student not found
                 }
 
+                Log::info('Attempting to create MahasiswaAchievement for NIM: ' . $mahasiswaRecord->nim);
                 MahasiswaAchievement::create([
                     'nim' => $mahasiswaRecord->nim,
                     'id_achievement' => $achievement->id,
                     'role' => $validatedData['peran_mahasiswa'][$key],
                     'id_tag' => $validatedData['tags_mahasiswa'][$key] ?? null,
                 ]);
+                Log::info('MahasiswaAchievement created for NIM: ' . $mahasiswaRecord->nim);
             }
         }
 
@@ -375,11 +388,13 @@ class AchievementController extends Controller
             foreach ($validatedData['nidn_dosen'] as $key => $nidn_dosen) {
                 $dosenRecord = Dosen::where('nidn', $nidn_dosen)->first();
                 if ($dosenRecord) {
+                    Log::info('Attempting to create SupervisorAchievement for NIDN: ' . $dosenRecord->nidn);
                     SupervisorAchievement::create([
                         'nidn' => $dosenRecord->nidn,
                         'id_achievement' => $achievement->id,
                         'role' => $validatedData['peran_dosen'][$key],
                     ]);
+                    Log::info('SupervisorAchievement created for NIDN: ' . $dosenRecord->nidn);
                 } else {
                     Log::warning("Dosen with NIDN '{$nidn_dosen}' not found when creating achievement.");
                 }
@@ -388,6 +403,7 @@ class AchievementController extends Controller
 
 
         NotificationHelper::success('Achievement berhasil ditambahkan!');
+        Log::info('Achievement successfully added and redirecting.');
         return redirect()->route('mahasiswa.daftar-achievement');
     }
 
@@ -417,6 +433,14 @@ class AchievementController extends Controller
 
     public function edit($id)
     {
+        $user = Auth::user();
+        $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
+
+        if (!$mahasiswa) {
+            NotificationHelper::error('Mahasiswa data not found.');
+            return redirect()->back();
+        }
+
         $activeMenu = 'daftar-achievement';
         $breadcrumbs = [
             [
@@ -431,15 +455,7 @@ class AchievementController extends Controller
         $headerTitle = 'Edit Achievement';
         $headerDesc = 'Perbarui data achievement yang telah kamu raih selama masa studi. Pastikan kamu mengunggah bukti yang valid seperti sertifikat atau surat keterangan resmi.';
 
-        $user = Auth::user();
-        $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
-
-        if (!$mahasiswa) {
-            NotificationHelper::error('Mahasiswa data not found.');
-            return redirect()->back();
-        }
-
-        $achievement = Achievement::with(['mahasiswa', 'supervisor'])
+        $achievement = Achievement::with(['mahasiswaAchievements.mahasiswa', 'supervisorAchievements.dosen', 'supervisorAchievements.roleSupervisor'])
             ->join('mahasiswa_achievement', 'achievement.id', '=', 'mahasiswa_achievement.id_achievement')
             ->where('achievement.id', $id)
             ->where('mahasiswa_achievement.nim', $mahasiswa->nim)
@@ -472,6 +488,7 @@ class AchievementController extends Controller
             'mahasiswaList' => $mahasiswaList,
             'dosenList' => $dosenList,
             'roleSupervisorList' => $roleSupervisorList,
+            'currentMahasiswaNim' => $mahasiswa->nim, // Pass current user's NIM
         ]);
     }
 
@@ -647,7 +664,7 @@ class AchievementController extends Controller
         }
 
         // Update SupervisorAchievement records
-        $achievement->supervisorAchievement()->delete(); // Delete existing records
+        $achievement->supervisorAchievements()->delete(); // Delete existing records
         if (isset($validatedData['nidn_dosen'])) {
             foreach ($validatedData['nidn_dosen'] as $key => $nidn_dosen) {
                 $dosenRecord = Dosen::where('nidn', $nidn_dosen)->first();
@@ -655,7 +672,7 @@ class AchievementController extends Controller
                     SupervisorAchievement::create([
                         'nidn' => $dosenRecord->nidn,
                         'id_achievement' => $achievement->id,
-                        'role_supervisor_id' => $validatedData['peran_dosen'][$key],
+                        'role' => $validatedData['peran_dosen'][$key],
                     ]);
                 } else {
                     Log::warning("Dosen with NIDN '{$nidn_dosen}' not found when updating achievement.");
@@ -705,7 +722,7 @@ class AchievementController extends Controller
 
         // Delete related records in pivot tables
         $achievement->mahasiswaAchievements()->delete();
-        $achievement->supervisorAchievement()->delete();
+        $achievement->supervisorAchievements()->delete();
 
         // Delete the Achievement record
         $achievement->delete();
