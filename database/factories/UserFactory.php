@@ -2,9 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserRoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -24,21 +27,29 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'username' => fake()->unique()->userName(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'role' => fake()->randomElement(UserRoleEnum::cases()),
+            'photo_profile' => $this->storeRandomPhotoProfile('photo_profiles'),
+            'email' => fake()->unique()->safeEmail(),
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Store a random photo profile to public storage.
+     *
+     * @param string $directory
+     * @return string
      */
-    public function unverified(): static
+    protected function storeRandomPhotoProfile(string $directory): string
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        $photos = File::files(database_path('factories/assets/photo-profile'));
+        $randomPhoto = fake()->randomElement($photos);
+        $filename = $randomPhoto->getFilename();
+        $sourcePath = $randomPhoto->getPathname();
+        $destinationPath = 'public/' . $directory . '/' . $filename;
+        Storage::put($destinationPath, File::get($sourcePath));
+        return 'storage/' . $directory . '/' . $filename;
     }
+
 }

@@ -3,30 +3,43 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
+
+    public function findForPassport($username)
+    {
+        return $this->where('username', $username)->first();
+    }
+
+    protected $table = "user";
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
+        'role',
+        'photo_profile'
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -34,15 +47,38 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'role' => UserRoleEnum::class, // Assuming UserRoleEnum exists for the enum type
+    ];
+
+    public function mahasiswa(): HasOne
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(Mahasiswa::class, 'id_user', 'id');
+    }
+
+    public function admin(): HasOne
+    {
+        return $this->hasOne(Admin::class, 'id_user', 'id');
+    }
+
+    public function dosen(): HasOne
+    {
+        return $this->hasOne(Dosen::class, 'id_user', 'id');
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'id_user', 'id');
+    }
+
+    public function competitions(): HasMany
+    {
+        return $this->hasMany(Competition::class, 'creator', 'id');
     }
 }

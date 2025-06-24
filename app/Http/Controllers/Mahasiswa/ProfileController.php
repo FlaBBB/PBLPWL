@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Http\Controllers\Mahasiswa;
+
+use App\Helpers\NotificationHelper;
+use App\Http\Controllers\Controller;
+use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+
+class ProfileController extends Controller
+{
+    public function index()
+    {
+        $activeMenu = 'profile';
+        $role = 'mahasiswa';
+
+        return view('mahasiswa.edit-profile', [
+            'activeMenu' => $activeMenu,
+            'breadcrumbs' => [['label' => 'Edit Profile', 'url' => '/mahasiswa/edit-profile']],
+            'headerTitle' => 'Edit Profile',
+            'headerDesc' => 'Edit your profile to update personal and contact information.',
+            'role' => $role,
+            'mahasiswa' => Auth::user()->mahasiswa,
+            'tags' => Tag::all(),
+            'user' => Auth::user(),
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+        $mahasiswa = $user->mahasiswa;
+
+        $messages = [
+            'email.required' => 'Email wajib diisi.',
+            'email.string' => 'Email harus berupa teks.',
+            'email.email' => 'Format email tidak valid.',
+            'email.max' => 'Email tidak boleh lebih dari 255 karakter.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'profile_picture.image' => 'Foto profil harus berupa gambar.',
+            'profile_picture.mimes' => 'Foto profil harus berformat jpeg, png, jpg, gif, atau svg.',
+            'profile_picture.max' => 'Ukuran foto profil tidak boleh lebih dari 2MB.',
+            'tags.array' => 'Tag harus berupa array.',
+            'tags.*.exists' => 'Salah satu tag yang dipilih tidak valid.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255|unique:user,email,' . $user->id,
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tag,id',
+        ], $messages);
+
+        if ($validator->fails()) {
+            $errorFields = array_keys($validator->errors()->messages());
+            foreach ($validator->errors()->all() as $error) {
+                NotificationHelper::error($error, [], $errorFields);
+            }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Update User data (for email)
+        $user->email = $request->input('email');
+        $user->save();
+
+        // Update profile picture
+        if ($request->hasFile('profile_picture')) {
+            // Delete old profile picture if exists and is not the default
+            if ($user->photo_profile && $user->photo_profile !== 'user-avatar.jpg') {
+                Storage::disk('public')->delete('profile_pictures/' . $user->photo_profile);
+            }
+
+            $path = $request->profile_picture->store('profile_pictures', 'public');
+            $user->photo_profile = '/storage/' . $path;
+            $user->save();
+        } elseif ($request->has('profile_picture') && !$request->file('profile_picture')) {
+            // If profile_picture input is present but no file was uploaded (e.g., cleared input)
+            if ($user->photo_profile && $user->photo_profile !== 'user-avatar.jpg') {
+                Storage::disk('public')->delete('profile_pictures/' . $user->photo_profile);
+            }
+            $user->photo_profile = null; // Set to null to remove the image
+            $user->save();
+        }
+
+        // Update tags
+        if ($request->has('tags')) {
+            $mahasiswa->preferences()->sync($request->input('tags'));
+        } else {
+            $mahasiswa->preferences()->detach(); // Remove all preferences if none are selected
+        }
+
+        NotificationHelper::success("Profile updated successfully!");
+
+        return redirect()->route('mahasiswa.edit-profile');
+    }
+
+    public function deleteProfilePicture()
+    {
+        $user = Auth::user();
+
+        if ($user->photo_profile && $user->photo_profile !== 'user-avatar.jpg') {
+            Storage::disk('public')->delete('profile_pictures/' . $user->photo_profile);
+            $user->photo_profile = null; // Or set to default image path if desired
+            $user->save();
+            NotificationHelper::success("Foto profil berhasil dihapus!");
+        } else {
+            NotificationHelper::error("Tidak ada foto profil untuk dihapus atau foto profil adalah default.");
+        }
+
+        return redirect()->route('mahasiswa.edit-profile');
+    }
+}
